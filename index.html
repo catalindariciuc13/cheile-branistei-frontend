@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheile Braniștei | Mountain Retreat</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+  <meta name="theme-color" content="#ffffff"/>
+
+ 
+  <link rel="preload" as="image" href="hero.webp" type="image/webp" media="(min-width: 601px)" fetchpriority="high">
+  <link rel="preload" as="image" href="hero-mobile.webp" type="image/webp" media="(max-width: 600px)" fetchpriority="high">
+
+  <link rel="stylesheet" href="style.css?v=18">
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="wrap nav-inner navbar">
+      <div class="nav-logo brand">
+        <img src="logo.png" alt="Cheile Braniștei" width="200" height="70">
+      </div>
+      <div class="nav-links menu" id="navLinks">
+        <a href="#acasa">Acasă</a>
+        <a href="#concept">Concept</a>
+        <a href="#facilitati">Facilități</a>
+        <a href="#rezerva">Rezervă</a>
+        <a href="#cazare">Cazare</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Meniu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU OVERLAY -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Închide">✕</button>
+    <nav class="mobile-nav">
+      <a href="#acasa" class="mobile-link">Acasă</a>
+      <a href="#concept" class="mobile-link">Concept</a>
+      <a href="#facilitati" class="mobile-link">Facilități</a>
+      <a href="#rezerva" class="mobile-link">Rezervă</a>
+      <a href="#cazare" class="mobile-link">Cazare</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </nav>
+  </div>
+
+  <main>
+
+  <!-- HERO -->
+  <section id="acasa" class="hero" aria-label="Hero">
+    <div class="hero-box reveal-hero">
+      <img src="logo.png" class="hero-logo" alt="Logo Cheile Braniștei" width="260" height="90" fetchpriority="high">
+      <h1>
+        <span class="small">The key to</span>
+        <span>your escape</span>
+      </h1>
+      <p class="hero-tagline">Cheile Braniștei • Mountain Retreat</p>
+      <p class="hero-rating">
+                  Descoperă ritmul lent al muntelui
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#rezerva">
+          <i class="fa-brands fa-whatsapp"></i> Rezervă rapid
+        </a>
+        <a class="btn" href="#cazare">
+          <i class="fa-solid fa-images"></i> Vezi galeria
+        </a>
+      </div>
+    </div>
+    <div class="scroll-indicator"><span></span></div>
+  </section>
+
+  <section id="concept" class="section">
+    <div class="wrap">
+      <h2 class="reveal">Povestea de pe malul râului</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <p class="reveal" data-delay="140">
+        Ascunsă între munți și înconjurată de natură, Cheile Braniștei este mai mult decât o pensiune — este o invitație la liniște.
+
+        Aici, timpul curge mai încet. Diminețile încep cu priveliști spectaculoase, serile se termină sub cerul înstelat, iar fiecare moment este construit în jurul confortului, naturii și stării de bine.
+
+        Un refugiu autentic în inima Bucovinei, creat pentru cei care caută experiențe simple, dar memorabile.
+
+      </p>
+    </div>
+  </section>
+
+  <!-- FACILITATI -->
+  <section id="facilitati" class="section alt">
+    <div class="wrap">
+      <h2 class="reveal">Facilități</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <p class="reveal" data-delay="140" style="margin-bottom:18px;">
+        Tot ce ai nevoie pentru un sejur liniștit — confort, natură și detalii care contează.
+      </p>
+      <div class="features">
+        <div class="feature reveal" data-delay="80">
+          <div class="feature-top"><i class="fa-solid fa-wifi"></i><h3>Wi-Fi</h3></div>
+          <p>Internet disponibil pentru lucru sau relaxare.</p>
+        </div>
+        <div class="feature reveal" data-delay="140">
+          <div class="feature-top"><i class="fa-solid fa-car"></i><h3>Parcare</h3></div>
+          <p>Loc de parcare în curte, acces facil.</p>
+        </div>
+        <div class="feature reveal" data-delay="200">
+          <div class="feature-top"><i class="fa-solid fa-fire"></i><h3>BBQ & Foișor</h3></div>
+          <p>Grătar și spațiu dedicat pentru seri cozy.</p>
+        </div>
+        <div class="feature reveal" data-delay="260">
+          <div class="feature-top"><i class="fa-solid fa-water"></i><h3>Râu aproape</h3></div>
+          <p>Sunetul apei și aer curat lângă cabană.</p>
+        </div>
+        <div class="feature reveal" data-delay="320">
+          <div class="feature-top"><i class="fa-solid fa-mountain"></i><h3>Priveliște</h3></div>
+          <p>Munții Bucovinei, vibe de postcard.</p>
+        </div>
+        <div class="feature reveal" data-delay="380">
+          <div class="feature-top"><i class="fa-solid fa-bed"></i><h3>Confort</h3></div>
+          <p>Cazare tihnită, curățenie și atmosferă caldă.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REZERVA -->
+  <section id="rezerva" class="section">
+    <div class="wrap">
+      <h2 class="reveal">Rezervă rapid</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <p class="reveal" data-delay="140" style="margin-bottom:18px;">
+        Completează datele și îți confirmăm rezervarea în cel mai scurt timp.
+      </p>
+      <div class="reserve-card reveal" data-delay="200">
+        <div class="reserve-grid">
+          <div class="reserve-left reveal" data-delay="260">
+            <div class="kicker">Confirmare rapidă</div>
+            <h3>Trimite cererea în 30 secunde</h3>
+            <p class="reserve-quote">„Un loc unde timpul stă pe loc și muntele îți vorbește."</p>
+            <div class="reserve-info">
+              <div class="reserve-info-item"><i class="fa-solid fa-moon"></i><span><strong>250 RON</strong> / cameră / noapte</span></div>
+              <div class="reserve-info-item"><i class="fa-solid fa-arrow-right-to-bracket"></i><span>Check-in după <strong>ora 14:00</strong></span></div>
+              <div class="reserve-info-item"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Check-out până la <strong>ora 12:00</strong></span></div>
+              <div class="reserve-info-item"><i class="fa-solid fa-calendar-week"></i><span>Minim <strong>2 nopți</strong> în weekend</span></div>
+              <div class="reserve-info-item"><i class="fa-solid fa-paw"></i><span>Animale de companie <strong>acceptate</strong></span></div>
+              <div class="reserve-info-item"><i class="fa-solid fa-square-parking"></i><span>Parcare <strong>gratuită</strong></span></div>
+            </div>
+          </div>
+          <div class="reserve-right reveal" data-delay="320">
+            <form id="reserveForm">
+              <div class="field"><label for="nume">Nume</label><input type="text" id="nume" placeholder="Numele tău" required></div>
+              <div class="field"><label for="telefon">Telefon</label><input type="tel" id="telefon" placeholder="07xx xxx xxx" required></div>
+              <div class="field"><label for="email">Email (opțional)</label><input type="email" id="email" placeholder="email@exemplu.com"></div>
+              <div class="field"><label for="checkin">Check-in</label><input type="date" id="checkin" required></div>
+              <div class="field"><label for="checkout">Check-out</label><input type="date" id="checkout" required></div>
+              <div class="field">
+                <label for="guests">Persoane</label>
+                <select id="guests" aria-label="Număr persoane" required>
+                  <option value="2">2 persoane</option>
+                  <option value="3">3 persoane</option>
+                  <option value="4">4 persoane</option>
+                  <option value="5">5 persoane</option>
+                  <option value="6">6 persoane</option>
+                  <option value="7">7 persoane</option>
+                  <option value="8">8 persoane</option>
+                  <option value="10">9-10 persoane</option>
+                  <option value="14">11-14 persoane</option>
+                </select>
+              </div>
+              <div class="field"><label for="note">Mesaj (opțional)</label><textarea id="note" placeholder="Ex: vrem și ciubăr / venim cu copil / ajungem seara..."></textarea></div>
+              <div class="privacy-consent">
+                <input type="checkbox" id="privacy" required>
+                <label for="privacy">
+                  Sunt de acord cu <a href="/privacy.html">Politica de confidențialitate</a>
+                </label>
+              </div>
+              <button type="submit" class="btn primary full"><i class="fa-solid fa-calendar-check"></i> Trimite rezervarea</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAZARE / GALERIE -->
+  <section id="cazare" class="section alt">
+    <div class="wrap">
+      <h2 class="reveal">Cazare tihnită</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <div class="carousel" data-carousel>
+        <button class="car-btn prev" type="button" aria-label="Înapoi" data-prev>‹</button>
+        <div class="car-track" data-track>
+          <button class="car-card" type="button" data-gallery-btn data-src="outside.webp" aria-label="Foto 1"><img src="outside.webp" alt="Exterior Cheile Braniștei" width="1200" height="900" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="interior2.webp" aria-label="Foto 2"><img src="interior2.webp" alt="Cameră dublă Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="interior4.webp" aria-label="Foto 3"><img src="interior4.webp" alt="Cameră dublă Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="interior1.webp" aria-label="Foto 4"><img src="interior1.webp" alt="Cameră dublă Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="camera2.webp" aria-label="Foto 5"><img src="camera2.webp" alt="Cameră dublă Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="camera5.png" aria-label="Foto 6"><img src="camera5.png" alt="Salon" width="1200" height="900" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="camera6.png" aria-label="Foto 7"><img src="camera6.png" alt="Salon" width="1200" height="900" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="hol.webp" aria-label="Foto 8"><img src="hol.webp" alt="Hol Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="garden.webp" aria-label="Foto 9"><img src="garden.webp" alt="Curte Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+        </div>
+        <button class="car-btn next" type="button" aria-label="Înainte" data-next>›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENZII -->
+  <section id="recenzii" class="section">
+    <div class="wrap">
+      <h2 class="reveal">Recenzii de la oaspeți</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <p class="reveal" data-delay="140" style="margin-bottom:2rem;">
+        Experiențe reale de la turiști care ne-au vizitat.
+      </p>
+      <div class="reviews-grid">
+        <div class="review-card reveal" data-delay="80">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">„Recomand cu încredere. Locația este deosebită și te apropie mai mult de natură. Este perfectă pentru un weekend cu familia sau un team building."</p>
+          <div class="review-meta">
+            <div class="review-avatar">A</div>
+            <div>
+              <div class="review-name">Adelin Ș.</div>
+              <div class="review-source"><i class="fa-brands fa-google"></i> Google Reviews · 5/5</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal" data-delay="180">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">„O experiență superbă, oameni primitori deosebiți cu care poți sta liniștit la o poveste! Condițiile sunt extraordinare. Recomand cu mare încredere!"</p>
+          <div class="review-meta">
+            <div class="review-avatar">Ș</div>
+            <div>
+              <div class="review-name">Ștefan O.</div>
+              <div class="review-source"><i class="fa-brands fa-google"></i> Google Reviews · 5/5</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal" data-delay="260">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">„Pensiunea este foarte frumoasă, spațioasă, potrivită pentru teambuilding. Gazda este de nota 10 și are grijă să nu îți lipsească nimic. Aer curat și curte spațioasă!"</p>
+          <div class="review-meta">
+            <div class="review-avatar">M</div>
+            <div>
+              <div class="review-name">Mihaela B.</div>
+              <div class="review-source"><i class="fa-brands fa-google"></i> Google Reviews · 5/5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <div class="divider"></div>
+      <p style="margin-bottom:14px;">
+        Calea Cernăuțiului 5, Braniștea, jud. Suceava
+      </p>
+      <div style="margin:20px auto;max-width:700px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);">
+        <iframe
+          title="Harta locatie Cheile Branistei"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2691.25115252845!2d25.3518692!3d47.58235680000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4735c57ddf5e8e4b%3A0xcf489c2a286b0df8!2sCasa%20Cheile%20Brani%C8%99tei!5e0!3m2!1sro!2sro!4v1778758637244!5m2!1sro!2sro"
+          width="100%"
+          height="320"
+          style="border:0;display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+      <a href="https://maps.app.goo.gl/fGCbCsRtcbRnctTH8" target="_blank" class="map-pin reveal" data-delay="80" aria-label="Deschide locația în Google Maps">
+        <i class="fa-solid fa-location-dot"></i>
+        Navighează spre Cheile Braniștei
+      </a>
+      <div class="contact-grid reveal" data-delay="140">
+        <a class="contact-btn" href="tel:0733623000">📞 0733 623 000</a>
+        <a class="contact-btn" href="mailto:cheilebranistei@gmail.com">✉ Email</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <a href="/" class="footer-logo">
+        <img src="logo.png" alt="Cheile Braniștei">
+      </a>
+      <p style="margin:0 0 6px;color:var(--accent);font-family:'Prata',serif;font-size:.9rem;letter-spacing:2px;">Cheile Branistei Mountain Retreat</p>
+      <p style="margin:0;font-size:.72rem;letter-spacing:1.5px;color:var(--muted);">© 2026 · Toate drepturile rezervate · Braniștea, jud. Suceava</p>
+      <p style="margin:4px 0 0;font-size:.68rem;color:rgba(245,241,232,.4);letter-spacing:1px;">
+        CIF: 54261765 · Reg. Com.: F2026014073005
+      </p>
+      <p style="margin-top:10px;">
+        <a href="/privacy.html">Politică de confidențialitate</a>
+      </p>
+    </div>
+  </footer>
+
+  <a class="whatsapp" href="https://wa.me/40733623000" target="_blank" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="whatsapp-tooltip">Scrie-ne pe WhatsApp</span>
+  </a>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-close close" id="lbClose" aria-label="Închide">✕</button>
+    <img id="lbImg" alt="Imagine galerie">
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-icon" id="modalIcon"></div>
+      <h3 id="modalTitle"></h3>
+      <p id="modalMsg"></p>
+      <div id="modalActions"></div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

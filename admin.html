@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Cheile Braniștei</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css">
+  <style>
+    :root {
+      --bg: #102a21;
+      --bg2: #0b1f19;
+      --text: #f5f1e8;
+      --muted: rgba(245,241,232,.74);
+      --line: rgba(245,241,232,.14);
+      --accent: #d6b36a;
+      --shadow: 0 18px 55px rgba(0,0,0,.38);
+      --green: #2d6a4f;
+      --red: #c62828;
+      --yellow: #f9a825;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg), var(--bg2));
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* =========================
+       LOGIN
+       ========================= */
+
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .login-box {
+      background: linear-gradient(160deg, #162e22, #0e2019);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .login-box img {
+      height: 80px;
+      width: auto;
+      margin: 0 auto 1.5rem;
+      display: block;
+      filter: brightness(0) invert(1);
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      font-size: 1rem;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 1rem;
+      outline: none;
+      text-align: center;
+      letter-spacing: 4px;
+    }
+
+    .login-input:focus { border-color: rgba(214,179,106,.55); }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(214,179,106,.55);
+      background: linear-gradient(180deg, rgba(214,179,106,.22), rgba(214,179,106,.10));
+      color: var(--text);
+      font-size: 0.85rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .login-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+    .login-error { color: #f5a0a0; font-size: 0.85rem; margin-top: 0.8rem; display: none; }
+
+    /* =========================
+       ADMIN PANEL
+       ========================= */
+
+    .admin-panel { display: none; }
+
+    .admin-header {
+      background: rgba(8,18,14,.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: 0.6rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .admin-header-left img {
+      height: 40px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+
+    .admin-header-left h1 {
+      font-family: 'Prata', serif;
+      color: var(--accent);
+      font-size: 1.2rem;
+    }
+
+    .admin-header-left p {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    .logout-btn {
+      background: rgba(200,50,50,.15);
+      border: 1px solid rgba(200,50,50,.35);
+      color: #f5a0a0;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: .18s ease;
+    }
+
+    .logout-btn:hover { background: rgba(200,50,50,.25); }
+
+    .admin-tabs {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1.5rem 2rem 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab-btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid transparent;
+      background: none;
+      color: var(--muted);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .tab-btn.active {
+      background: rgba(214,179,106,.12);
+      border-color: var(--line);
+      border-bottom-color: var(--bg);
+      color: var(--accent);
+    }
+
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    .admin-content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: rgba(0,0,0,.2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.2rem;
+      text-align: center;
+    }
+
+    .stat-card .stat-num   { font-family: 'Prata', serif; font-size: 2rem; color: var(--accent); }
+    .stat-card .stat-label { color: var(--muted); font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+    .rezervari-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .rezervare-card {
+      background: rgba(0,0,0,.2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.2rem 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      transition: border-color .18s ease;
+    }
+
+    .rezervare-card:hover       { border-color: rgba(214,179,106,.3); }
+    .rezervare-card.pending     { border-left: 3px solid var(--yellow); }
+    .rezervare-card.confirmata  { border-left: 3px solid #4caf50; }
+    .rezervare-card.anulata     { border-left: 3px solid var(--red); opacity: 0.7; }
+    .rezervare-card.blocat      { border-left: 3px solid #9c27b0; }
+
+    .rezervare-info h3 {
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .rezervare-info p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+    .rezervare-info .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .badge.pending    { background: rgba(249,168,37,.15); color: var(--yellow); border: 1px solid rgba(249,168,37,.3); }
+    .badge.confirmata { background: rgba(76,175,80,.15);  color: #4caf50;       border: 1px solid rgba(76,175,80,.3); }
+    .badge.anulata    { background: rgba(198,40,40,.15);  color: #f5a0a0;       border: 1px solid rgba(198,40,40,.3); }
+    .badge.blocat     { background: rgba(156,39,176,.15); color: #ce93d8;       border: 1px solid rgba(156,39,176,.3); }
+
+    .rezervare-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.2);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .18s ease;
+      white-space: nowrap;
+    }
+
+    .action-btn:hover           { transform: translateY(-1px); }
+    .action-btn.confirm         { border-color: rgba(76,175,80,.4); color: #4caf50; }
+    .action-btn.confirm:hover   { background: rgba(76,175,80,.15); }
+    .action-btn.cancel          { border-color: rgba(198,40,40,.4); color: #f5a0a0; }
+    .action-btn.cancel:hover    { background: rgba(198,40,40,.15); }
+
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: none;
+      color: var(--muted);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .filter-btn.active {
+      background: rgba(214,179,106,.12);
+      border-color: rgba(214,179,106,.4);
+      color: var(--accent);
+    }
+
+    .blocare-card {
+      background: rgba(0,0,0,.2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.5rem;
+      max-width: 560px;
+    }
+
+    .blocare-card h3 { font-family: 'Prata', serif; color: var(--accent); margin-bottom: 1rem; font-size: 1.2rem; }
+
+    .field { display: grid; gap: 6px; margin-bottom: 1rem; }
+
+    .field label {
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .field input:focus,
+    .field select:focus { border-color: rgba(214,179,106,.55); }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 12px;
+      border: 1px solid rgba(214,179,106,.55);
+      background: linear-gradient(180deg, rgba(214,179,106,.22), rgba(214,179,106,.10));
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: .18s ease;
+      margin-top: 0.5rem;
+    }
+
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5; display: block; }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #162e22;
+      border: 1px solid rgba(76,175,80,.4);
+      border-radius: 12px;
+      padding: 0.8rem 1.2rem;
+      color: #4caf50;
+      font-size: 0.85rem;
+      font-weight: 700;
+      z-index: 9999;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: .3s ease;
+    }
+
+    .toast.show  { transform: translateY(0); opacity: 1; }
+    .toast.error { border-color: rgba(198,40,40,.4); color: #f5a0a0; background: #1a0a0a; }
+
+    .loading { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.9rem; }
+
+    @media (max-width: 600px) {
+      .admin-content { padding: 1rem; }
+      .rezervare-card { grid-template-columns: 1fr; }
+      .rezervare-actions { flex-direction: row; flex-wrap: wrap; }
+      .admin-tabs { padding: 1rem 1rem 0; overflow-x: auto; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .admin-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.7);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:99999;
+    }
+
+    .admin-modal.open{
+      display:flex;
+    }
+
+    .admin-modal-box{
+      width:min(420px,90vw);
+      background:linear-gradient(160deg,#162e22,#0e2019);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:2rem;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+
+    .admin-modal-box h3{
+      color:var(--accent);
+      margin-bottom:12px;
+      font-family:'Prata',serif;
+    }
+
+    .admin-modal-box p{
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .admin-modal-actions{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    /* =========================
+       CALENDAR
+       ========================= */
+
+    #calendar {
+      background: rgba(0,0,0,.2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.5rem;
+    }
+
+    .fc { color: var(--text); }
+
+    .fc-toolbar-title {
+      font-family: 'Prata', serif;
+      color: var(--accent);
+      font-size: 1.2rem !important;
+    }
+
+    .fc-button {
+      background: rgba(0,0,0,.2) !important;
+      border: 1px solid var(--line) !important;
+      color: var(--text) !important;
+      font-family: 'Montserrat', sans-serif !important;
+      font-size: 0.78rem !important;
+      font-weight: 700 !important;
+      letter-spacing: 1px !important;
+      text-transform: uppercase !important;
+      border-radius: 8px !important;
+      padding: 0.4rem 0.8rem !important;
+    }
+
+    .fc-button:hover {
+      background: rgba(214,179,106,.15) !important;
+      border-color: rgba(214,179,106,.4) !important;
+    }
+
+    .fc-button-active, .fc-button-primary:not(:disabled).fc-button-active {
+      background: rgba(214,179,106,.2) !important;
+      border-color: rgba(214,179,106,.5) !important;
+    }
+
+    .fc-col-header-cell {
+      background: rgba(0,0,0,.2);
+      color: var(--muted);
+      font-size: 0.78rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 0;
+    }
+
+    .fc-daygrid-day {
+      background: rgba(0,0,0,.1);
+      border-color: var(--line) !important;
+    }
+
+    .fc-daygrid-day:hover { background: rgba(214,179,106,.05); }
+
+    .fc-day-today { background: rgba(214,179,106,.08) !important; }
+
+    .fc-daygrid-day-number { color: var(--muted); font-size: 0.85rem; }
+
+    .fc-event {
+      border-radius: 6px !important;
+      border: none !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      padding: 2px 6px !important;
+      cursor: pointer;
+    }
+
+    .legenda {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .legenda-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <img src="logo.png" alt="Cheile Braniștei">
+      <input type="password" class="login-input" id="passwordInput"
+             placeholder="••••••••" autocomplete="current-password">
+      <button class="login-btn" id="loginBtn">
+        <i class="fa-solid fa-lock"></i> Accesează
+      </button>
+      <p class="login-error" id="loginError">Parolă incorectă. Încearcă din nou.</p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <div class="admin-panel" id="adminPanel">
+
+    <div class="admin-header">
+      <div class="admin-header-left">
+        <img src="logo.png" alt="Cheile Braniștei">
+        <div>
+          <h1>Panou Admin</h1>
+          <p>Cheile Braniștei Mountain Retreat</p>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i> Ieșire
+      </button>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="rezervari">
+        <i class="fa-solid fa-calendar-check"></i> Rezervări
+      </button>
+      <button class="tab-btn" data-tab="calendar">
+        <i class="fa-solid fa-calendar-days"></i> Calendar
+      </button>
+      <button class="tab-btn" data-tab="blocare">
+        <i class="fa-solid fa-lock"></i> Blochează perioadă
+      </button>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- TAB: Rezervari -->
+      <div class="tab-content active" id="tab-rezervari">
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-num" id="statTotal">—</div>
+            <div class="stat-label">Total rezervări</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statPending">—</div>
+            <div class="stat-label">În așteptare</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statConfirmate">—</div>
+            <div class="stat-label">Confirmate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num" id="statAnulate">—</div>
+            <div class="stat-label">Anulate</div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="toate">Toate</button>
+          <button class="filter-btn" data-filter="PENDING">În așteptare</button>
+          <button class="filter-btn" data-filter="CONFIRMATA">Confirmate</button>
+          <button class="filter-btn" data-filter="ANULATA">Anulate</button>
+          <button class="filter-btn" data-filter="BLOCAT">Blocate</button>
+          <button onclick="exportPDF()" style="margin-left:auto;padding:0.4rem 1rem;border-radius:20px;border:1px solid rgba(214,179,106,.4);background:rgba(214,179,106,.12);color:var(--accent);font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.18s ease;">
+            <i class="fa-solid fa-file-pdf"></i> Exportă PDF
+          </button>
+        </div>
+
+        <div class="rezervari-list" id="rezervariList">
+          <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Se încarcă...</div>
+        </div>
+
+      </div>
+
+      <!-- TAB: Calendar -->
+      <div class="tab-content" id="tab-calendar">
+        <div class="legenda">
+          <div class="legenda-item">
+            <div class="legenda-dot" style="background:#f9a825;"></div>
+            <span>În așteptare</span>
+          </div>
+          <div class="legenda-item">
+            <div class="legenda-dot" style="background:#4caf50;"></div>
+            <span>Confirmate</span>
+          </div>
+          <div class="legenda-item">
+            <div class="legenda-dot" style="background:#9c27b0;"></div>
+            <span>Blocate</span>
+          </div>
+          <div class="legenda-item">
+            <div class="legenda-dot" style="background:#c62828;"></div>
+            <span>Anulate</span>
+          </div>
+        </div>
+        <div id="calendar"></div>
+      </div>
+
+      <!-- TAB: Blocare -->
+      <div class="tab-content" id="tab-blocare">
+        <div class="blocare-card">
+          <h3>Blochează o perioadă</h3>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.2rem;">
+            Folosește această funcție pentru a bloca perioade rezervate prin Booking.com, Airbnb sau alte platforme externe.
+          </p>
+
+          <div class="field">
+            <label>Motiv blocare</label>
+            <select id="blocMotiv">
+              <option value="Booking.com">Booking.com</option>
+              <option value="Airbnb">Airbnb</option>
+              <option value="Rezervare telefonica">Rezervare telefonică</option>
+              <option value="Renovare / Mentenanta">Renovare / Mentenanță</option>
+              <option value="Uz personal">Uz personal</option>
+              <option value="Altul">Altul</option>
+            </select>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="field">
+              <label>Check-in</label>
+              <input type="date" id="blocCheckin">
+            </div>
+            <div class="field">
+              <label>Check-out</label>
+              <input type="date" id="blocCheckout">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Nr. camere blocate</label>
+            <select id="blocCamere">
+              <option value="1">1 cameră</option>
+              <option value="2">2 camere</option>
+              <option value="3">3 camere</option>
+              <option value="4">4 camere</option>
+              <option value="5">5 camere</option>
+              <option value="6">6 camere</option>
+              <option value="7">7 camere (toate)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Observații (opțional)</label>
+            <input type="text" id="blocObs" placeholder="Ex: confirmare #12345">
+          </div>
+
+          <button class="submit-btn" id="blocareBtn">
+            <i class="fa-solid fa-lock"></i> Blochează perioada
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Calendar Popup -->
+  <div id="calPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:4000;align-items:center;justify-content:center;padding:2rem;">
+    <div style="background:linear-gradient(160deg,#162e22,#0e2019);border:1px solid var(--line);border-radius:20px;padding:2rem;max-width:400px;width:100%;position:relative;box-shadow:var(--shadow);">
+      <button onclick="document.getElementById('calPopup').style.display='none'" style="position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--muted);cursor:pointer;font-size:16px;">✕</button>
+      <div id="calPopupContent"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div id="deleteModal" class="admin-modal">
+    <div class="admin-modal-box">
+      <div style="font-size:42px;color:#f5a0a0;margin-bottom:12px;">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+
+      <h3 id="deleteTitle">Ștergere rezervare</h3>
+
+      <p id="deleteText">
+        Ești sigur că dorești să ștergi această rezervare?
+      </p>
+
+      <div class="admin-modal-actions">
+        <button id="cancelDelete" class="action-btn">
+          Anulează
+        </button>
+
+        <button id="confirmDelete" class="action-btn cancel">
+          Șterge definitiv
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script>
+    const API    = 'https://cheile-branistei-backend-production.up.railway.app/api';
+    const PAROLA = 'admin2026';
+
+    let toateRezervari = [];
+    let filtruActiv    = 'toate';
+
+    // ========================
+    // LOGIN
+    // ========================
+
+    const loginScreen = document.getElementById('loginScreen');
+    const adminPanel  = document.getElementById('adminPanel');
+    const loginError  = document.getElementById('loginError');
+
+    if (sessionStorage.getItem('adminLogat') === 'true') {
+      loginScreen.style.display = 'none';
+      adminPanel.style.display  = 'block';
+      incarcaDate();
+    }
+
+    document.getElementById('loginBtn').addEventListener('click', login);
+    document.getElementById('passwordInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') login();
+    });
+
+    function login() {
+      const parola = document.getElementById('passwordInput').value;
+      if (parola === PAROLA) {
+        sessionStorage.setItem('adminLogat', 'true');
+        loginScreen.style.display = 'none';
+        adminPanel.style.display  = 'block';
+        loginError.style.display  = 'none';
+        incarcaDate();
+      } else {
+        loginError.style.display = 'block';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+      }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('adminLogat');
+      location.reload();
+    });
+
+    // ========================
+    // TABS
+    // ========================
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+        if (btn.dataset.tab === 'calendar') initCalendar();
+      });
+    });
+
+    // ========================
+    // FILTRE
+    // ========================
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filtruActiv = btn.dataset.filter;
+        randeazaRezervari();
+      });
+    });
+
+    // ========================
+    // INCARCARE DATE
+    // ========================
+
+    async function incarcaDate() {
+      try {
+        const r = await fetch(`${API}/rezervari`);
+        toateRezervari = await r.json();
+        actualizeazaStats();
+        randeazaRezervari();
+      } catch (err) {
+        document.getElementById('rezervariList').innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p>Nu s-a putut conecta la server.</p>
+          </div>`;
+      }
+    }
+
+    // ========================
+    // STATS
+    // ========================
+
+    function actualizeazaStats() {
+      const normale = toateRezervari.filter(r => r.status !== 'BLOCAT');
+      document.getElementById('statTotal').textContent      = normale.length;
+      document.getElementById('statPending').textContent    = normale.filter(r => r.status === 'PENDING').length;
+      document.getElementById('statConfirmate').textContent = normale.filter(r => r.status === 'CONFIRMATA').length;
+      document.getElementById('statAnulate').textContent    = normale.filter(r => r.status === 'ANULATA').length;
+    }
+
+    // ========================
+    // RANDARE REZERVARI
+    // ========================
+
+    function randeazaRezervari() {
+      const list = document.getElementById('rezervariList');
+
+      const filtrate = filtruActiv === 'toate'
+        ? toateRezervari
+        : toateRezervari.filter(r => r.status === filtruActiv);
+
+      if (filtrate.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-calendar-xmark"></i>
+            <p>Nu există rezervări în această categorie.</p>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = filtrate.map(r => {
+        const statusClass = r.status?.toLowerCase() || 'pending';
+        const statusLabel = {
+          PENDING:    'În așteptare',
+          CONFIRMATA: 'Confirmată',
+          ANULATA:    'Anulată',
+          BLOCAT:     'Blocat'
+        }[r.status] || r.status;
+
+        const esteBloc   = r.status === 'BLOCAT';
+        const numeAfisat = esteBloc ? `🔒 ${r.mesaj || 'Perioadă blocată'}` : r.nume;
+
+        let actiuni = '';
+
+        if (r.status === 'PENDING') {
+          actiuni = `
+            <button class="action-btn confirm" onclick="schimbaStatus(${r.id}, 'CONFIRMATA')">
+              <i class="fa-solid fa-check"></i> Confirmă
+            </button>
+            <button class="action-btn cancel" onclick="schimbaStatus(${r.id}, 'ANULATA')">
+              <i class="fa-solid fa-xmark"></i> Anulează
+            </button>
+          `;
+        } else if (r.status === 'CONFIRMATA') {
+          actiuni = `
+            <button class="action-btn cancel" onclick="schimbaStatus(${r.id}, 'ANULATA')">
+              <i class="fa-solid fa-xmark"></i> Anulează
+            </button>
+          `;
+        } else if (r.status === 'BLOCAT') {
+          actiuni = `
+            <button class="action-btn cancel" onclick="stergeRezervare(${r.id}, true)">
+              <i class="fa-solid fa-trash"></i> Șterge
+            </button>
+          `;
+        } else if (r.status === 'ANULATA') {
+          actiuni = `
+            <button class="action-btn confirm" onclick="schimbaStatus(${r.id}, 'CONFIRMATA')">
+              <i class="fa-solid fa-rotate-left"></i> Reactivează
+            </button>
+            <button class="action-btn cancel" onclick="stergeRezervare(${r.id}, false)">
+              <i class="fa-solid fa-trash"></i> Șterge
+            </button>
+          `;
+        }
+
+        return `
+          <div class="rezervare-card ${statusClass}" id="card-${r.id}">
+            <div class="rezervare-info">
+              <span class="badge ${statusClass}">${statusLabel}</span>
+              <h3>${numeAfisat}</h3>
+              <p>
+                📅 <strong>${r.dataCheckin}</strong> → <strong>${r.dataCheckout}</strong>
+                ${esteBloc
+                  ? `&nbsp;·&nbsp; 🛏️ ${Math.ceil(r.nrPersoane / 2)} camere blocate`
+                  : `&nbsp;·&nbsp; 👥 ${r.nrPersoane} persoane`}
+              </p>
+              ${!esteBloc ? `<p>📞 ${r.telefon || '—'}${r.email ? `&nbsp;·&nbsp; ✉ ${r.email}` : ''}</p>` : ''}
+              ${r.mesaj && !esteBloc ? `<p style="margin-top:4px;font-style:italic;opacity:.8;">💬 ${r.mesaj}</p>` : ''}
+              <p style="font-size:.75rem;opacity:.5;margin-top:6px;">
+                Adăugat: ${new Date(r.dataCreare).toLocaleString('ro-RO')}
+              </p>
+            </div>
+            <div class="rezervare-actions">${actiuni}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ========================
+    // SCHIMBA STATUS
+    // ========================
+
+    async function schimbaStatus(id, status) {
+      try {
+        const r = await fetch(`${API}/rezervari/${id}/status?status=${status}`, { method: 'PUT' });
+        if (r.ok) {
+          const updated = await r.json();
+          toateRezervari = toateRezervari.map(x => x.id === id ? updated : x);
+          actualizeazaStats();
+          randeazaRezervari();
+          showToast(`Rezervare ${status === 'CONFIRMATA' ? 'confirmată' : 'anulată'} cu succes!`);
+        }
+      } catch (err) {
+        showToast('Eroare la actualizare!', true);
+      }
+    }
+
+    // ========================
+    // STERGE REZERVARE
+    // ========================
+
+    async function stergeRezervare(id, esteBloc) {
+      const mesaj = esteBloc
+        ? 'Ești sigur că vrei să ștergi această perioadă blocată?'
+        : 'Ești sigur că vrei să ștergi definitiv această rezervare?';
+      const ok = await confirmaStergere(mesaj);
+      if (!ok) return;
+
+      try {
+        const r = await fetch(`${API}/rezervari/${id}`, { method: 'DELETE' });
+        if (r.ok) {
+          toateRezervari = toateRezervari.filter(x => x.id !== id);
+          actualizeazaStats();
+          randeazaRezervari();
+          showToast(esteBloc ? 'Perioadă deblocată!' : 'Rezervare ștearsă definitiv!');
+        }
+      } catch (err) {
+        showToast('Eroare la ștergere!', true);
+      }
+    }
+
+    // ========================
+    // BLOCARE PERIOADA
+    // ========================
+
+    document.getElementById('blocareBtn').addEventListener('click', async () => {
+      const motiv    = document.getElementById('blocMotiv').value;
+      const checkin  = document.getElementById('blocCheckin').value;
+      const checkout = document.getElementById('blocCheckout').value;
+      const camere   = parseInt(document.getElementById('blocCamere').value);
+      const obs      = document.getElementById('blocObs').value;
+
+      if (!checkin || !checkout) {
+        showToast('Selectează datele de check-in și check-out!', true);
+        return;
+      }
+
+      if (checkout <= checkin) {
+        showToast('Check-out-ul trebuie să fie după check-in!', true);
+        return;
+      }
+
+      try {
+        const dispR = await fetch(`${API}/rezervari/disponibilitate?checkin=${checkin}&checkout=${checkout}`);
+        const disp  = await dispR.json();
+        const camereOcupate = disp.camereOcupate || 0;
+
+        if (camereOcupate > 0) {
+          showToast(`⚠️ Există rezervări active în această perioadă (${camereOcupate} camere ocupate). Anulează-le înainte de a bloca!`, true);
+          return;
+        }
+      } catch (err) {}
+
+      try {
+        const r = await fetch(`${API}/rezervari`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nume:         'BLOCAT',
+            telefon:      '0000000000',
+            email:        '',
+            dataCheckin:  checkin,
+            dataCheckout: checkout,
+            nrPersoane:   camere * 2,
+            mesaj:        `${motiv}${obs ? ' — ' + obs : ''}`
+          })
+        });
+
+        if (r.ok) {
+          const saved = await r.json();
+          await fetch(`${API}/rezervari/${saved.id}/status?status=BLOCAT`, { method: 'PUT' });
+          showToast(`Perioada ${checkin} → ${checkout} blocată pentru ${motiv}!`);
+          document.getElementById('blocCheckin').value  = '';
+          document.getElementById('blocCheckout').value = '';
+          document.getElementById('blocObs').value      = '';
+          await incarcaDate();
+          document.querySelector('[data-tab="rezervari"]').click();
+        } else {
+          const data = await r.json();
+          showToast(data.eroare || 'Eroare la blocare!', true);
+        }
+      } catch (err) {
+        showToast('Nu s-a putut conecta la server!', true);
+      }
+    });
+
+    const azi = new Date().toISOString().split('T')[0];
+    document.getElementById('blocCheckin').setAttribute('min', azi);
+    document.getElementById('blocCheckout').setAttribute('min', azi);
+    document.getElementById('blocCheckin').addEventListener('change', e => {
+      document.getElementById('blocCheckout').setAttribute('min', e.target.value);
+    });
+
+    // ========================
+    // EXPORT PDF
+    // ========================
+
+    function exportPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('landscape');
+
+      const filtrate = filtruActiv === 'toate'
+        ? toateRezervari.filter(r => r.status !== 'BLOCAT')
+        : toateRezervari.filter(r => r.status === filtruActiv);
+
+      const statusLabel = {
+        PENDING:    'In asteptare',
+        CONFIRMATA: 'Confirmata',
+        ANULATA:    'Anulata',
+        BLOCAT:     'Blocata'
+      };
+
+      const rows = filtrate.map(r => [
+        r.id,
+        r.nume || '—',
+        r.telefon || '—',
+        r.email || '—',
+        r.dataCheckin || '—',
+        r.dataCheckout || '—',
+        r.nrPersoane || '—',
+        statusLabel[r.status] || r.status,
+        new Date(r.dataCreare).toLocaleDateString('ro-RO')
+      ]);
+
+      const genereazaPDF = (logoBase64) => {
+        // Fundal verde pentru header
+        doc.setFillColor(16, 42, 33);
+        doc.rect(0, 0, 297, 38, 'F');
+
+        // Logo pe fundal verde
+        if (logoBase64) {
+          doc.addImage(logoBase64, 'PNG', 118, 4, 60, 28);
+        } else {
+          doc.setFontSize(16);
+          doc.setTextColor(214, 179, 106);
+          doc.text('Cheile Branistei Mountain Retreat', 14, 22);
+        }
+
+        // Data raport
+        doc.setFontSize(10);
+        doc.setTextColor(80, 80, 80);
+        doc.text('Raport rezervari — ' + new Date().toLocaleDateString('ro-RO'), 14, 46);
+
+        // Linie separatoare
+        doc.setDrawColor(16, 42, 33);
+        doc.setLineWidth(0.5);
+        doc.line(14, 49, 283, 49);
+
+        doc.autoTable({
+          startY: 53,
+          head: [['#', 'Nume', 'Telefon', 'Email', 'Check-in', 'Check-out', 'Pers.', 'Status', 'Data']],
+          body: rows,
+          styles: {
+            fontSize: 10,
+            cellPadding: 4,
+            overflow: 'linebreak',
+            halign: 'left',
+            minCellHeight: 12
+          },
+          headStyles: {
+            fillColor: [16, 42, 33],
+            textColor: [214, 179, 106],
+            fontStyle: 'bold',
+            fontSize: 10
+          },
+          alternateRowStyles: {
+            fillColor: [245, 245, 245]
+          },
+          columnStyles: {
+            0: { cellWidth: 18 },
+            1: { cellWidth: 38 },
+            2: { cellWidth: 32 },
+            3: { cellWidth: 58 },
+            4: { cellWidth: 26 },
+            5: { cellWidth: 26 },
+            6: { cellWidth: 18 },
+            7: { cellWidth: 28 },
+            8: { cellWidth: 28 }
+          }
+        });
+
+        // Footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(150);
+          doc.text(
+            `Cheile Branistei Mountain Retreat • Pagina ${i} din ${pageCount}`,
+            14,
+            doc.internal.pageSize.height - 8
+          );
+        }
+
+        doc.save(`rezervari_${new Date().toISOString().split('T')[0]}.pdf`);
+        showToast('PDF exportat cu succes!');
+      };
+
+      // Incarca logo ca base64
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = 'logo.png';
+      img.onload = function() {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width  = img.width;
+          canvas.height = img.height;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          const logoBase64 = canvas.toDataURL('image/png');
+          genereazaPDF(logoBase64);
+        } catch (e) {
+          genereazaPDF(null);
+        }
+      };
+      img.onerror = () => genereazaPDF(null);
+    }
+
+    // ========================
+    // CALENDAR
+    // ========================
+
+    let calendarInstance = null;
+
+    function initCalendar() {
+      const calEl = document.getElementById('calendar');
+      if (!calEl) return;
+
+      if (calendarInstance) {
+        calendarInstance.destroy();
+        calendarInstance = null;
+      }
+
+      const culori = {
+        PENDING:    { bg: '#f9a825', text: '#000' },
+        CONFIRMATA: { bg: '#4caf50', text: '#fff' },
+        ANULATA:    { bg: '#c62828', text: '#fff' },
+        BLOCAT:     { bg: '#9c27b0', text: '#fff' }
+      };
+
+      const events = toateRezervari
+        .filter(r => r.status !== 'ANULATA')
+        .map(r => {
+          const esteBloc = r.status === 'BLOCAT';
+          const culoare  = culori[r.status] || culori.PENDING;
+          return {
+            title: esteBloc
+              ? '🔒 ' + (r.mesaj || 'Blocat')
+              : r.nume + ' (' + r.nrPersoane + ' pers.)',
+            start:           r.dataCheckin,
+            end:             r.dataCheckout,
+            backgroundColor: culoare.bg,
+            textColor:       culoare.text,
+            extendedProps:   { rezervare: r }
+          };
+        });
+
+      calendarInstance = new FullCalendar.Calendar(calEl, {
+        initialView:  'dayGridMonth',
+        locale:       'ro',
+        headerToolbar: {
+          left:   'prev,next today',
+          center: 'title',
+          right:  'dayGridMonth,dayGridWeek'
+        },
+        buttonText: {
+          today: 'Azi',
+          month: 'Lună',
+          week:  'Săptămână'
+        },
+        events: events,
+        eventClick: function(info) {
+          const r = info.event.extendedProps.rezervare;
+          if (!r) return;
+          const esteBloc  = r.status === 'BLOCAT';
+          const isPending = r.status === 'PENDING';
+          const isConfirm = r.status === 'CONFIRMATA';
+
+          let continut = '';
+          if (esteBloc) {
+            continut = `
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">🔒 ${r.mesaj || 'Perioadă blocată'}</div>
+              <div style="color:var(--muted);font-size:.9rem;line-height:1.8;">
+                📅 <strong>${r.dataCheckin}</strong> → <strong>${r.dataCheckout}</strong><br>
+                🛏️ <strong>${Math.ceil(r.nrPersoane / 2)} camere</strong> blocate
+              </div>
+              <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                <button onclick="calendarSterge(${r.id}, true)" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(198,40,40,.4);background:rgba(198,40,40,.15);color:#f5a0a0;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+                  <i class="fa-solid fa-lock-open"></i> Deblochează
+                </button>
+              </div>
+            `;
+          } else {
+            continut = `
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:8px;">👤 ${r.nume}</div>
+              <div style="color:var(--muted);font-size:.9rem;line-height:1.8;">
+                📞 <strong>${r.telefon}</strong>${r.email ? '<br>✉️ ' + r.email : ''}<br>
+                📅 <strong>${r.dataCheckin}</strong> → <strong>${r.dataCheckout}</strong><br>
+                👥 <strong>${r.nrPersoane} persoane</strong>
+                ${r.mesaj ? '<br>💬 ' + r.mesaj : ''}
+              </div>
+              <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
+                ${isPending ? `
+                  <button onclick="calendarStatus(${r.id}, 'CONFIRMATA')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(76,175,80,.4);background:rgba(76,175,80,.15);color:#4caf50;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+                    <i class="fa-solid fa-check"></i> Confirmă
+                  </button>
+                ` : ''}
+                ${isPending || isConfirm ? `
+                  <button onclick="calendarStatus(${r.id}, 'ANULATA')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(198,40,40,.4);background:rgba(198,40,40,.15);color:#f5a0a0;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
+                    <i class="fa-solid fa-xmark"></i> Anulează
+                  </button>
+                ` : ''}
+              </div>
+            `;
+          }
+
+          document.getElementById('calPopupContent').innerHTML = continut;
+          document.getElementById('calPopup').style.display = 'flex';
+        },
+        height: 'auto'
+      });
+
+      calendarInstance.render();
+    }
+
+    // ========================
+    // CALENDAR ACTIONS
+    // ========================
+
+    async function calendarStatus(id, status) {
+      document.getElementById('calPopup').style.display = 'none';
+      await schimbaStatus(id, status);
+      initCalendar();
+    }
+
+    async function calendarSterge(id, esteBloc) {
+      document.getElementById('calPopup').style.display = 'none';
+      await stergeRezervare(id, esteBloc);
+      initCalendar();
+    }
+
+    // ========================
+    // TOAST
+    // ========================
+
+    function confirmaStergere(mesaj) {
+      return new Promise(resolve => {
+
+      const modal = document.getElementById('deleteModal');
+
+      document.getElementById('deleteText').textContent = mesaj;
+
+      modal.classList.add('open');
+
+      document.getElementById('cancelDelete').onclick = () => {
+        modal.classList.remove('open');
+        resolve(false);
+      };
+
+      document.getElementById('confirmDelete').onclick = () => {
+        modal.classList.remove('open');
+        resolve(true);
+      };
+    });
+  }
+
+    function showToast(msg, error = false) {
+      const toast = document.getElementById('toast');
+      toast.textContent = (error ? '⚠️ ' : '✅ ') + msg;
+      toast.className   = 'toast' + (error ? ' error' : '');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+  }
+  </script>
+
+</body>
+</html>

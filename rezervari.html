@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rezervări • Cheile Braniștei Mountain Retreat</title>
+  <meta name="description" content="Trimite o cerere de rezervare. Confirmăm rapid pe WhatsApp sau email."/>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="mark">🔑</span>
+        <span>
+          <div class="name">Cheile Braniștei</div>
+          <div class="sub">Mountain Retreat</div>
+        </span>
+      </a>
+      <nav class="menu" data-menu data-nav>
+        <a href="index.html">Acasă</a>
+        <a href="camere.html">Camere</a>
+        <a href="galerie.html">Galerie</a>
+        <a href="rezervari.html">Rezervări</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Meniu">☰</button>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="display:grid; gap:1rem; grid-template-columns: 1.1fr .9fr; align-items:start">
+      <div class="card">
+        <h2>Rezervări</h2>
+        <p class="lead">Completează formularul și îți confirmăm disponibilitatea.</p>
+
+        <!-- Varianta simplă: mailto (fără backend). -->
+        <form class="form" data-booking-form
+          action="mailto:contact@cheilebranistei.ro"
+          method="post"
+          enctype="text/plain">
+
+          <div class="field">
+            <label>Nume</label>
+            <input name="nume" placeholder="Nume și prenume" required />
+          </div>
+
+          <div class="field">
+            <label>Telefon</label>
+            <input name="telefon" placeholder="+40..." />
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:.8rem">
+            <div class="field">
+              <label>Check-in</label>
+              <input type="date" name="checkin" required />
+            </div>
+            <div class="field">
+              <label>Check-out</label>
+              <input type="date" name="checkout" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Număr persoane</label>
+            <select name="persoane" required>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Mesaj (opțional)</label>
+            <textarea name="mesaj" placeholder="Detalii: preferințe, ore aproximative, etc."></textarea>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn primary" type="submit">Trimite pe email</button>
+            <!-- Schimbă numărul cu al tău: ex. 407xxxxxxxx -->
+            <button class="btn" type="button" data-wa="40700000000">Trimite pe WhatsApp</button>
+          </div>
+
+          <div class="notice">
+            <strong>Tip:</strong> Când ai domeniu și email reale, schimbăm mailto cu un formular profesional (Netlify Forms / Formspree / backend).
+          </div>
+        </form>
+      </div>
+
+      <aside class="card">
+        <h3 style="margin:0 0 .3rem">Contact rapid</h3>
+        <p class="small" style="margin:.2rem 0; color:var(--muted)">Telefon: +40 …</p>
+        <p class="small" style="margin:.2rem 0; color:var(--muted)">WhatsApp: +40 …</p>
+        <p class="small" style="margin:.2rem 0; color:var(--muted)">Email: contact@…</p>
+
+        <div class="notice" style="margin-top:1rem">
+          <strong>Ce îți cerem:</strong><br/>
+          perioadă • număr persoane • nume • telefon.
+        </div>
+
+        <a class="btn" href="galerie.html" style="margin-top:1rem">Vezi poze</a>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="small">© <span id="y"></span> Cheile Braniștei</div>
+      <div class="small">Confirmare rezervare: WhatsApp / Email</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

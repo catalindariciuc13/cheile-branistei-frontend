@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact • Cheile Braniștei Mountain Retreat</title>
+  <meta name="description" content="Contact: telefon, WhatsApp, email, locație."/>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="mark">🔑</span>
+        <span>
+          <div class="name">Cheile Braniștei</div>
+          <div class="sub">Mountain Retreat</div>
+        </span>
+      </a>
+      <nav class="menu" data-menu data-nav>
+        <a href="index.html">Acasă</a>
+        <a href="camere.html">Camere</a>
+        <a href="galerie.html">Galerie</a>
+        <a href="rezervari.html">Rezervări</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Meniu">☰</button>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" style="display:grid; gap:1rem; grid-template-columns: 1fr 1fr; align-items:start">
+      <div class="card">
+        <h2>Contact</h2>
+        <p class="lead">Scrie-ne oricând. Răspundem cât de repede putem.</p>
+
+        <div class="notice">
+          <div><strong>Telefon:</strong> +40 …</div>
+          <div><strong>WhatsApp:</strong> +40 …</div>
+          <div><strong>Email:</strong> contact@…</div>
+        </div>
+
+        <div class="hero-actions" style="margin-top:1rem">
+          <a class="btn primary" href="rezervari.html">Rezervări</a>
+          <a class="btn" href="index.html">Înapoi acasă</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-top:0">Locație</h3>
+        <p class="small" style="color:var(--muted)">Adaugă aici adresa exactă și un embed Google Maps când ești gata.</p>
+        <div class="notice">Map placeholder</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="small">© <span id="y"></span> Cheile Braniștei</div>
+      <div class="small">Bucovina • Munte • Liniște</div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

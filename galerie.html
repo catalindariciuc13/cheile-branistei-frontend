@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galerie • Cheile Braniștei Mountain Retreat</title>
+  <meta name="description" content="Galerie foto: camere, detalii și atmosfera Cheile Braniștei."/>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="nav">
+    <div class="container navbar">
+      <a class="brand" href="index.html">
+        <span class="mark">🔑</span>
+        <span>
+          <div class="name">Cheile Braniștei</div>
+          <div class="sub">Mountain Retreat</div>
+        </span>
+      </a>
+      <nav class="menu" data-menu data-nav>
+        <a href="index.html">Acasă</a>
+        <a href="camere.html">Camere</a>
+        <a href="galerie.html">Galerie</a>
+        <a href="rezervari.html">Rezervări</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <button class="burger" data-burger aria-label="Meniu">☰</button>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container">
+      <h2>Galerie</h2>
+      <p class="lead">Alege pozele tale cele mai bune — aici e vitrina.</p>
+
+      <div class="gallery" style="margin-top:1rem">
+        <button data-gallery-btn data-src="assets/img/gallery1.jpg"><img src="assets/img/gallery1.jpg" alt="Galerie 1"></button>
+        <button data-gallery-btn data-src="assets/img/gallery2.jpg"><img src="assets/img/gallery2.jpg" alt="Galerie 2"></button>
+        <button data-gallery-btn data-src="assets/img/gallery3.jpg"><img src="assets/img/gallery3.jpg" alt="Galerie 3"></button>
+        <button data-gallery-btn data-src="assets/img/gallery4.jpg"><img src="assets/img/gallery4.jpg" alt="Galerie 4"></button>
+        <!-- Duplică rândurile de mai sus pentru mai multe poze -->
+      </div>
+
+      <div class="lightbox" data-lightbox>
+        <button class="close" data-lightbox-close aria-label="Închide">✕</button>
+        <img data-lightbox-img alt="Imagine mărită" />
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="small">© <span id="y"></span> Cheile Braniștei</div>
+      <div class="small"><a class="btn" href="rezervari.html">Rezervă</a></div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Politică de Confidențialitate | Cheile Braniștei Mountain Retreat</title>
+  <meta name="description" content="Politica de confidențialitate Cheile Braniștei Mountain Retreat — modul în care colectăm și prelucrăm datele cu caracter personal.">
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #102a21;
+      --bg2: #0b1f19;
+      --text: #f5f1e8;
+      --muted: rgba(245,241,232,.72);
+      --accent: #d6b36a;
+      --line: rgba(245,241,232,.12);
+      --card: rgba(255,255,255,.04);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%);
+      color: var(--text);
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+
+    /* ===== NAV ===== */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,18,14,.75);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 48px;
+      width: auto;
+      filter: brightness(0) invert(1);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: .18s ease;
+    }
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: var(--line);
+      background: rgba(0,0,0,.15);
+    }
+    .nav-links a.btn-back {
+      border-color: rgba(214,179,106,.4);
+      color: var(--accent);
+      background: rgba(214,179,106,.08);
+    }
+    .nav-links a.btn-back:hover {
+      background: rgba(214,179,106,.16);
+    }
+
+    /* ===== HERO STRIP ===== */
+    .hero-strip {
+      background: linear-gradient(135deg, rgba(214,179,106,.12), rgba(214,179,106,.04));
+      border-bottom: 1px solid var(--line);
+      padding: 52px 28px 48px;
+      text-align: center;
+    }
+    .hero-strip .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(214,179,106,.35);
+      background: rgba(214,179,106,.1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero-strip h1 {
+      font-family: 'Prata', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--accent);
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .hero-strip .meta {
+      color: var(--muted);
+      font-size: .82rem;
+      letter-spacing: 1px;
+    }
+    .hero-strip .meta span {
+      margin: 0 8px;
+      opacity: .5;
+    }
+
+    /* ===== LAYOUT ===== */
+    .page-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 28px 100px;
+    }
+
+    /* ===== SECTIONS ===== */
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(214,179,106,.15);
+      border: 1px solid rgba(214,179,106,.35);
+      color: var(--accent);
+      font-size: .85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-family: 'Prata', serif;
+      font-size: 1.15rem;
+      color: var(--text);
+      font-weight: 400;
+      letter-spacing: .5px;
+    }
+
+    h3 {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 22px 0 10px;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 300;
+      margin-bottom: 12px;
+      line-height: 1.85;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 14px;
+    }
+
+    ul li {
+      color: var(--muted);
+      font-size: .92rem;
+      font-weight: 300;
+      padding: 6px 0 6px 22px;
+      position: relative;
+      line-height: 1.75;
+      border-bottom: 1px solid rgba(245,241,232,.06);
+    }
+    ul li:last-child { border-bottom: none; }
+    ul li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    ul li strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    /* ===== HIGHLIGHT BOX ===== */
+    .highlight {
+      background: rgba(214,179,106,.07);
+      border: 1px solid rgba(214,179,106,.25);
+      border-radius: 14px;
+      padding: 18px 22px;
+      margin: 20px 0;
+    }
+    .highlight p { margin: 0; }
+
+    /* ===== RIGHTS GRID ===== */
+    .rights-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .right-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      transition: border-color .18s;
+    }
+    .right-card:hover { border-color: rgba(214,179,106,.3); }
+    .right-card .right-title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+      letter-spacing: .5px;
+    }
+    .right-card p {
+      font-size: .84rem;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ===== CONTACT BOX ===== */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(214,179,106,.12), rgba(214,179,106,.04));
+      border: 1px solid rgba(214,179,106,.3);
+      border-radius: 18px;
+      padding: 28px 32px;
+      text-align: center;
+      margin-top: 48px;
+    }
+    .contact-box h3 {
+      text-align: center;
+      margin-top: 0;
+      font-size: 1rem;
+      letter-spacing: 2px;
+    }
+    .contact-box p {
+      margin-bottom: 20px;
+    }
+    .contact-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: .8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      transition: .18s ease;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: rgba(0,0,0,.2);
+    }
+    .btn:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+      border-color: rgba(214,179,106,.45);
+    }
+    .btn.primary {
+      border-color: rgba(214,179,106,.5);
+      background: linear-gradient(180deg, rgba(214,179,106,.22), rgba(214,179,106,.1));
+      color: var(--accent);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--line);
+      background: rgba(0,0,0,.1);
+      padding: 40px 28px;
+      text-align: center;
+    }
+    .footer-logo {
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .footer-logo img {
+      height: 52px;
+      width: auto;
+      filter: brightness(0) invert(1);
+      opacity: .7;
+    }
+    footer p {
+      font-size: .72rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin: 4px 0;
+    }
+    footer a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      .rights-grid { grid-template-columns: 1fr; }
+      .nav-links a:not(.btn-back) { display: none; }
+      .hero-strip { padding: 36px 20px 32px; }
+      .page-wrap { padding: 40px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="logo.png" alt="Cheile Braniștei">
+      </a>
+      <div class="nav-links">
+        <a href="/#rezerva">Rezervă</a>
+        <a href="/#contact">Contact</a>
+        <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Înapoi la site</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO STRIP -->
+  <div class="hero-strip">
+    <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+    <h1>Politică de Confidențialitate</h1>
+    <p class="meta">
+      www.cheilebranistei.ro
+      <span>•</span>
+      Versiunea 1.0
+      <span>•</span>
+      Mai 2026
+    </p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="page-wrap">
+
+    <p style="margin-bottom:40px;">Vă mulțumim că vizitați website-ul nostru. Protejarea datelor dumneavoastră personale reprezintă o prioritate pentru noi. Această politică descrie ce date colectăm, de ce le utilizăm și ce drepturi aveți în legătură cu acestea.</p>
+
+    <!-- 1 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Identitatea operatorului de date</h2>
+      </div>
+      <p>Datele dumneavoastră cu caracter personal sunt prelucrate de:</p>
+      <div class="highlight">
+        <p><strong style="color:var(--text);">Cheile Braniștei Mountain Retreat (DARICIUC CĂTĂLIN-TEODOR I.I.)</strong><br>
+        Adresă: Calea Cernăuțiului 5, sat Braniștea, comuna Fundu Moldovei, jud. Suceava<br>
+        CIF: 54261765<br>
+        Nr. de ordine în registrul comerțului: F2026014073005<br>
+        Email: <a href="mailto:cheilebranistei@gmail.com">cheilebranistei@gmail.com</a><br>
+        Telefon: <a href="tel:0733623000">0733 623 000</a><br>
+        Website: <a href="https://www.cheilebranistei.ro">www.cheilebranistei.ro</a></p>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Ce date cu caracter personal colectăm</h2>
+      </div>
+      <h3>2.1. Prin formularul de rezervare</h3>
+      <p>Atunci când completați formularul de rezervare de pe site, colectăm:</p>
+      <ul>
+        <li><strong>Nume și prenume</strong> — pentru identificarea rezervării</li>
+        <li><strong>Număr de telefon</strong> — pentru confirmarea rezervării</li>
+        <li><strong>Adresă de email</strong> (opțional) — pentru trimiterea confirmării automate</li>
+        <li><strong>Datele sejurului</strong> (check-in, check-out, număr persoane) — pentru gestionarea disponibilității</li>
+        <li><strong>Mesaj opțional</strong> — pentru cerințe speciale ale sejurului</li>
+      </ul>
+      <h3>2.2. Prin navigarea pe site</h3>
+      <p>Site-ul nostru utilizează exclusiv cookie-uri tehnice, strict necesare pentru funcționarea corectă a paginii. Nu utilizăm cookie-uri de tracking, analiză comportamentală sau publicitate.</p>
+      <div class="highlight">
+        <p><i class="fa-solid fa-circle-info" style="color:var(--accent);margin-right:8px;"></i>Nu colectăm date sensibile (date medicale, date financiare, numere de card). Nu vindem și nu comercializăm datele dumneavoastră.</p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Scopul prelucrării și temeiul juridic</h2>
+      </div>
+      <p>Prelucrăm datele dumneavoastră în următoarele scopuri:</p>
+      <ul>
+        <li><strong>Procesarea rezervărilor de cazare</strong> — temei juridic: executarea unui contract (art. 6 alin. 1 lit. b din GDPR)</li>
+        <li><strong>Trimiterea notificărilor automate</strong> (confirmare, anulare) — temei juridic: executarea unui contract</li>
+        <li><strong>Îndeplinirea obligațiilor legale</strong> (contabilitate, arhivare) — temei juridic: obligație legală (art. 6 alin. 1 lit. c din GDPR)</li>
+      </ul>
+    </div>
+
+    <!-- 4 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Durata păstrării datelor</h2>
+      </div>
+      <ul>
+        <li><strong>Date aferente rezervărilor:</strong> 3 ani de la data sejurului, conform obligațiilor legale</li>
+        <li><strong>Date prelucrate în baza consimțământului:</strong> până la retragerea consimțământului sau la cererea de ștergere</li>
+      </ul>
+      <p>După expirarea termenelor menționate, datele sunt șterse în mod securizat.</p>
+    </div>
+
+    <!-- 5 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Destinatarii datelor</h2>
+      </div>
+      <p>Datele dumneavoastră nu sunt vândute, închiriate sau transferate către terți în scop comercial. Datele pot fi accesate în mod limitat de furnizorii de servicii care asigură funcționarea platformei:</p>
+      <ul>
+        <li><strong>Resend</strong> (resend.com) — serviciu de trimitere email pentru notificările automate</li>
+        <li><strong>Railway</strong> (railway.app) — furnizor de găzduire pentru baza de date</li>
+        <li><strong>Netlify</strong> (netlify.com) — furnizor de găzduire pentru website</li>
+      </ul>
+      <p>Furnizorii noștri pot prelucra date în afara Spațiului Economic European, utilizând mecanisme pentru protecția datelor aprobate de Comisia Europeană.</p>
+    </div>
+
+    <!-- 6 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Drepturile dumneavoastră</h2>
+      </div>
+      <p>În calitate de persoană vizată, aveți următoarele drepturi garantate de GDPR:</p>
+      <div class="rights-grid">
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-eye"></i> Dreptul de acces</div>
+          <p>Puteți solicita o copie a datelor pe care le deținem despre dumneavoastră.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-pen"></i> Dreptul la rectificare</div>
+          <p>Puteți solicita corectarea datelor inexacte sau incomplete.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-trash"></i> Dreptul la ștergere</div>
+          <p>Puteți solicita ștergerea datelor, în condițiile prevăzute de lege.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-download"></i> Dreptul la portabilitate</div>
+          <p>Puteți primi datele într-un format structurat, lizibil automat.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-hand"></i> Dreptul la opoziție</div>
+          <p>Puteți obiecta față de prelucrarea datelor în anumite situații.</p>
+        </div>
+        <div class="right-card">
+          <div class="right-title"><i class="fa-solid fa-rotate-left"></i> Retragerea consimțământului</div>
+          <p>Oricând, fără a afecta legalitatea prelucrărilor anterioare.</p>
+        </div>
+      </div>
+      <p>Pentru exercitarea acestor drepturi, ne puteți contacta la <a href="mailto:cheilebranistei@gmail.com">cheilebranistei@gmail.com</a>. Veți primi un răspuns în termen de maximum 30 de zile calendaristice.</p>
+    </div>
+
+    <!-- 7 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2>Dreptul de a depune plângere</h2>
+      </div>
+      <p>Dacă considerați că drepturile dumneavoastră au fost încălcate, aveți dreptul de a depune o plângere la <strong style="color:var(--text);">Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP)</strong>:</p>
+      <ul>
+        <li><strong>Website:</strong> <a href="https://www.dataprotection.ro" target="_blank">www.dataprotection.ro</a></li>
+        <li><strong>Email:</strong> <a href="mailto:anspdcp@dataprotection.ro">anspdcp@dataprotection.ro</a></li>
+        <li><strong>Adresă:</strong> B-dul G-ral. Gheorghe Magheru nr. 28-30, Sector 1, București</li>
+      </ul>
+    </div>
+
+    <!-- 8 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2>Securitatea datelor</h2>
+      </div>
+      <p>Implementăm măsuri tehnice și organizatorice adecvate pentru protejarea datelor dumneavoastră:</p>
+      <ul>
+        <li>Transmiterea datelor prin protocol <strong>HTTPS</strong> cu certificat SSL</li>
+        <li>Baza de date protejată prin <strong>parolă și conexiune SSL</strong> criptată</li>
+        <li>Acces limitat exclusiv la <strong>administratorul pensiunii</strong></li>
+        <li>Notificările email trimise prin serviciu verificat cu <strong>DKIM și SPF</strong></li>
+      </ul>
+    </div>
+
+    <!-- 9 -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <h2>Modificări ale politicii</h2>
+      </div>
+      <p>Ne rezervăm dreptul de a actualiza această politică ori de câte ori este necesar. Versiunea actualizată va fi publicată pe această pagină cu data intrării în vigoare. Vă recomandăm să consultați periodic această pagină.</p>
+      <p style="color:var(--muted);font-size:.85rem;">Ultima actualizare: Mai 2026</p>
+    </div>
+
+    <!-- CONTACT BOX -->
+    <div class="contact-box">
+      <h3><i class="fa-solid fa-envelope"></i> Întrebări despre datele dumneavoastră?</h3>
+      <p>Ne puteți contacta oricând. Vom răspunde în termen de 30 de zile.</p>
+      <div class="contact-btns">
+        <a href="mailto:cheilebranistei@gmail.com" class="btn primary">
+          <i class="fa-solid fa-envelope"></i> cheilebranistei@gmail.com
+        </a>
+        <a href="tel:0733623000" class="btn">
+          <i class="fa-solid fa-phone"></i> 0733 623 000
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="/" class="footer-logo">
+      <img src="logo.png" alt="Cheile Braniștei">
+    </a>
+    <p style="color:var(--accent);font-family:'Prata',serif;font-size:.9rem;margin-bottom:6px;">Cheile Branistei Mountain Retreat</p>
+    <p>Braniștea, comuna Fundu Moldovei, jud. Suceava, România &nbsp;•&nbsp; <a href="mailto:cheilebranistei@gmail.com">cheilebranistei@gmail.com</a></p>
+    <p style="margin-top:8px;">© 2026 Cheile Braniștei &nbsp;•&nbsp; <a href="/">Înapoi la site</a></p>
+  </footer>
+
+</body>
+</html>
