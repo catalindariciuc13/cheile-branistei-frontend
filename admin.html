@@ -4,10 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Cheile Braniștei</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prata&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css">
   <style>
+    @font-face{
+      font-family:'Montserrat';
+      font-style:normal;
+      font-weight:300 700;
+      font-display:swap;
+      src:url('fonts/montserrat-latin.woff2') format('woff2');
+      unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    @font-face{
+      font-family:'Montserrat';
+      font-style:normal;
+      font-weight:300 700;
+      font-display:swap;
+      src:url('fonts/montserrat-latin-ext.woff2') format('woff2');
+      unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+    }
+    @font-face{
+      font-family:'Prata';
+      font-style:normal;
+      font-weight:400;
+      font-display:swap;
+      src:url('fonts/prata-latin.woff2') format('woff2');
+      unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    .icon{
+      width:1em;height:1em;
+      display:inline-block;
+      vertical-align:-0.125em;
+      fill:currentColor;
+    }
+    .icon-spin{
+      animation: icon-spin 1s linear infinite;
+    }
+    @keyframes icon-spin{
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .icon-spin{ animation-duration: 2.5s; }
+    }
     :root {
       --bg: #102a21;
       --bg2: #0b1f19;
@@ -539,6 +577,21 @@
 </head>
 
 <body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="lock" viewBox="0 0 448 512"><path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/></symbol>
+    <symbol id="lock-open" viewBox="0 0 576 512"><path d="M352 144c0-44.2 35.8-80 80-80s80 35.8 80 80v48c0 17.7 14.3 32 32 32s32-14.3 32-32V144C576 64.5 511.5 0 432 0S288 64.5 288 144v48H64c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H352V144z"/></symbol>
+    <symbol id="right-from-bracket" viewBox="0 0 512 512"><path d="M502.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L402.7 224 192 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l210.7 0-73.4 73.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l128-128zM160 96c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 32C43 32 0 75 0 128L0 384c0 53 43 96 96 96l64 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l64 0z"/></symbol>
+    <symbol id="calendar-check" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z"/></symbol>
+    <symbol id="calendar-days" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zm64 80v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm128 0v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H208c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V272c0-8.8-7.2-16-16-16H336zM64 400v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H80c-8.8 0-16 7.2-16 16zm144-16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H208zm112 16v32c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H336c-8.8 0-16 7.2-16 16z"/></symbol>
+    <symbol id="calendar-xmark" viewBox="0 0 448 512"><path d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM305 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-47 47-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l47 47-47 47c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l47-47 47 47c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-47-47 47-47z"/></symbol>
+    <symbol id="file-pdf" viewBox="0 0 512 512"><path d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V304H176c-35.3 0-64 28.7-64 64V512H64c-35.3 0-64-28.7-64-64V64zm384 64H256V0L384 128zM176 352h32c30.9 0 56 25.1 56 56s-25.1 56-56 56H192v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V448 368c0-8.8 7.2-16 16-16zm32 80c13.3 0 24-10.7 24-24s-10.7-24-24-24H192v48h16zm96-80h32c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48H304c-8.8 0-16-7.2-16-16V368c0-8.8 7.2-16 16-16zm32 128c8.8 0 16-7.2 16-16V400c0-8.8-7.2-16-16-16H320v96h16zm80-112c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16H448v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V432 368z"/></symbol>
+    <symbol id="spinner" viewBox="0 0 512 512"><path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z"/></symbol>
+    <symbol id="trash" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></symbol>
+    <symbol id="check" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></symbol>
+    <symbol id="xmark" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></symbol>
+    <symbol id="triangle-exclamation" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></symbol>
+    <symbol id="rotate-left" viewBox="0 0 512 512"><path d="M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/></symbol>
+  </svg>
 
   <!-- LOGIN -->
   <div class="login-screen" id="loginScreen">
@@ -547,7 +600,7 @@
       <input type="password" class="login-input" id="passwordInput"
              placeholder="••••••••" autocomplete="current-password">
       <button class="login-btn" id="loginBtn">
-        <i class="fa-solid fa-lock"></i> Accesează
+        <svg class="icon" aria-hidden="true"><use href="#lock"/></svg> Accesează
       </button>
       <p class="login-error" id="loginError">Parolă incorectă. Încearcă din nou.</p>
     </div>
@@ -565,19 +618,19 @@
         </div>
       </div>
       <button class="logout-btn" id="logoutBtn">
-        <i class="fa-solid fa-right-from-bracket"></i> Ieșire
+        <svg class="icon" aria-hidden="true"><use href="#right-from-bracket"/></svg> Ieșire
       </button>
     </div>
 
     <div class="admin-tabs">
       <button class="tab-btn active" data-tab="rezervari">
-        <i class="fa-solid fa-calendar-check"></i> Rezervări
+        <svg class="icon" aria-hidden="true"><use href="#calendar-check"/></svg> Rezervări
       </button>
       <button class="tab-btn" data-tab="calendar">
-        <i class="fa-solid fa-calendar-days"></i> Calendar
+        <svg class="icon" aria-hidden="true"><use href="#calendar-days"/></svg> Calendar
       </button>
       <button class="tab-btn" data-tab="blocare">
-        <i class="fa-solid fa-lock"></i> Blochează perioadă
+        <svg class="icon" aria-hidden="true"><use href="#lock"/></svg> Blochează perioadă
       </button>
     </div>
 
@@ -612,12 +665,12 @@
           <button class="filter-btn" data-filter="ANULATA">Anulate</button>
           <button class="filter-btn" data-filter="BLOCAT">Blocate</button>
           <button onclick="exportPDF()" style="margin-left:auto;padding:0.4rem 1rem;border-radius:20px;border:1px solid rgba(214,179,106,.4);background:rgba(214,179,106,.12);color:var(--accent);font-family:Montserrat,sans-serif;font-size:.78rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.18s ease;">
-            <i class="fa-solid fa-file-pdf"></i> Exportă PDF
+            <svg class="icon" aria-hidden="true"><use href="#file-pdf"/></svg> Exportă PDF
           </button>
         </div>
 
         <div class="rezervari-list" id="rezervariList">
-          <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Se încarcă...</div>
+          <div class="loading"><svg class="icon icon-spin" aria-hidden="true"><use href="#spinner"/></svg> Se încarcă...</div>
         </div>
 
       </div>
@@ -695,7 +748,7 @@
           </div>
 
           <button class="submit-btn" id="blocareBtn">
-            <i class="fa-solid fa-lock"></i> Blochează perioada
+            <svg class="icon" aria-hidden="true"><use href="#lock"/></svg> Blochează perioada
           </button>
         </div>
       </div>
@@ -716,7 +769,7 @@
   <div id="deleteModal" class="admin-modal">
     <div class="admin-modal-box">
       <div style="font-size:42px;color:#f5a0a0;margin-bottom:12px;">
-        <i class="fa-solid fa-trash"></i>
+        <svg class="icon" aria-hidden="true"><use href="#trash"/></svg>
       </div>
 
       <h3 id="deleteTitle">Ștergere rezervare</h3>
@@ -787,7 +840,7 @@
       const parola = document.getElementById('passwordInput').value;
       const oldBtnHTML = loginBtn.innerHTML;
       loginBtn.disabled = true;
-      loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Se verifică...';
+      loginBtn.innerHTML = '<svg class="icon icon-spin" aria-hidden="true"><use href="#spinner"/></svg> Se verifică...';
 
       try {
         const r = await fetch(`${API}/auth/login`, {
@@ -864,7 +917,7 @@
       } catch (err) {
         document.getElementById('rezervariList').innerHTML = `
           <div class="empty-state">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+            <svg class="icon" aria-hidden="true"><use href="#triangle-exclamation"/></svg>
             <p>Nu s-a putut conecta la server.</p>
           </div>`;
       }
@@ -896,7 +949,7 @@
       if (filtrate.length === 0) {
         list.innerHTML = `
           <div class="empty-state">
-            <i class="fa-solid fa-calendar-xmark"></i>
+            <svg class="icon" aria-hidden="true"><use href="#calendar-xmark"/></svg>
             <p>Nu există rezervări în această categorie.</p>
           </div>`;
         return;
@@ -919,31 +972,31 @@
         if (r.status === 'PENDING') {
           actiuni = `
             <button class="action-btn confirm" onclick="schimbaStatus(${r.id}, 'CONFIRMATA')">
-              <i class="fa-solid fa-check"></i> Confirmă
+              <svg class="icon" aria-hidden="true"><use href="#check"/></svg> Confirmă
             </button>
             <button class="action-btn cancel" onclick="schimbaStatus(${r.id}, 'ANULATA')">
-              <i class="fa-solid fa-xmark"></i> Anulează
+              <svg class="icon" aria-hidden="true"><use href="#xmark"/></svg> Anulează
             </button>
           `;
         } else if (r.status === 'CONFIRMATA') {
           actiuni = `
             <button class="action-btn cancel" onclick="schimbaStatus(${r.id}, 'ANULATA')">
-              <i class="fa-solid fa-xmark"></i> Anulează
+              <svg class="icon" aria-hidden="true"><use href="#xmark"/></svg> Anulează
             </button>
           `;
         } else if (r.status === 'BLOCAT') {
           actiuni = `
             <button class="action-btn cancel" onclick="stergeRezervare(${r.id}, true)">
-              <i class="fa-solid fa-trash"></i> Șterge
+              <svg class="icon" aria-hidden="true"><use href="#trash"/></svg> Șterge
             </button>
           `;
         } else if (r.status === 'ANULATA') {
           actiuni = `
             <button class="action-btn confirm" onclick="schimbaStatus(${r.id}, 'CONFIRMATA')">
-              <i class="fa-solid fa-rotate-left"></i> Reactivează
+              <svg class="icon" aria-hidden="true"><use href="#rotate-left"/></svg> Reactivează
             </button>
             <button class="action-btn cancel" onclick="stergeRezervare(${r.id}, false)">
-              <i class="fa-solid fa-trash"></i> Șterge
+              <svg class="icon" aria-hidden="true"><use href="#trash"/></svg> Șterge
             </button>
           `;
         }
@@ -1280,7 +1333,7 @@
               </div>
               <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
                 <button onclick="calendarSterge(${r.id}, true)" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(198,40,40,.4);background:rgba(198,40,40,.15);color:#f5a0a0;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
-                  <i class="fa-solid fa-lock-open"></i> Deblochează
+                  <svg class="icon" aria-hidden="true"><use href="#lock-open"/></svg> Deblochează
                 </button>
               </div>
             `;
@@ -1296,12 +1349,12 @@
               <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
                 ${isPending ? `
                   <button onclick="calendarStatus(${r.id}, 'CONFIRMATA')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(76,175,80,.4);background:rgba(76,175,80,.15);color:#4caf50;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
-                    <i class="fa-solid fa-check"></i> Confirmă
+                    <svg class="icon" aria-hidden="true"><use href="#check"/></svg> Confirmă
                   </button>
                 ` : ''}
                 ${isPending || isConfirm ? `
                   <button onclick="calendarStatus(${r.id}, 'ANULATA')" style="padding:6px 14px;border-radius:8px;border:1px solid rgba(198,40,40,.4);background:rgba(198,40,40,.15);color:#f5a0a0;cursor:pointer;font-family:Montserrat,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;">
-                    <i class="fa-solid fa-xmark"></i> Anulează
+                    <svg class="icon" aria-hidden="true"><use href="#xmark"/></svg> Anulează
                   </button>
                 ` : ''}
               </div>
