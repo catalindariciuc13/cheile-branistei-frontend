@@ -741,11 +741,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script>
-    const API    = 'https://cheile-branistei-backend-production.up.railway.app/api';
-    const PAROLA = 'admin2026';
+    const API       = 'https://cheile-branistei-backend-production.up.railway.app/api';
+    const TOKEN_KEY = 'cb_admin_token';
 
     let toateRezervari = [];
     let filtruActiv    = 'toate';
+
+    // ========================
+    // AUTH FETCH (ataseaza tokenul; delogheaza la 401)
+    // ========================
+
+    async function authFetch(url, options = {}) {
+      const token = localStorage.getItem(TOKEN_KEY);
+      const headers = { ...(options.headers || {}), Authorization: `Bearer ${token}` };
+      const r = await fetch(url, { ...options, headers });
+      if (r.status === 401) {
+        localStorage.removeItem(TOKEN_KEY);
+        location.reload();
+        throw new Error('Sesiune expirata');
+      }
+      return r;
+    }
 
     // ========================
     // LOGIN
@@ -754,35 +770,57 @@
     const loginScreen = document.getElementById('loginScreen');
     const adminPanel  = document.getElementById('adminPanel');
     const loginError  = document.getElementById('loginError');
+    const loginBtn    = document.getElementById('loginBtn');
 
-    if (sessionStorage.getItem('adminLogat') === 'true') {
+    if (localStorage.getItem(TOKEN_KEY)) {
       loginScreen.style.display = 'none';
       adminPanel.style.display  = 'block';
       incarcaDate();
     }
 
-    document.getElementById('loginBtn').addEventListener('click', login);
+    loginBtn.addEventListener('click', login);
     document.getElementById('passwordInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') login();
     });
 
-    function login() {
+    async function login() {
       const parola = document.getElementById('passwordInput').value;
-      if (parola === PAROLA) {
-        sessionStorage.setItem('adminLogat', 'true');
-        loginScreen.style.display = 'none';
-        adminPanel.style.display  = 'block';
-        loginError.style.display  = 'none';
-        incarcaDate();
-      } else {
+      const oldBtnHTML = loginBtn.innerHTML;
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Se verifică...';
+
+      try {
+        const r = await fetch(`${API}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: parola })
+        });
+
+        if (r.ok) {
+          const data = await r.json();
+          localStorage.setItem(TOKEN_KEY, data.token);
+          loginScreen.style.display = 'none';
+          adminPanel.style.display  = 'block';
+          loginError.style.display  = 'none';
+          incarcaDate();
+        } else {
+          const data = await r.json().catch(() => ({}));
+          loginError.textContent = data.eroare || 'Parolă incorectă. Încearcă din nou.';
+          loginError.style.display = 'block';
+          document.getElementById('passwordInput').value = '';
+          document.getElementById('passwordInput').focus();
+        }
+      } catch (err) {
+        loginError.textContent = 'Nu s-a putut conecta la server.';
         loginError.style.display = 'block';
-        document.getElementById('passwordInput').value = '';
-        document.getElementById('passwordInput').focus();
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = oldBtnHTML;
       }
     }
 
     document.getElementById('logoutBtn').addEventListener('click', () => {
-      sessionStorage.removeItem('adminLogat');
+      localStorage.removeItem(TOKEN_KEY);
       location.reload();
     });
 
@@ -819,7 +857,7 @@
 
     async function incarcaDate() {
       try {
-        const r = await fetch(`${API}/rezervari`);
+        const r = await authFetch(`${API}/rezervari`);
         toateRezervari = await r.json();
         actualizeazaStats();
         randeazaRezervari();
@@ -939,7 +977,7 @@
 
     async function schimbaStatus(id, status) {
       try {
-        const r = await fetch(`${API}/rezervari/${id}/status?status=${status}`, { method: 'PUT' });
+        const r = await authFetch(`${API}/rezervari/${id}/status?status=${status}`, { method: 'PUT' });
         if (r.ok) {
           const updated = await r.json();
           toateRezervari = toateRezervari.map(x => x.id === id ? updated : x);
@@ -964,7 +1002,7 @@
       if (!ok) return;
 
       try {
-        const r = await fetch(`${API}/rezervari/${id}`, { method: 'DELETE' });
+        const r = await authFetch(`${API}/rezervari/${id}`, { method: 'DELETE' });
         if (r.ok) {
           toateRezervari = toateRezervari.filter(x => x.id !== id);
           actualizeazaStats();
@@ -1025,7 +1063,7 @@
 
         if (r.ok) {
           const saved = await r.json();
-          await fetch(`${API}/rezervari/${saved.id}/status?status=BLOCAT`, { method: 'PUT' });
+          await authFetch(`${API}/rezervari/${saved.id}/status?status=BLOCAT`, { method: 'PUT' });
           showToast(`Perioada ${checkin} → ${checkout} blocată pentru ${motiv}!`);
           document.getElementById('blocCheckin').value  = '';
           document.getElementById('blocCheckout').value = '';
