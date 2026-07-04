@@ -10,10 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const revealAt = 40;
 
+    // Continutul din hero (logo, titlu, butoane) apare la incarcarea paginii,
+    // nu doar dupa ce utilizatorul deruleaza.
+    requestAnimationFrame(() => box.classList.add('show'));
+
     const onScroll = () => {
-      const show = window.scrollY > revealAt;
-      box.classList.toggle('show', show);
-      hero.classList.toggle('hero-scrolled', show);
+      hero.classList.toggle('hero-scrolled', window.scrollY > revealAt);
     };
 
     window.addEventListener('scroll', onScroll, { passive:true });
