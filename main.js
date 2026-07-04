@@ -19,11 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
 
-    // Rezerva: daca nu se deruleaza deloc, arata oricum dupa o pauza.
-    setTimeout(() => {
-      if (window.scrollY <= revealAt) box.classList.add('show');
-    }, 2500);
-
     // Scroll indicator
     const scrollInd = document.querySelector('.scroll-indicator');
     if (scrollInd) {
