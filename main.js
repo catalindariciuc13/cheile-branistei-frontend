@@ -10,16 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const revealAt = 40;
 
-    // Apare/dispare pe masura ce se deruleaza (peisaj gol sus, textul apare
-    // dupa ce cobori putin). Pauza de mai jos garanteaza ca apare oricum
-    // dupa un timp, chiar daca nu se deruleaza deloc.
     const onScroll = () => {
-      box.classList.toggle('show', window.scrollY > revealAt);
+      const show = window.scrollY > revealAt;
+      box.classList.toggle('show', show);
+      hero.classList.toggle('hero-scrolled', show);
     };
 
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
 
+    // Rezerva: daca nu se deruleaza deloc, arata oricum dupa o pauza.
     setTimeout(() => {
       if (window.scrollY <= revealAt) box.classList.add('show');
     }, 2500);

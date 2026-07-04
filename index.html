@@ -346,6 +346,12 @@ nav{
   text-align:center;
   position:relative;
   background:
+    linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.28)),
+    url('hero.webp') top center / cover no-repeat;
+}
+
+.hero.hero-scrolled{
+  background:
     linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.60)),
     url('hero.webp') center/cover no-repeat;
 }
@@ -1174,10 +1180,16 @@ a:focus, button:focus{
   .hero-box{ padding: 28px 18px; }
   .hero{
     background-image:
+      linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.28)),
+      url('hero-mobile.webp');
+    background-position: center top;
+    background-size: cover;
+  }
+  .hero.hero-scrolled{
+    background-image:
       linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.60)),
       url('hero-mobile.webp');
     background-position: center center;
-    background-size: cover;
   }
 
   .car-track{
