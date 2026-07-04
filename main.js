@@ -9,12 +9,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!hero || !box) return;
 
     const revealAt = 40;
+    let revealed = false;
 
-    // Continutul din hero (logo, titlu, butoane) apare la incarcarea paginii,
-    // nu doar dupa ce utilizatorul deruleaza.
-    requestAnimationFrame(() => box.classList.add('show'));
+    // Pastreaza efectul de "peisaj gol, apoi apare textul" - dar apare oricum
+    // dupa o pauza scurta, ca sa nu ramana ascuns definitiv daca nu se deruleaza.
+    const reveal = () => {
+      if (revealed) return;
+      revealed = true;
+      box.classList.add('show');
+    };
+    setTimeout(reveal, 800);
 
     const onScroll = () => {
+      if (window.scrollY > revealAt) reveal();
       hero.classList.toggle('hero-scrolled', window.scrollY > revealAt);
     };
 
