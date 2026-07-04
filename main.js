@@ -115,14 +115,29 @@ document.addEventListener('DOMContentLoaded', () => {
      5) LIGHTBOX (gallery + carousel)
      ========================= */
   (() => {
-    const lb    = document.getElementById('lightbox');
-    const img   = document.getElementById('lbImg');
-    const close = document.getElementById('lbClose');
+    const lb      = document.getElementById('lightbox');
+    const img     = document.getElementById('lbImg');
+    const close   = document.getElementById('lbClose');
+    const prev    = document.getElementById('lbPrev');
+    const next    = document.getElementById('lbNext');
+    const counter = document.getElementById('lbCounter');
     if (!lb || !img) return;
 
-    const openLb = (src) => {
+    const btns = Array.from(document.querySelectorAll('[data-gallery-btn]'));
+    const srcOf = btn =>
+      btn.getAttribute('data-src') ||
+      btn.querySelector('img')?.getAttribute('src');
+
+    let idx = -1;
+
+    const show = (i) => {
+      if (!btns.length) return;
+      idx = (i + btns.length) % btns.length;
+      const src = srcOf(btns[idx]);
       if (!src) return;
       img.src = src;
+      img.alt = btns[idx].querySelector('img')?.alt || 'Imagine galerie';
+      if (counter) counter.textContent = `${idx + 1} / ${btns.length}`;
       lb.classList.add('open');
       lb.setAttribute('aria-hidden', 'false');
     };
@@ -133,19 +148,36 @@ document.addEventListener('DOMContentLoaded', () => {
       img.src = '';
     };
 
-    document.querySelectorAll('[data-gallery-btn]').forEach(btn => {
+    btns.forEach((btn, i) => {
       btn.addEventListener('click', e => {
         e.preventDefault();
-        const src =
-          btn.getAttribute('data-src') ||
-          btn.querySelector('img')?.getAttribute('src');
-        openLb(src);
+        show(i);
       });
     });
 
+    prev?.addEventListener('click', e => { e.stopPropagation(); show(idx - 1); });
+    next?.addEventListener('click', e => { e.stopPropagation(); show(idx + 1); });
     close?.addEventListener('click', closeLb);
     lb.addEventListener('click', e => e.target === lb && closeLb());
-    document.addEventListener('keydown', e => e.key === 'Escape' && closeLb());
+
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLb();
+      if (e.key === 'ArrowLeft')  show(idx - 1);
+      if (e.key === 'ArrowRight') show(idx + 1);
+    });
+
+    // Swipe pe mobil
+    let touchX = null;
+    lb.addEventListener('touchstart', e => {
+      touchX = e.touches[0].clientX;
+    }, { passive: true });
+    lb.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(dx) > 45) show(idx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
   })();
 
 
