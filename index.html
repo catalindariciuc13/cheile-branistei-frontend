@@ -333,6 +333,44 @@ nav{
 .btn.full{ width:100%; }
 
 /* =========================
+   STICKY CTA (doar mobil)
+   ========================= */
+.sticky-cta{
+  position:fixed;
+  left:50%;
+  bottom:calc(14px + env(safe-area-inset-bottom));
+  transform:translate(-50%, 90px);
+  z-index:90;
+  display:none;
+  align-items:center;
+  gap:10px;
+  padding:.85rem 1.7rem;
+  border-radius:999px;
+  border:1px solid rgba(214,179,106,.7);
+  background:linear-gradient(180deg, #ddbc77, #c6a054);
+  color:#10241c;
+  font-size:.78rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:700;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+  opacity:0;
+  pointer-events:none;
+  transition:transform .3s ease, opacity .3s ease;
+}
+.sticky-cta.show{
+  transform:translate(-50%, 0);
+  opacity:1;
+  pointer-events:auto;
+}
+@media (max-width: 600px){
+  .sticky-cta{ display:inline-flex; }
+}
+@media (prefers-reduced-motion: reduce){
+  .sticky-cta{ transition:opacity .3s ease; transform:translate(-50%, 0); }
+}
+
+/* =========================
    HERO
    ========================= */
 
@@ -1709,6 +1747,10 @@ a:focus, button:focus{
       <div id="modalActions"></div>
     </div>
   </div>
+
+  <a class="sticky-cta" id="stickyCta" href="#rezerva">
+    <svg class="icon" aria-hidden="true"><use href="#calendar-check"></use></svg> Rezervă
+  </a>
 
   <script src="main.js"></script>
 </body>

@@ -508,4 +508,31 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   })();
 
+  /* ==============================
+     STICKY CTA (mobil)
+     ============================== */
+  (() => {
+    const cta     = document.getElementById('stickyCta');
+    const hero    = document.querySelector('.hero');
+    const rezerva = document.getElementById('rezerva');
+    if (!cta || !hero || !rezerva || !('IntersectionObserver' in window)) return;
+
+    let heroVizibil = true;
+    let formVizibil = false;
+
+    const update = () => {
+      cta.classList.toggle('show', !heroVizibil && !formVizibil);
+    };
+
+    new IntersectionObserver(([e]) => {
+      heroVizibil = e.isIntersecting;
+      update();
+    }, { threshold: 0.1 }).observe(hero);
+
+    new IntersectionObserver(([e]) => {
+      formVizibil = e.isIntersecting;
+      update();
+    }, { threshold: 0.1 }).observe(rezerva);
+  })();
+
 });
