@@ -9,24 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!hero || !box) return;
 
     const revealAt = 40;
-    let revealed = false;
 
-    // Pastreaza efectul de "peisaj gol, apoi apare textul" - dar apare oricum
-    // dupa o pauza scurta, ca sa nu ramana ascuns definitiv daca nu se deruleaza.
-    const reveal = () => {
-      if (revealed) return;
-      revealed = true;
-      box.classList.add('show');
-    };
-    setTimeout(reveal, 800);
-
+    // Apare/dispare pe masura ce se deruleaza (peisaj gol sus, textul apare
+    // dupa ce cobori putin). Pauza de mai jos garanteaza ca apare oricum
+    // dupa un timp, chiar daca nu se deruleaza deloc.
     const onScroll = () => {
-      if (window.scrollY > revealAt) reveal();
-      hero.classList.toggle('hero-scrolled', window.scrollY > revealAt);
+      box.classList.toggle('show', window.scrollY > revealAt);
     };
 
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
+
+    setTimeout(() => {
+      if (window.scrollY <= revealAt) box.classList.add('show');
+    }, 2500);
 
     // Scroll indicator
     const scrollInd = document.querySelector('.scroll-indicator');
