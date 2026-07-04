@@ -1422,6 +1422,80 @@ a:focus, button:focus{
   filter:brightness(0) invert(1);
   opacity:.7;
 }
+
+/* =========================
+   IMPREJURIMI
+   ========================= */
+.zona-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
+  margin-top:10px;
+  text-align:left;
+}
+.zona-card{
+  background:rgba(0,0,0,.15);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:1.2rem 1.3rem;
+  transition:.18s ease;
+}
+.zona-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(214,179,106,.45);
+}
+.zona-card h3{
+  font-family:'Prata',serif;
+  font-weight:400;
+  font-size:1.02rem;
+  margin-bottom:6px;
+}
+.zona-tip{
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.55;
+}
+.zona-dist{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+  color:var(--accent);
+  font-size:.75rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+@media (max-width: 980px){
+  .zona-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 600px){
+  .zona-grid{ grid-template-columns:1fr; }
+}
+
+/* Footer social */
+.footer-social{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:16px;
+}
+.footer-social a{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font-size:18px;
+  transition:.18s ease;
+}
+.footer-social a:hover{
+  color:var(--accent);
+  border-color:rgba(214,179,106,.45);
+  transform:translateY(-1px);
+}
   </style>
 
   <script type="application/ld+json">
@@ -1431,6 +1505,10 @@ a:focus, button:focus{
     "name": "Cheile Braniștei Mountain Retreat",
     "image": "https://cheilebranistei.ro/hero.webp",
     "url": "https://cheilebranistei.ro/",
+    "sameAs": [
+      "https://www.facebook.com/cheilebranistei/",
+      "https://www.instagram.com/cheile.branistei/"
+    ],
     "telephone": "+40733623000",
     "email": "cheilebranistei@gmail.com",
     "priceRange": "250 RON",
@@ -1477,6 +1555,8 @@ a:focus, button:focus{
     <symbol id="whatsapp" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></symbol>
     <symbol id="phone" viewBox="0 0 512 512"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></symbol>
     <symbol id="envelope" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></symbol>
+    <symbol id="facebook" viewBox="0 0 320 512"><path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/></symbol>
+    <symbol id="instagram" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></symbol>
     <symbol id="google" viewBox="0 0 488 512"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></symbol>
   </svg>
 
@@ -1492,6 +1572,7 @@ a:focus, button:focus{
         <a href="#facilitati">Facilități</a>
         <a href="#rezerva">Rezervă</a>
         <a href="#cazare">Cazare</a>
+        <a href="#zona">Împrejurimi</a>
         <a href="#contact">Contact</a>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Meniu">
@@ -1511,6 +1592,7 @@ a:focus, button:focus{
       <a href="#facilitati" class="mobile-link">Facilități</a>
       <a href="#rezerva" class="mobile-link">Rezervă</a>
       <a href="#cazare" class="mobile-link">Cazare</a>
+      <a href="#zona" class="mobile-link">Împrejurimi</a>
       <a href="#contact" class="mobile-link">Contact</a>
     </nav>
   </div>
@@ -1676,7 +1758,50 @@ a:focus, button:focus{
   </section>
 
   <!-- RECENZII -->
-  <section id="recenzii" class="section">
+  <!-- IMPREJURIMI -->
+  <section id="zona" class="section">
+    <div class="wrap">
+      <h2 class="reveal">Ce vizitezi în zonă</h2>
+      <div class="divider reveal" data-delay="80"></div>
+      <p class="reveal" data-delay="140" style="margin-bottom:18px;">
+        Stai la noi și ai cele mai frumoase locuri din Bucovina la o plimbare cu mașina distanță.
+      </p>
+      <div class="zona-grid">
+        <div class="zona-card reveal">
+          <h3>Rarău — Pietrele Doamnei &amp; Skywalk</h3>
+          <p class="zona-tip">Belvedere spectaculoasă și trasee de drumeție pe unul dintre cei mai iubiți munți din Bucovina.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~35 min</span>
+        </div>
+        <div class="zona-card reveal" data-delay="60">
+          <h3>Hanul Păstrăvarului</h3>
+          <p class="zona-tip">Popas culinar cu păstrăv proaspăt și bucate tradiționale din Bucovina.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~20 min</span>
+        </div>
+        <div class="zona-card reveal" data-delay="120">
+          <h3>Herghelia Lucina</h3>
+          <p class="zona-tip">Herghelia cailor huțuli — plimbări călare în peisaj de poveste.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~30 min</span>
+        </div>
+        <div class="zona-card reveal" data-delay="180">
+          <h3>Mănăstirea Moldovița &amp; Mocănița Huțulca</h3>
+          <p class="zona-tip">Patrimoniu UNESCO și o călătorie cu trenulețul cu abur pe valea Moldoviței.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~40 min</span>
+        </div>
+        <div class="zona-card reveal" data-delay="240">
+          <h3>Pârtia Rarău</h3>
+          <p class="zona-tip">Schi și snowboard iarna, telegondolă și priveliști tot anul.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~35 min</span>
+        </div>
+        <div class="zona-card reveal" data-delay="300">
+          <h3>Pasul Palma</h3>
+          <p class="zona-tip">Unul dintre cele mai spectaculoase drumuri de munte din România.</p>
+          <span class="zona-dist"><svg class="icon" aria-hidden="true"><use href="#car"></use></svg> ~1 oră</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="recenzii" class="section alt">
     <div class="wrap">
       <h2 class="reveal">Recenzii de la oaspeți</h2>
       <div class="divider reveal" data-delay="80"></div>
@@ -1764,6 +1889,14 @@ a:focus, button:focus{
       <p style="margin:4px 0 0;font-size:.68rem;color:rgba(245,241,232,.4);letter-spacing:1px;">
         CIF: 54261765 · Reg. Com.: F2026014073005
       </p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/cheilebranistei/" target="_blank" rel="noopener" aria-label="Facebook Cheile Braniștei">
+          <svg class="icon" aria-hidden="true"><use href="#facebook"></use></svg>
+        </a>
+        <a href="https://www.instagram.com/cheile.branistei/" target="_blank" rel="noopener" aria-label="Instagram Cheile Braniștei">
+          <svg class="icon" aria-hidden="true"><use href="#instagram"></use></svg>
+        </a>
+      </div>
       <p style="margin-top:10px;">
         <a href="/privacy.html">Politică de confidențialitate</a>
       </p>

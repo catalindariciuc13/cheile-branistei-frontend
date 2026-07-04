@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const top = sec.offsetTop;
         const bottom = top + sec.offsetHeight;
         if (y >= top && y < bottom) {
-          current = sec.id === 'recenzii' ? '#cazare' : `#${sec.id}`;
+          current = sec.id === 'recenzii' ? '#zona' : `#${sec.id}`;
           break;
         }
       }
