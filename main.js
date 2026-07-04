@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
            ${a.target ? `target="${a.target}"` : ''}
            class="btn ${a.primary ? 'primary' : ''}"
            data-action-index="${i}">
-          ${a.icon ? `<i class="${a.icon}"></i>` : ''} ${a.label}
+          ${a.icon ? `<svg class="icon" aria-hidden="true"><use href="#${a.icon}"></use></svg>` : ''} ${a.label}
         </a>
       `).join('');
 
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = form.querySelector('button[type="submit"]');
       const oldBtnHTML = submitBtn.innerHTML;
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Se trimite...';
+      submitBtn.innerHTML = '<svg class="icon icon-spin" aria-hidden="true"><use href="#spinner"></use></svg> Se trimite...';
 
       const checkin  = document.getElementById('checkin')?.value;
       const checkout = document.getElementById('checkout')?.value;
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                            `Bună! Am trimis o rezervare pentru ${nume}, ${checkin} → ${checkout}, ${guests} persoane.`
                          )}`,
                 target:  '_blank',
-                icon:    'fab fa-whatsapp',
+                icon:    'whatsapp',
                 label:   'Scrie-ne pe WhatsApp',
                 primary: true
               },
