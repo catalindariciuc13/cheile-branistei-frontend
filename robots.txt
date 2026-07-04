@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /camere.html
+Disallow: /galerie.html
+Disallow: /contact.html
+Disallow: /rezervari.html
+Allow: /
+
+Sitemap: https://cheilebranistei.ro/sitemap.xml
