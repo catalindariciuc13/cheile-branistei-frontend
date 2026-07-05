@@ -19,6 +19,26 @@ self.addEventListener('activate', e => {
   );
 });
 
+// Notificari push (admin): afiseaza notificarea primita de la backend
+self.addEventListener('push', e => {
+  let data = {};
+  try { data = e.data ? e.data.json() : {}; } catch (err) {}
+  e.waitUntil(
+    self.registration.showNotification(data.titlu || 'Cheile Braniștei', {
+      body: data.corp || '',
+      icon: '/icon-192.png',
+      badge: '/icon-192.png',
+      vibrate: [200, 100, 200],
+      data: { url: '/admin.html' }
+    })
+  );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.openWindow((e.notification.data && e.notification.data.url) || '/admin.html'));
+});
+
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   // API-ul (Railway) și CDN-urile nu se cache-uiesc — doar fișierele proprii, doar GET

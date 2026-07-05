@@ -599,6 +599,7 @@
     <symbol id="check" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></symbol>
     <symbol id="xmark" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></symbol>
     <symbol id="triangle-exclamation" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></symbol>
+    <symbol id="bell" viewBox="0 0 448 512"><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></symbol>
     <symbol id="rotate-left" viewBox="0 0 512 512"><path d="M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/></symbol>
   </svg>
 
@@ -626,9 +627,14 @@
           <p>Cheile Braniștei Mountain Retreat</p>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn">
-        <svg class="icon" aria-hidden="true"><use href="#right-from-bracket"/></svg> Ieșire
-      </button>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="logout-btn" id="pushBtn" style="display:none;background:rgba(214,179,106,.12);border-color:rgba(214,179,106,.35);color:var(--accent);">
+          <svg class="icon" aria-hidden="true"><use href="#bell"/></svg> <span id="pushBtnText">Notificări</span>
+        </button>
+        <button class="logout-btn" id="logoutBtn">
+          <svg class="icon" aria-hidden="true"><use href="#right-from-bracket"/></svg> Ieșire
+        </button>
+      </div>
     </div>
 
     <div class="admin-tabs">
@@ -885,6 +891,76 @@
       localStorage.removeItem(TOKEN_KEY);
       location.reload();
     });
+
+    // ========================
+    // NOTIFICARI PUSH (admin)
+    // ========================
+
+    const pushBtn     = document.getElementById('pushBtn');
+    const pushBtnText = document.getElementById('pushBtnText');
+
+    function b64ToUint8(base64) {
+      const padding = '='.repeat((4 - base64.length % 4) % 4);
+      const raw = atob((base64 + padding).replace(/-/g, '+').replace(/_/g, '/'));
+      return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
+    }
+
+    async function initPush() {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return;
+      pushBtn.style.display = '';
+      try {
+        const reg = await navigator.serviceWorker.ready;
+        const sub = await reg.pushManager.getSubscription();
+        if (sub && Notification.permission === 'granted') {
+          pushBtnText.textContent = 'Notificări active';
+          // re-sincronizeaza abonamentul cu serverul (inofensiv daca exista deja)
+          authFetch(`${API}/push/aboneaza`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(sub.toJSON())
+          }).catch(() => {});
+        }
+      } catch (err) {}
+    }
+
+    pushBtn.addEventListener('click', async () => {
+      try {
+        const perm = await Notification.requestPermission();
+        if (perm !== 'granted') {
+          showToast('Permisiunea de notificări a fost refuzată din browser.', true);
+          return;
+        }
+        const r = await authFetch(`${API}/push/cheie-publica`);
+        const data = await r.json();
+        if (!data.cheie) {
+          showToast(data.eroare || 'Notificările nu sunt configurate pe server.', true);
+          return;
+        }
+        const reg = await navigator.serviceWorker.ready;
+        let sub = await reg.pushManager.getSubscription();
+        if (!sub) {
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: b64ToUint8(data.cheie)
+          });
+        }
+        const save = await authFetch(`${API}/push/aboneaza`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sub.toJSON())
+        });
+        if (save.ok) {
+          pushBtnText.textContent = 'Notificări active';
+          showToast('🔔 Notificările sunt active pe acest dispozitiv!');
+        } else {
+          showToast('Eroare la salvarea abonamentului.', true);
+        }
+      } catch (err) {
+        showToast('Nu s-au putut activa notificările: ' + err.message, true);
+      }
+    });
+
+    initPush();
 
     // ========================
     // TABS
