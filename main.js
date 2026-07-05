@@ -607,6 +607,216 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 
   /* ==============================
+     CALENDAR DISPONIBILITATE
+     ============================== */
+  (() => {
+    const inCheckin  = document.getElementById('checkin');
+    const inCheckout = document.getElementById('checkout');
+    const form       = document.getElementById('reserveForm');
+    if (!inCheckin || !inCheckout || !form) return;
+
+    const API  = 'https://cheile-branistei-backend-production.up.railway.app/api';
+    const LUNI = ['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie',
+                  'Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+    const ZILE = ['L','Ma','Mi','J','V','S','D'];
+
+    let libere  = null;   // { 'YYYY-MM-DD': camere libere }
+    let pret    = 250;
+    let lunaOfs = 0;
+    let maxOfs  = 3;
+    let selIn   = '';
+    let selOut  = '';
+
+    const pop = document.createElement('div');
+    pop.className = 'cal-pop';
+    pop.innerHTML = `
+      <button type="button" class="cal-inchide" aria-label="Închide">✕</button>
+      <div class="cal-head">
+        <button type="button" class="cal-nav" data-cal-prev aria-label="Luna anterioară">‹</button>
+        <div class="cal-luna"></div>
+        <button type="button" class="cal-nav" data-cal-next aria-label="Luna următoare">›</button>
+      </div>
+      <div class="cal-grid"></div>
+      <div class="cal-hint"></div>`;
+    document.body.appendChild(pop);
+
+    const backdrop = document.createElement('div');
+    backdrop.className = 'cal-backdrop';
+    document.body.appendChild(backdrop);
+
+    const grid    = pop.querySelector('.cal-grid');
+    const lblLuna = pop.querySelector('.cal-luna');
+    const hint    = pop.querySelector('.cal-hint');
+    const btnPrev = pop.querySelector('[data-cal-prev]');
+    const btnNext = pop.querySelector('[data-cal-next]');
+
+    const azi = () => {
+      const d = new Date();
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    };
+    const iso = d =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+    // Daca API-ul nu raspunde, revenim la calendarul nativ al browserului
+    const fallbackNativ = () => {
+      [inCheckin, inCheckout].forEach(el => {
+        el.readOnly = false;
+        el.type = 'date';
+      });
+      pop.remove();
+      backdrop.remove();
+    };
+
+    const incarca = async () => {
+      if (libere) return true;
+      try {
+        const r = await fetch(`${API}/rezervari/calendar?zile=120`);
+        if (!r.ok) return false;
+        const data = await r.json();
+        libere = data.libere || {};
+        pret   = data.pretCamera || 250;
+        const chei = Object.keys(libere);
+        if (!chei.length) return false;
+        const ultima = new Date(chei[chei.length - 1] + 'T00:00:00');
+        const a = azi();
+        maxOfs = (ultima.getFullYear() * 12 + ultima.getMonth())
+               - (a.getFullYear() * 12 + a.getMonth());
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    // Prima zi in care nu se mai poate innopta, pornind de la check-in:
+    // check-out-ul poate fi cel mult ziua aceea
+    const limitaCheckout = () => {
+      if (!selIn) return null;
+      const d = new Date(selIn + 'T00:00:00');
+      for (let i = 0; i < 190; i++) {
+        const k = iso(d);
+        if (!(k in libere) || libere[k] === 0) return k;
+        d.setDate(d.getDate() + 1);
+      }
+      return null;
+    };
+
+    const randeaza = () => {
+      const a     = azi();
+      const luna  = new Date(a.getFullYear(), a.getMonth() + lunaOfs, 1);
+      lblLuna.textContent = `${LUNI[luna.getMonth()]} ${luna.getFullYear()}`;
+      btnPrev.disabled = lunaOfs <= 0;
+      btnNext.disabled = lunaOfs >= maxOfs;
+
+      const limita = selIn && !selOut ? limitaCheckout() : null;
+
+      let html = ZILE.map(z => `<div class="cal-zh">${z}</div>`).join('');
+      const goluri = (luna.getDay() + 6) % 7;
+      for (let i = 0; i < goluri; i++) html += '<button type="button" class="cal-zi gol" tabindex="-1"></button>';
+
+      const nrZile = new Date(luna.getFullYear(), luna.getMonth() + 1, 0).getDate();
+      for (let zi = 1; zi <= nrZile; zi++) {
+        const d = new Date(luna.getFullYear(), luna.getMonth(), zi);
+        const k = iso(d);
+        const cunoscut = k in libere;
+        const trecut   = d < a;
+        const plin     = cunoscut && libere[k] === 0;
+
+        let cls = 'cal-zi', jos = '', dis = '';
+        if (trecut || !cunoscut) {
+          cls += ' trecut'; dis = 'disabled';
+        } else if (plin && k !== limita) {
+          cls += ' plin'; dis = 'disabled';
+          jos = '<span class="zi-pret">–</span>';
+        } else {
+          if (plin && k === limita) cls += ' plin-checkout';
+          else {
+            jos = `<span class="zi-pret">${pret}</span>`;
+            if (libere[k] <= 2) cls += ' putine';
+          }
+          if (k === selIn || k === selOut) cls += ' selectat';
+          else if (selIn && selOut && k > selIn && k < selOut) cls += ' interval';
+        }
+        html += `<button type="button" class="${cls}" data-zi="${k}" ${dis}>
+                   <span class="zi-nr">${zi}</span>${jos}
+                 </button>`;
+      }
+      grid.innerHTML = html;
+
+      hint.textContent = !selIn
+        ? 'Alege data de check-in'
+        : (!selOut ? 'Acum alege data de check-out'
+                   : `${Math.round((new Date(selOut) - new Date(selIn)) / 86400000)} nopți selectate`);
+    };
+
+    const aplica = () => {
+      inCheckin.value  = selIn;
+      inCheckout.value = selOut;
+      inCheckin.dispatchEvent(new Event('change'));
+      inCheckout.dispatchEvent(new Event('change'));
+    };
+
+    const deschide = async () => {
+      if (!(await incarca())) { fallbackNativ(); return; }
+      pop.classList.add('open');
+      backdrop.classList.add('open');
+      randeaza();
+    };
+
+    const inchide = () => {
+      pop.classList.remove('open');
+      backdrop.classList.remove('open');
+    };
+
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('[data-zi]');
+      if (!btn || btn.disabled) return;
+      const k = btn.getAttribute('data-zi');
+      const limita = selIn && !selOut ? limitaCheckout() : null;
+
+      if (!selIn || selOut || k <= selIn || (limita && k > limita)) {
+        if (libere[k] === 0) return;
+        selIn  = k;
+        selOut = '';
+        aplica();
+        randeaza();
+      } else {
+        selOut = k;
+        aplica();
+        randeaza();
+        setTimeout(inchide, 350);
+      }
+    });
+
+    btnPrev.addEventListener('click', () => { lunaOfs--; randeaza(); });
+    btnNext.addEventListener('click', () => { lunaOfs++; randeaza(); });
+    pop.querySelector('.cal-inchide').addEventListener('click', inchide);
+    backdrop.addEventListener('click', inchide);
+
+    [inCheckin, inCheckout].forEach(el =>
+      el.addEventListener('click', deschide)
+    );
+
+    document.addEventListener('click', e => {
+      if (!pop.classList.contains('open')) return;
+      // Elementele redesenate intre timp (zilele din grila) nu mai sunt in DOM
+      if (!document.body.contains(e.target)) return;
+      if (pop.contains(e.target) || e.target === inCheckin || e.target === inCheckout) return;
+      inchide();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') inchide();
+    });
+
+    form.addEventListener('reset', () => {
+      selIn = ''; selOut = ''; lunaOfs = 0;
+      randeaza();
+    });
+
+    // Deschidere directa pentru testare vizuala
+    if (location.hash === '#caltest') deschide();
+  })();
+
+  /* ==============================
      PWA — service worker
      ============================== */
   if ('serviceWorker' in navigator) {
