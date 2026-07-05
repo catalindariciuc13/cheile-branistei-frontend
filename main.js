@@ -667,23 +667,25 @@ document.addEventListener('DOMContentLoaded', () => {
       backdrop.remove();
     };
 
+    // Se reincarca la fiecare deschidere, ca sa reflecte mereu rezervarile noi;
+    // daca cererea esueaza dar avem date dintr-o deschidere anterioara, le pastram
     const incarca = async () => {
-      if (libere) return true;
       try {
         const r = await fetch(`${API}/rezervari/calendar?zile=120`);
-        if (!r.ok) return false;
+        if (!r.ok) return !!libere;
         const data = await r.json();
-        libere = data.libere || {};
+        const noi = data.libere || {};
+        const chei = Object.keys(noi);
+        if (!chei.length) return !!libere;
+        libere = noi;
         pret   = data.pretCamera || 250;
-        const chei = Object.keys(libere);
-        if (!chei.length) return false;
         const ultima = new Date(chei[chei.length - 1] + 'T00:00:00');
         const a = azi();
         maxOfs = (ultima.getFullYear() * 12 + ultima.getMonth())
                - (a.getFullYear() * 12 + a.getMonth());
         return true;
       } catch {
-        return false;
+        return !!libere;
       }
     };
 
