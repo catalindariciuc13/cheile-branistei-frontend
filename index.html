@@ -388,10 +388,19 @@ nav{
     url('hero.webp') top center / cover no-repeat;
 }
 
-.hero.hero-scrolled{
-  background:
-    linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.60)),
-    url('hero.webp') center/cover no-repeat;
+/* Întunecarea la scroll e un strat separat — imaginea de fundal nu se
+   schimbă niciodată, deci nu mai există refetch/redecode (flash pe mobil) */
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background: linear-gradient(rgba(0,0,0,.13), rgba(0,0,0,.45));
+  opacity:0;
+  transition: opacity .45s ease;
+}
+.hero.hero-scrolled::before{
+  opacity:1;
 }
 
 .hero::after{
@@ -1262,12 +1271,6 @@ a:focus, button:focus{
       url('hero-mobile.webp');
     background-position: center top;
     background-size: cover;
-  }
-  .hero.hero-scrolled{
-    background-image:
-      linear-gradient(rgba(0,0,0,.18), rgba(0,0,0,.60)),
-      url('hero-mobile.webp');
-    background-position: center center;
   }
 
   .car-track{
