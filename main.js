@@ -63,7 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
       );
     };
 
-    window.addEventListener('scroll', setActive, { passive:true });
+    // Throttle pe requestAnimationFrame — o singură recalculare pe cadru
+    let rafSpy = null;
+    const onScrollSpy = () => {
+      if (rafSpy) return;
+      rafSpy = requestAnimationFrame(() => {
+        rafSpy = null;
+        setActive();
+      });
+    };
+
+    window.addEventListener('scroll', onScrollSpy, { passive:true });
     setActive();
   })();
 
@@ -129,17 +139,46 @@ document.addEventListener('DOMContentLoaded', () => {
       btn.querySelector('img')?.getAttribute('src');
 
     let idx = -1;
+    const preloaded = {};
+
+    // Preîncarcă discret varianta mare a pozei vecine
+    const preload = (i) => {
+      const n = (i + btns.length) % btns.length;
+      const src = srcOf(btns[n]);
+      if (!src || preloaded[src]) return;
+      preloaded[src] = true;
+      new Image().src = src;
+    };
 
     const show = (i) => {
       if (!btns.length) return;
       idx = (i + btns.length) % btns.length;
-      const src = srcOf(btns[idx]);
-      if (!src) return;
-      img.src = src;
-      img.alt = btns[idx].querySelector('img')?.alt || 'Imagine galerie';
+      const btn   = btns[idx];
+      const full  = srcOf(btn);
+      const thumb = btn.querySelector('img')?.getAttribute('src');
+      if (!full && !thumb) return;
+
+      img.alt = btn.querySelector('img')?.alt || 'Imagine galerie';
       if (counter) counter.textContent = `${idx + 1} / ${btns.length}`;
       lb.classList.add('open');
       lb.setAttribute('aria-hidden', 'false');
+
+      // Thumbnail-ul (deja în cache) apare instant, HD-ul intră când e gata
+      img.src = thumb || full;
+      if (full && full !== thumb) {
+        const wanted = idx;
+        const hd = new Image();
+        hd.onload = () => {
+          if (idx === wanted && lb.classList.contains('open')) img.src = full;
+          preloaded[full] = true;
+          preload(idx + 1);
+          preload(idx - 1);
+        };
+        hd.src = full;
+      } else {
+        preload(idx + 1);
+        preload(idx - 1);
+      }
     };
 
     const closeLb = () => {

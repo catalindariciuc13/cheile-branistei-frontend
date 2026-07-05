@@ -1499,6 +1499,42 @@ a:focus, button:focus{
   border-color:rgba(214,179,106,.45);
   transform:translateY(-1px);
 }
+
+/* =========================
+   FINISAJE TOUCH & SCROLL
+   ========================= */
+
+/* Pagina din spate stă pe loc cât timp e ceva deschis peste ea */
+body:has(.lightbox.open),
+body:has(.modal-overlay.open),
+body:has(.mobile-menu.open){
+  overflow:hidden;
+}
+.lightbox,
+.modal-overlay,
+.mobile-menu{
+  overscroll-behavior: contain;
+}
+
+/* Feedback la atingere pe touch (hover nu există pe mobil) */
+html{ -webkit-tap-highlight-color: transparent; }
+@media (hover: none){
+  .btn:active,
+  .contact-btn:active,
+  .whatsapp:active,
+  .map-pin:active,
+  .lb-close:active,
+  .footer-social a:active{
+    transform: scale(.96);
+  }
+  .sticky-cta.show:active{
+    transform: translate(-50%, 0) scale(.96);
+  }
+  .car-btn:active,
+  .lb-nav:active{
+    transform: translateY(-50%) scale(.92);
+  }
+}
   </style>
 
   <script type="application/ld+json">
