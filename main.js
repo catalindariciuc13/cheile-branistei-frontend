@@ -567,4 +567,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 }).observe(rezerva);
   })();
 
+  /* ==============================
+     PWA — service worker
+     ============================== */
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+
 });
