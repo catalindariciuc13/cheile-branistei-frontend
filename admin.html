@@ -445,7 +445,25 @@
       .rezervare-card { grid-template-columns: 1fr; }
       .rezervare-actions { flex-direction: row; flex-wrap: wrap; }
       .admin-tabs { padding: 1rem 1rem 0; overflow-x: auto; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stat-card { padding: 1rem 0.5rem; }
+
+      /* Header compact pe telefon */
+      body { overflow-x: hidden; }
+      .admin-header { padding: 0.6rem 0.9rem; gap: 8px; flex-wrap: wrap; }
+      .admin-header-left { gap: 10px; min-width: 0; flex: 1; }
+      .admin-header-left img { height: 30px; flex: none; }
+      .admin-header-left h1 {
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .admin-header-left p { display: none; }
+      .logout-btn { padding: 0.45rem 0.7rem; font-size: 0.7rem; white-space: nowrap; }
+      /* Butonul de notificari devine doar clopotel */
+      #pushBtnText { display: none; }
+      #pushBtn { font-size: 0.9rem; }
     }
 
     .admin-modal{
