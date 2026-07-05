@@ -943,6 +943,24 @@
 
     pushBtn.addEventListener('click', async () => {
       try {
+        const reg = await navigator.serviceWorker.ready;
+        let sub = await reg.pushManager.getSubscription();
+
+        // Deja active → comutator: intreaba si dezactiveaza
+        if (sub && Notification.permission === 'granted') {
+          if (!confirm('Dezactivezi notificările pe acest dispozitiv?')) return;
+          const endpoint = sub.endpoint;
+          await sub.unsubscribe();
+          authFetch(`${API}/push/dezaboneaza`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ endpoint })
+          }).catch(() => {});
+          pushBtnText.textContent = 'Notificări';
+          showToast('Notificările au fost dezactivate pe acest dispozitiv.');
+          return;
+        }
+
         const perm = await Notification.requestPermission();
         if (perm !== 'granted') {
           showToast('Permisiunea de notificări a fost refuzată din browser.', true);
@@ -954,8 +972,6 @@
           showToast(data.eroare || 'Notificările nu sunt configurate pe server.', true);
           return;
         }
-        const reg = await navigator.serviceWorker.ready;
-        let sub = await reg.pushManager.getSubscription();
         if (!sub) {
           sub = await reg.pushManager.subscribe({
             userVisibleOnly: true,
@@ -974,7 +990,7 @@
           showToast('Eroare la salvarea abonamentului.', true);
         }
       } catch (err) {
-        showToast('Nu s-au putut activa notificările: ' + err.message, true);
+        showToast('Eroare la notificări: ' + err.message, true);
       }
     });
 
