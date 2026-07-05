@@ -1516,6 +1516,13 @@ body:has(.mobile-menu.open){
   overscroll-behavior: contain;
 }
 
+/* Contur vizibil doar la navigarea cu tastatura (Tab) */
+:focus{ outline: none; }
+:focus-visible{
+  outline: 2px solid rgba(214,179,106,.85);
+  outline-offset: 2px;
+}
+
 /* Feedback la atingere pe touch (hover nu există pe mobil) */
 html{ -webkit-tap-highlight-color: transparent; }
 @media (hover: none){

@@ -50,6 +50,11 @@
     @media (prefers-reduced-motion: reduce){
       .icon-spin{ animation-duration: 2.5s; }
     }
+    :focus{ outline: none; }
+    :focus-visible{
+      outline: 2px solid rgba(214,179,106,.85);
+      outline-offset: 2px;
+    }
     :root {
       --bg: #102a21;
       --bg2: #0b1f19;
