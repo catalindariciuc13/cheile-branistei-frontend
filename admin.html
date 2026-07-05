@@ -1104,7 +1104,7 @@
       } catch (err) {}
 
       try {
-        const r = await fetch(`${API}/rezervari`, {
+        const r = await authFetch(`${API}/rezervari`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
