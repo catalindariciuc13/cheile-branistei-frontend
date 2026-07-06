@@ -55,6 +55,71 @@
       outline: 2px solid rgba(214,179,106,.85);
       outline-offset: 2px;
     }
+
+    /* ===== STATISTICI ===== */
+    .chart-card{
+      background: rgba(0,0,0,.2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem 1rem;
+      margin-top: 1.5rem;
+    }
+    .chart-title{
+      font-family: 'Prata', serif;
+      font-weight: 400;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .chart-title span{
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--muted);
+      font-size: .7rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .bars{
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      gap: 12px;
+      height: 190px;
+      padding-top: 20px;
+    }
+    .bar-col{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      flex: 1;
+      max-width: 90px;
+      height: 100%;
+    }
+    .bar-val{
+      color: var(--text);
+      font-size: .72rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .bar{
+      width: min(100%, 38px);
+      background: var(--accent);
+      border-radius: 4px 4px 0 0;
+      min-height: 2px;
+      transition: filter .15s ease;
+    }
+    .bar-col:hover .bar{ filter: brightness(1.18); }
+    .bar.gol{ background: rgba(245,241,232,.14); }
+    .bar-luna{
+      color: var(--muted);
+      font-size: .68rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
     :root {
       --bg: #102a21;
       --bg2: #0b1f19;
@@ -617,6 +682,7 @@
     <symbol id="check" viewBox="0 0 448 512"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></symbol>
     <symbol id="xmark" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></symbol>
     <symbol id="triangle-exclamation" viewBox="0 0 512 512"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></symbol>
+    <symbol id="chart" viewBox="0 0 512 512"><path d="M32 32c17.7 0 32 14.3 32 32V400c0 8.8 7.2 16 16 16H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H80c-44.2 0-80-35.8-80-80V64C0 46.3 14.3 32 32 32zM160 224c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32s-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm128-64V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V160c0-17.7 14.3-32 32-32s32 14.3 32 32zm64 32c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32s-32-14.3-32-32V224c0-17.7 14.3-32 32-32zM480 96V320c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-17.7 14.3-32 32-32s32 14.3 32 32z"/></symbol>
     <symbol id="bell" viewBox="0 0 448 512"><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></symbol>
     <symbol id="rotate-left" viewBox="0 0 512 512"><path d="M125.7 160H176c17.7 0 32 14.3 32 32s-14.3 32-32 32H48c-17.7 0-32-14.3-32-32V64c0-17.7 14.3-32 32-32s32 14.3 32 32v51.2L97.6 97.6c87.5-87.5 229.3-87.5 316.8 0s87.5 229.3 0 316.8s-229.3 87.5-316.8 0c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0c62.5 62.5 163.8 62.5 226.3 0s62.5-163.8 0-226.3s-163.8-62.5-226.3 0L125.7 160z"/></symbol>
   </svg>
@@ -661,6 +727,9 @@
       </button>
       <button class="tab-btn" data-tab="calendar">
         <svg class="icon" aria-hidden="true"><use href="#calendar-days"/></svg> Calendar
+      </button>
+      <button class="tab-btn" data-tab="statistici">
+        <svg class="icon" aria-hidden="true"><use href="#chart"/></svg> Statistici
       </button>
       <button class="tab-btn" data-tab="blocare">
         <svg class="icon" aria-hidden="true"><use href="#lock"/></svg> Blochează perioadă
@@ -783,6 +852,14 @@
           <button class="submit-btn" id="blocareBtn">
             <svg class="icon" aria-hidden="true"><use href="#lock"/></svg> Blochează perioada
           </button>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-statistici">
+        <div class="stats-grid" id="statTiles"></div>
+        <div class="chart-card">
+          <h3 class="chart-title">Venit estimat pe lună <span>rezervări confirmate · ultimele 6 luni · 250 RON/cameră/noapte</span></h3>
+          <div class="bars" id="chartLuni"></div>
         </div>
       </div>
 
@@ -1035,8 +1112,76 @@
         btn.classList.add('active');
         document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
         if (btn.dataset.tab === 'calendar') initCalendar();
+        if (btn.dataset.tab === 'statistici') randeazaStatistici();
       });
     });
+
+    // ========================
+    // STATISTICI
+    // ========================
+
+    function randeazaStatistici() {
+      const LUNI_RO = ['ian','feb','mar','apr','mai','iun','iul','aug','sep','oct','nov','dec'];
+      const camere = r => Math.ceil(r.nrPersoane / 2);
+      const zi = s => new Date(s + 'T00:00:00');
+
+      // Cate nopti ale rezervarii cad in luna (an, luna 0-11)
+      function noptiInLuna(r, an, luna) {
+        const start = new Date(an, luna, 1);
+        const end   = new Date(an, luna + 1, 1);
+        const a = zi(r.dataCheckin) > start ? zi(r.dataCheckin) : start;
+        const b = zi(r.dataCheckout) < end ? zi(r.dataCheckout) : end;
+        return Math.max(0, Math.round((b - a) / 86400000));
+      }
+
+      const confirmate = toateRezervari.filter(r => r.status === 'CONFIRMATA');
+      const anulate    = toateRezervari.filter(r => r.status === 'ANULATA').length;
+      const ocupante   = toateRezervari.filter(r => r.status !== 'ANULATA'); // include blocarile
+      const acum   = new Date();
+      const anCur  = acum.getFullYear();
+      const lunaCur = acum.getMonth();
+
+      // — Tile-uri (anul curent) —
+      let camereNoptiAn = 0;
+      confirmate.forEach(r => {
+        for (let m = 0; m < 12; m++) camereNoptiAn += noptiInLuna(r, anCur, m) * camere(r);
+      });
+      const venitAn = camereNoptiAn * 250;
+
+      let ocupLuna = 0;
+      ocupante.forEach(r => { ocupLuna += noptiInLuna(r, anCur, lunaCur) * camere(r); });
+      const zileLuna = new Date(anCur, lunaCur + 1, 0).getDate();
+      const ocuparePct = Math.min(100, Math.round(ocupLuna * 100 / (7 * zileLuna)));
+
+      const decise = confirmate.length + anulate;
+      const rataConf = decise ? Math.round(confirmate.length * 100 / decise) + '%' : '—';
+
+      document.getElementById('statTiles').innerHTML = `
+        <div class="stat-card"><div class="stat-num">${camereNoptiAn}</div><div class="stat-label">Nopți vândute ${anCur}</div></div>
+        <div class="stat-card"><div class="stat-num">${venitAn.toLocaleString('ro-RO')}</div><div class="stat-label">Venit estimat ${anCur} (RON)</div></div>
+        <div class="stat-card"><div class="stat-num">${ocuparePct}%</div><div class="stat-label">Ocupare ${LUNI_RO[lunaCur]}</div></div>
+        <div class="stat-card"><div class="stat-num">${rataConf}</div><div class="stat-label">Rată de confirmare</div></div>
+      `;
+
+      // — Grafic: venit pe ultimele 6 luni —
+      const luni = [];
+      for (let i = 5; i >= 0; i--) {
+        const d = new Date(anCur, lunaCur - i, 1);
+        let cn = 0;
+        confirmate.forEach(r => { cn += noptiInLuna(r, d.getFullYear(), d.getMonth()) * camere(r); });
+        luni.push({ nume: LUNI_RO[d.getMonth()], venit: cn * 250 });
+      }
+      const maxV = Math.max(...luni.map(l => l.venit), 1);
+
+      document.getElementById('chartLuni').innerHTML = luni.map(l => `
+        <div class="bar-col" title="${l.nume}: ${l.venit.toLocaleString('ro-RO')} RON">
+          <span class="bar-val">${l.venit ? l.venit.toLocaleString('ro-RO') : '·'}</span>
+          <div class="bar ${l.venit ? '' : 'gol'}" style="height:${Math.max(2, Math.round(l.venit * 75 / maxV))}%"
+               role="img" aria-label="${l.nume}: ${l.venit} RON"></div>
+          <span class="bar-luna">${l.nume}</span>
+        </div>
+      `).join('');
+    }
 
     // ========================
     // FILTRE
