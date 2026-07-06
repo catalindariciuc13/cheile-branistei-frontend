@@ -858,7 +858,7 @@
       <div class="tab-content" id="tab-statistici">
         <div class="stats-grid" id="statTiles"></div>
         <div class="chart-card">
-          <h3 class="chart-title">Venit estimat pe lună <span>rezervări confirmate · ultimele 6 luni · 250 RON/cameră/noapte</span></h3>
+          <h3 class="chart-title">Venit estimat pe lună <span>confirmate + telefonice / Booking / Airbnb · ultimele 6 luni · 250 RON/cameră/noapte</span></h3>
           <div class="bars" id="chartLuni"></div>
         </div>
       </div>
@@ -1137,13 +1137,18 @@
       const confirmate = toateRezervari.filter(r => r.status === 'CONFIRMATA');
       const anulate    = toateRezervari.filter(r => r.status === 'ANULATA').length;
       const ocupante   = toateRezervari.filter(r => r.status !== 'ANULATA'); // include blocarile
+      // Blocarile care sunt de fapt rezervari venite pe alte canale conteaza la venit;
+      // renovarea / uzul personal / altele raman doar la ocupare
+      const esteVanzareBlocata = r => r.status === 'BLOCAT'
+        && /^(Booking\.com|Airbnb|Rezervare telefonica)/i.test(r.mesaj || '');
+      const vandute = toateRezervari.filter(r => r.status === 'CONFIRMATA' || esteVanzareBlocata(r));
       const acum   = new Date();
       const anCur  = acum.getFullYear();
       const lunaCur = acum.getMonth();
 
       // — Tile-uri (anul curent) —
       let camereNoptiAn = 0;
-      confirmate.forEach(r => {
+      vandute.forEach(r => {
         for (let m = 0; m < 12; m++) camereNoptiAn += noptiInLuna(r, anCur, m) * camere(r);
       });
       const venitAn = camereNoptiAn * 250;
@@ -1168,7 +1173,7 @@
       for (let i = 5; i >= 0; i--) {
         const d = new Date(anCur, lunaCur - i, 1);
         let cn = 0;
-        confirmate.forEach(r => { cn += noptiInLuna(r, d.getFullYear(), d.getMonth()) * camere(r); });
+        vandute.forEach(r => { cn += noptiInLuna(r, d.getFullYear(), d.getMonth()) * camere(r); });
         luni.push({ nume: LUNI_RO[d.getMonth()], venit: cn * 250 });
       }
       const maxV = Math.max(...luni.map(l => l.venit), 1);
