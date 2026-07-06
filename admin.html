@@ -823,6 +823,34 @@
     </div>
   </div>
 
+  <div id="motivModal" class="admin-modal">
+    <div class="admin-modal-box">
+      <div style="font-size:42px;color:#f9a825;margin-bottom:12px;">
+        <svg class="icon" aria-hidden="true"><use href="#calendar-xmark"/></svg>
+      </div>
+
+      <h3>Anulezi rezervarea?</h3>
+
+      <p style="margin:10px 0 8px;">
+        Poți adăuga un motiv — va apărea în emailul trimis clientului:
+      </p>
+
+      <textarea id="motivText" rows="3"
+        placeholder="Ex: Perioada nu mai este disponibilă. (opțional)"
+        style="width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--text);font-family:'Montserrat',sans-serif;font-size:.9rem;resize:vertical;"></textarea>
+
+      <div class="admin-modal-actions">
+        <button id="cancelMotiv" class="action-btn">
+          Renunță
+        </button>
+
+        <button id="confirmMotiv" class="action-btn cancel">
+          Anulează rezervarea
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -1133,6 +1161,7 @@
               </p>
               ${!esteBloc ? `<p>📞 ${r.telefon || '—'}${r.email ? `&nbsp;·&nbsp; ✉ ${r.email}` : ''}</p>` : ''}
               ${r.mesaj && !esteBloc ? `<p style="margin-top:4px;font-style:italic;opacity:.8;">💬 ${r.mesaj}</p>` : ''}
+              ${r.motivAnulare ? `<p style="margin-top:4px;color:#f5a0a0;font-size:.85rem;">✕ Motiv anulare: ${r.motivAnulare}</p>` : ''}
               <p style="font-size:.75rem;opacity:.5;margin-top:6px;">
                 Adăugat: ${new Date(r.dataCreare).toLocaleString('ro-RO')}
               </p>
@@ -1147,9 +1176,36 @@
     // SCHIMBA STATUS
     // ========================
 
+    // Intreaba motivul anularii; false = admin a renuntat, string = motivul (posibil gol)
+    function cereMotivAnulare() {
+      return new Promise(resolve => {
+        const modal = document.getElementById('motivModal');
+        const text  = document.getElementById('motivText');
+        text.value = '';
+        modal.classList.add('open');
+        setTimeout(() => text.focus(), 50);
+
+        document.getElementById('cancelMotiv').onclick = () => {
+          modal.classList.remove('open');
+          resolve(false);
+        };
+        document.getElementById('confirmMotiv').onclick = () => {
+          modal.classList.remove('open');
+          resolve(text.value.trim());
+        };
+      });
+    }
+
     async function schimbaStatus(id, status) {
+      let motiv = '';
+      if (status === 'ANULATA') {
+        motiv = await cereMotivAnulare();
+        if (motiv === false) return;
+      }
       try {
-        const r = await authFetch(`${API}/rezervari/${id}/status?status=${status}`, { method: 'PUT' });
+        const url = `${API}/rezervari/${id}/status?status=${status}`
+                  + (motiv ? `&motiv=${encodeURIComponent(motiv)}` : '');
+        const r = await authFetch(url, { method: 'PUT' });
         if (r.ok) {
           const updated = await r.json();
           toateRezervari = toateRezervari.map(x => x.id === id ? updated : x);
