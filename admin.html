@@ -1416,19 +1416,31 @@
       document.getElementById('calPopup').style.display = 'flex';
 
       try {
-        const res = await authFetch(`${API}/checkin/rezervare/${id}`);
+        // Reincarcam si rezervarile, ca emailul de facturare (setat la trimiterea
+        // fisei de pe telefonul oaspetelui) sa fie cel mai proaspat, nu unul vechi
+        // ramas in memorie de la ultima incarcare a paginii de admin
+        const [res] = await Promise.all([
+          authFetch(`${API}/checkin/rezervare/${id}`),
+          incarcaDate()
+        ]);
         const lista = await res.json();
+        const r = toateRezervari.find(x => x.id === id);
+        const emailHtml = r?.email
+          ? `<p style="font-size:.85rem;color:var(--accent);margin-bottom:14px;">✉ Email de facturare: <strong>${r.email}</strong></p>`
+          : `<p style="font-size:.85rem;opacity:.6;margin-bottom:14px;">Niciun email de facturare înregistrat încă.</p>`;
 
         if (!lista.length) {
           content.innerHTML = `
             <h3 style="font-family:'Prata',serif;color:var(--accent);margin-bottom:10px;">Fișă de cazare</h3>
+            ${emailHtml}
             <p style="opacity:.75;">Niciun oaspete nu a completat încă fișa de cazare pentru această rezervare.</p>
           `;
           return;
         }
 
         content.innerHTML = `
-          <h3 style="font-family:'Prata',serif;color:var(--accent);margin-bottom:14px;">Fișă de cazare — ${lista.length} ${lista.length === 1 ? 'persoană' : 'persoane'}</h3>
+          <h3 style="font-family:'Prata',serif;color:var(--accent);margin-bottom:6px;">Fișă de cazare — ${lista.length} ${lista.length === 1 ? 'persoană' : 'persoane'}</h3>
+          ${emailHtml}
           ${lista.map(p => `
             <div style="border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;">
               <div style="font-weight:700;margin-bottom:4px;">${p.numePrenume}</div>
