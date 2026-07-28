@@ -145,6 +145,10 @@
     <!-- Pas 2: formularul, dupa validarea unui token (link direct sau gasit prin cautare) -->
     <div class="card hidden" id="formCard">
       <div class="rez-info" id="rezInfo"></div>
+      <div class="field" style="margin-top:16px;">
+        <label for="emailFactura">Email (necesar pentru emiterea facturii)</label>
+        <input type="email" id="emailFactura" placeholder="nume@exemplu.ro" autocomplete="email" required>
+      </div>
     </div>
 
     <div class="card hidden" id="personsCard">
@@ -204,21 +208,21 @@
         </div>
         <div class="field">
           <label>Nume și prenume</label>
-          <input type="text" class="f-nume" placeholder="Popescu Ion" autocomplete="name">
+          <input type="text" class="f-nume" placeholder="Popescu Ion" autocomplete="name" required>
         </div>
         <div class="row2">
           <div class="field">
             <label>CNP</label>
-            <input type="text" class="f-cnp" placeholder="13 cifre" inputmode="numeric" maxlength="13">
+            <input type="text" class="f-cnp" placeholder="13 cifre" inputmode="numeric" maxlength="13" required>
           </div>
           <div class="field">
             <label>Serie și număr CI</label>
-            <input type="text" class="f-ci" placeholder="XX 123456" autocomplete="off">
+            <input type="text" class="f-ci" placeholder="XX 123456" autocomplete="off" required>
           </div>
         </div>
         <div class="field">
           <label>Domiciliu (adresă completă)</label>
-          <input type="text" class="f-dom" placeholder="Str. ..., nr. ..., localitate, județ" autocomplete="street-address">
+          <input type="text" class="f-dom" placeholder="Str. ..., nr. ..., localitate, județ" autocomplete="street-address" required>
         </div>
       `;
       div.querySelector('.rm-btn')?.addEventListener('click', () => {
@@ -252,6 +256,7 @@
         <div><strong>${ctx.dataCheckin}</strong> → <strong>${ctx.dataCheckout}</strong></div>
         <div><strong>${ctx.nrPersoane}</strong> persoane</div>
       `;
+      document.getElementById('emailFactura').value = ctx.email || '';
 
       persoaneEl.innerHTML = '';
       persoaneEl.appendChild(randPersoana(0));
@@ -309,6 +314,12 @@
     });
 
     submitBtn.addEventListener('click', async () => {
+      const email = document.getElementById('emailFactura').value.trim();
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        mesaj('Introdu o adresă de email validă — este necesară pentru emiterea facturii.', 'err');
+        return;
+      }
+
       const persoane = [...persoaneEl.children].map(el => ({
         numePrenume: el.querySelector('.f-nume').value.trim(),
         cnp: el.querySelector('.f-cnp').value.trim(),
@@ -337,7 +348,7 @@
         const r = await fetch(`${API}/checkin/${encodeURIComponent(token)}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(persoane)
+          body: JSON.stringify({ email, persoane })
         });
         const data = await r.json();
         if (!r.ok) {
