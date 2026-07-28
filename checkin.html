@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fișă de cazare — Cheile Braniștei</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <style>
+    @font-face{
+      font-family:'Montserrat';
+      font-style:normal;
+      font-weight:300 700;
+      font-display:swap;
+      src:url('fonts/montserrat-latin.woff2') format('woff2');
+      unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    @font-face{
+      font-family:'Montserrat';
+      font-style:normal;
+      font-weight:300 700;
+      font-display:swap;
+      src:url('fonts/montserrat-latin-ext.woff2') format('woff2');
+      unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+    }
+    @font-face{
+      font-family:'Prata';
+      font-style:normal;
+      font-weight:400;
+      font-display:swap;
+      src:url('fonts/prata-latin.woff2') format('woff2');
+      unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    :root{
+      --bg:#102a21; --bg2:#0b1f19; --text:#f5f1e8;
+      --muted:rgba(245,241,232,.72); --accent:#d6b36a; --line:rgba(245,241,232,.14);
+      --card:rgba(255,255,255,.05); --red:#e88a8a;
+    }
+    body{
+      font-family:'Montserrat', sans-serif;
+      background: linear-gradient(180deg, var(--bg), var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+      padding: 32px 18px 60px;
+    }
+    .wrap{ max-width: 560px; margin: 0 auto; }
+    .logo{ display:block; height:56px; width:auto; margin: 0 auto 22px; filter: brightness(0) invert(1); opacity:.92; }
+    h1{
+      font-family:'Prata', serif; font-weight:400; text-align:center;
+      color: var(--accent); font-size: 1.5rem; margin-bottom: 6px; letter-spacing: .5px;
+    }
+    .sub{ text-align:center; color: var(--muted); font-size:.85rem; margin-bottom: 28px; line-height:1.6; }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 26px 22px;
+      margin-bottom: 18px;
+    }
+    .rez-info{
+      display:flex; flex-wrap:wrap; gap: 10px 22px;
+      font-size:.82rem; color: var(--muted); margin-bottom: 4px;
+    }
+    .rez-info strong{ color: var(--text); }
+    .field{ margin-bottom: 14px; }
+    .field label{
+      display:block; font-size:.72rem; letter-spacing:1px; text-transform:uppercase;
+      color: var(--muted); margin-bottom: 6px; font-weight:700;
+    }
+    .field input{
+      width:100%; padding: 12px 14px; border-radius: 12px;
+      border:1px solid var(--line); background: rgba(0,0,0,.22); color: var(--text);
+      font-family:'Montserrat', sans-serif; font-size:.92rem; outline:none;
+    }
+    .field input:focus{ border-color: rgba(214,179,106,.55); }
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .persoana{
+      border-top: 1px solid var(--line);
+      padding-top: 18px; margin-top: 6px;
+    }
+    .persoana:first-of-type{ border-top:none; padding-top:0; margin-top:0; }
+    .persoana-head{
+      display:flex; align-items:center; justify-content:space-between; margin-bottom: 14px;
+    }
+    .persoana-head span{
+      font-family:'Prata', serif; color: var(--accent); font-size:1rem;
+    }
+    .rm-btn{
+      background:none; border:1px solid rgba(232,138,138,.4); color: var(--red);
+      border-radius:8px; padding:4px 10px; font-size:.7rem; letter-spacing:1px;
+      text-transform:uppercase; cursor:pointer;
+    }
+    .add-btn, .submit-btn, .btn-secundar{
+      width:100%; padding: 13px; border-radius: 999px; border:1px solid rgba(214,179,106,.5);
+      background: rgba(214,179,106,.08); color: var(--text); font-family:'Montserrat', sans-serif;
+      font-size:.78rem; letter-spacing:2px; text-transform:uppercase; font-weight:700; cursor:pointer;
+    }
+    .submit-btn{
+      background: linear-gradient(180deg, rgba(214,179,106,.28), rgba(214,179,106,.14));
+      margin-top: 8px;
+    }
+    .submit-btn:disabled{ opacity:.5; cursor:default; }
+    .btn-secundar{ background:none; }
+    .notice{
+      font-size:.72rem; color: var(--muted); line-height:1.6; text-align:center;
+      margin-top: 16px; padding: 0 6px;
+    }
+    .notice a{ color: var(--accent); }
+    .msg{
+      text-align:center; font-size:.85rem; padding: 12px 14px; border-radius: 12px; margin-bottom:16px;
+    }
+    .msg.err{ background: rgba(232,138,138,.12); border:1px solid rgba(232,138,138,.3); color: var(--red); }
+    .msg.ok{ background: rgba(214,179,106,.12); border:1px solid rgba(214,179,106,.35); color: var(--accent); }
+    .hidden{ display:none !important; }
+    .center{ text-align:center; }
+    .spinner{
+      width:16px; height:16px; border-radius:50%;
+      border: 2px solid rgba(245,241,232,.3); border-top-color: var(--text);
+      display:inline-block; animation: spin 0.8s linear infinite; vertical-align:-3px; margin-right:8px;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+    @media (max-width:480px){ .row2{ grid-template-columns: 1fr; } }
+    :focus{ outline:none; }
+    :focus-visible{ outline: 2px solid rgba(214,179,106,.85); outline-offset: 2px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <img src="logo.webp" alt="Cheile Braniștei" class="logo">
+    <h1>Fișă de cazare</h1>
+    <p class="sub">Completarea durează un minut și ne scutește de a-ți mai cere buletinul la recepție.</p>
+
+    <div id="msgBox"></div>
+
+    <!-- Pas 1: cautare dupa telefon (flux QR, fara token in URL) -->
+    <div class="card" id="cautaCard">
+      <div class="field">
+        <label for="cautaTelefon">Numărul de telefon folosit la rezervare</label>
+        <input type="tel" id="cautaTelefon" placeholder="07xx xxx xxx" inputmode="tel">
+      </div>
+      <button class="submit-btn" id="cautaBtn">Continuă</button>
+    </div>
+
+    <!-- Pas 2: formularul, dupa validarea unui token (link direct sau gasit prin cautare) -->
+    <div class="card hidden" id="formCard">
+      <div class="rez-info" id="rezInfo"></div>
+    </div>
+
+    <div class="card hidden" id="personsCard">
+      <div id="persoane"></div>
+      <button type="button" class="add-btn" id="addBtn" style="margin-top:14px;">+ Adaugă o persoană</button>
+      <button class="submit-btn" id="submitBtn" style="margin-top:14px;">Trimite fișa de cazare</button>
+      <p class="notice">
+        Datele sunt colectate conform legii pentru registrul de evidență a turiștilor, sunt păstrate criptat
+        și șterse automat după perioada legală de retenție. Detalii în
+        <a href="/privacy.html" target="_blank">politica de confidențialitate</a>.
+      </p>
+    </div>
+
+    <!-- Ecran de succes -->
+    <div class="card hidden center" id="okCard">
+      <p style="color:var(--text);font-size:1rem;margin-bottom:6px;">✓ Mulțumim!</p>
+      <p class="sub" style="margin:0;">Fișa de cazare a fost înregistrată. Te așteptăm la recepție.</p>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+    const API = 'https://cheile-branistei-backend-production.up.railway.app/api';
+
+    const msgBox      = document.getElementById('msgBox');
+    const cautaCard   = document.getElementById('cautaCard');
+    const cautaTelefon= document.getElementById('cautaTelefon');
+    const cautaBtn    = document.getElementById('cautaBtn');
+    const formCard    = document.getElementById('formCard');
+    const rezInfo     = document.getElementById('rezInfo');
+    const personsCard = document.getElementById('personsCard');
+    const persoaneEl  = document.getElementById('persoane');
+    const addBtn      = document.getElementById('addBtn');
+    const submitBtn   = document.getElementById('submitBtn');
+    const okCard      = document.getElementById('okCard');
+
+    let token = new URLSearchParams(location.search).get('t') || '';
+    let maxPersoane = 20;
+
+    // Scoatem token-ul din URL vizibil/istoric inainte ca orice script
+    // (inclusiv analytics-ul) sa apuce sa-l vada in adresa paginii
+    if (token) {
+      history.replaceState({}, '', location.pathname);
+    }
+
+    function mesaj(text, tip) {
+      msgBox.innerHTML = text ? `<div class="msg ${tip}">${text}</div>` : '';
+    }
+
+    function randPersoana(i) {
+      const div = document.createElement('div');
+      div.className = 'persoana';
+      div.innerHTML = `
+        <div class="persoana-head">
+          <span>Persoana ${i + 1}</span>
+          ${i > 0 ? '<button type="button" class="rm-btn">Șterge</button>' : ''}
+        </div>
+        <div class="field">
+          <label>Nume și prenume</label>
+          <input type="text" class="f-nume" placeholder="Popescu Ion" autocomplete="name">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>CNP</label>
+            <input type="text" class="f-cnp" placeholder="13 cifre" inputmode="numeric" maxlength="13">
+          </div>
+          <div class="field">
+            <label>Serie și număr CI</label>
+            <input type="text" class="f-ci" placeholder="XX 123456" autocomplete="off">
+          </div>
+        </div>
+        <div class="field">
+          <label>Domiciliu (adresă completă)</label>
+          <input type="text" class="f-dom" placeholder="Str. ..., nr. ..., localitate, județ" autocomplete="street-address">
+        </div>
+      `;
+      div.querySelector('.rm-btn')?.addEventListener('click', () => {
+        div.remove();
+        renumeroteaza();
+      });
+      return div;
+    }
+
+    function renumeroteaza() {
+      [...persoaneEl.children].forEach((el, i) => {
+        el.querySelector('.persoana-head span').textContent = `Persoana ${i + 1}`;
+        const rm = el.querySelector('.rm-btn');
+        if (i === 0 && rm) rm.remove();
+      });
+    }
+
+    addBtn.addEventListener('click', () => {
+      if (persoaneEl.children.length >= maxPersoane) return;
+      persoaneEl.appendChild(randPersoana(persoaneEl.children.length));
+    });
+
+    function afiseazaFormular(ctx) {
+      cautaCard.classList.add('hidden');
+      formCard.classList.remove('hidden');
+      personsCard.classList.remove('hidden');
+      maxPersoane = ctx.nrPersoane || 20;
+
+      rezInfo.innerHTML = `
+        <div>Rezervare <strong>${ctx.nume}</strong></div>
+        <div><strong>${ctx.dataCheckin}</strong> → <strong>${ctx.dataCheckout}</strong></div>
+        <div><strong>${ctx.nrPersoane}</strong> persoane</div>
+      `;
+
+      persoaneEl.innerHTML = '';
+      persoaneEl.appendChild(randPersoana(0));
+      if (persoaneEl.children.length < maxPersoane) {
+        addBtn.classList.remove('hidden');
+      }
+    }
+
+    async function incarcaDinToken(t) {
+      mesaj('<span class="spinner"></span>Se verifică link-ul...', 'ok');
+      try {
+        const r = await fetch(`${API}/checkin/rezervare?token=${encodeURIComponent(t)}`);
+        const data = await r.json();
+        if (!r.ok) {
+          mesaj(data.eroare || 'Link invalid sau expirat.', 'err');
+          cautaCard.classList.remove('hidden');
+          return;
+        }
+        mesaj('', '');
+        token = t;
+        afiseazaFormular(data);
+      } catch {
+        mesaj('Nu s-a putut contacta serverul. Încearcă din nou.', 'err');
+        cautaCard.classList.remove('hidden');
+      }
+    }
+
+    cautaBtn.addEventListener('click', async () => {
+      const tel = cautaTelefon.value.trim();
+      if (tel.replace(/[^0-9]/g, '').length < 7) {
+        mesaj('Introdu un număr de telefon valid.', 'err');
+        return;
+      }
+      cautaBtn.disabled = true;
+      cautaBtn.innerHTML = '<span class="spinner"></span>Se caută...';
+      try {
+        const r = await fetch(`${API}/checkin/cauta`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ telefon: tel })
+        });
+        const data = await r.json();
+        if (!r.ok) {
+          mesaj(data.eroare || 'Nu am găsit nicio rezervare.', 'err');
+          cautaBtn.disabled = false;
+          cautaBtn.textContent = 'Continuă';
+          return;
+        }
+        await incarcaDinToken(data.token);
+      } catch {
+        mesaj('Nu s-a putut contacta serverul. Încearcă din nou.', 'err');
+        cautaBtn.disabled = false;
+        cautaBtn.textContent = 'Continuă';
+      }
+    });
+
+    submitBtn.addEventListener('click', async () => {
+      const persoane = [...persoaneEl.children].map(el => ({
+        numePrenume: el.querySelector('.f-nume').value.trim(),
+        cnp: el.querySelector('.f-cnp').value.trim(),
+        ci: el.querySelector('.f-ci').value.trim().toUpperCase(),
+        domiciliu: el.querySelector('.f-dom').value.trim()
+      }));
+
+      for (const p of persoane) {
+        if (!p.numePrenume || !p.domiciliu) {
+          mesaj('Completează numele și domiciliul pentru fiecare persoană.', 'err');
+          return;
+        }
+        if (!/^[0-9]{13}$/.test(p.cnp)) {
+          mesaj('CNP-ul trebuie să aibă exact 13 cifre.', 'err');
+          return;
+        }
+        if (p.ci.length < 6) {
+          mesaj('Verifică seria și numărul cărții de identitate.', 'err');
+          return;
+        }
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner"></span>Se trimite...';
+      try {
+        const r = await fetch(`${API}/checkin/${encodeURIComponent(token)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(persoane)
+        });
+        const data = await r.json();
+        if (!r.ok) {
+          mesaj(data.eroare || 'A apărut o eroare. Te rugăm să încerci din nou.', 'err');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Trimite fișa de cazare';
+          return;
+        }
+        formCard.classList.add('hidden');
+        personsCard.classList.add('hidden');
+        mesaj('', '');
+        okCard.classList.remove('hidden');
+      } catch {
+        mesaj('Nu s-a putut contacta serverul. Încearcă din nou.', 'err');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Trimite fișa de cazare';
+      }
+    });
+
+    if (token) {
+      cautaCard.classList.add('hidden');
+      incarcaDinToken(token);
+    }
+  })();
+  </script>
+
+  <!-- Cloudflare Web Analytics (fara cookies, fara tracking personal) -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d5746165c7694d72bc28e3d435e04534"}'></script>
+</body>
+</html>
