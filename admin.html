@@ -1384,15 +1384,29 @@
     async function trimiteCheckin(id) {
       const r = toateRezervari.find(x => x.id === id);
       if (!r) return;
+
+      // Deschidem fereastra IMEDIAT, sincron cu click-ul — pe mobil, orice
+      // window.open() aparut dupa un await nu mai e recunoscut ca gest al
+      // utilizatorului si e blocat silentios de browser. Ii setam adresa
+      // abia dupa ce vine raspunsul de la server.
+      const fereastra = window.open('', '_blank');
+
       try {
         const res = await authFetch(`${API}/checkin/${id}/genereaza-link`, { method: 'POST' });
-        if (!res.ok) { showToast('Eroare la generarea link-ului de check-in.', true); return; }
+        if (!res.ok) {
+          showToast('Eroare la generarea link-ului de check-in.', true);
+          fereastra?.close();
+          return;
+        }
         const data = await res.json();
         const link = `https://cheilebranistei.ro/checkin.html?t=${data.token}`;
         const mesaj = `Bună, ${r.nume}! Pentru a scurta procedura la sosire, te rugăm să completezi fișa de cazare aici: ${link}`;
-        window.open(`https://wa.me/${normalizeazaTelefon(r.telefon)}?text=${encodeURIComponent(mesaj)}`, '_blank');
+        const waUrl = `https://wa.me/${normalizeazaTelefon(r.telefon)}?text=${encodeURIComponent(mesaj)}`;
+        if (fereastra) fereastra.location.href = waUrl;
+        else window.open(waUrl, '_blank');
       } catch (err) {
         showToast('Nu s-a putut genera link-ul de check-in.', true);
+        fereastra?.close();
       }
     }
 
