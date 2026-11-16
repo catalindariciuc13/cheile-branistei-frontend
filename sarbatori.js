@@ -92,6 +92,9 @@
 .xm-garland{position:absolute;left:0;right:0;top:calc(100% - 12px);height:66px;pointer-events:none;z-index:1}
 .xm-garland svg,.xm-card-garland svg{display:block;width:100%;height:100%;overflow:visible}
 .xm-gl{position:relative;width:100%;height:100%}
+/* ghirlanda din meniul de pe telefon, sub logo */
+.xm-mm-garland{position:absolute;left:0;right:0;top:calc(100% - 12px);height:56px;pointer-events:none;z-index:1}
+.xm-on .mobile-nav{padding-top:48px}
 .xm-gl svg{position:absolute;inset:0;display:block;width:100%;height:100%;overflow:visible}
 .xm-gl-n,.xm-gl-l{pointer-events:none}
 .xm-gl-n{will-change:transform}   /* crenguța: strat propriu, desenat o singură dată */
@@ -202,7 +205,8 @@ html.xm-on body{background:radial-gradient(800px 520px at 100% 22%,rgba(168,40,5
 /* caseta din hero nu mai intră sub bară + ghirlandă (globulețele atârnă ~60px) */
 .xm-on .hero{padding-top:125px}   /* poza de iarnă e în index.html, ca să apară de la prima afișare */
 @media (max-height:820px){ .xm-on .hero{padding-bottom:8vh} }
-@media (max-width:600px){ .xm-on .hero{padding-top:115px} }
+/* pe telefon caseta stă centrată, cu loc jos pentru cadoul plutitor și WhatsApp (altfel acopereau „Oferta de iarnă”) */
+@media (max-width:600px){ .xm-on .hero{padding-top:115px;padding-bottom:112px;justify-content:center} }
 
 
 /* nopți libere de sărbători */
@@ -356,7 +360,8 @@ html.xm-on body{background:radial-gradient(800px 520px at 100% 22%,rgba(168,40,5
 html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,150,215,.13),transparent 60%),radial-gradient(800px 520px at 100% 30%,rgba(168,40,52,.08),transparent 62%),linear-gradient(180deg,#0b1a22,#060f13)}
 .xm-night .hero::before{opacity:1!important;background:linear-gradient(180deg,rgba(6,14,40,.30),rgba(8,16,36,.12) 55%,rgba(4,10,18,.35))}
 .xm-night .hero::after{background:radial-gradient(700px 420px at 18% 12%,rgba(255,244,210,.12),transparent 65%)}
-.xm-night nav{background:rgba(6,14,22,.78)}
+.xm-night nav.nav{background:rgba(6,14,22,.78)}
+.xm-night .mobile-menu{background:radial-gradient(520px 300px at 50% 0%,rgba(120,150,215,.16),transparent 70%),radial-gradient(500px 360px at 100% 100%,rgba(168,40,52,.10),transparent 70%),linear-gradient(180deg,#0f1d2c,#060d16)}
 .xm-night .section.alt{background:rgba(140,170,230,.035)}
 .xm-night .xm-light circle:first-child{opacity:.6}
 .xm-night .xm-overlay{background:rgba(3,8,18,.74)}
@@ -712,7 +717,28 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     // în meniul de sus: primul link; în meniul de pe mobil: după „Acasă”
     const link = cls => Object.assign(document.createElement('a'), { href: '#iarna', className: cls, textContent: 'Iarna' });
     document.querySelector('.nav-links')?.prepend(link(''));
-    document.querySelector('.mobile-nav a[href="#acasa"]')?.insertAdjacentElement('afterend', link('mobile-link'));
+    const linkMobil = link('mobile-link');
+    linkMobil.innerHTML = `${ico('xm-snowflake')}<span>Iarna</span>`;
+    document.querySelector('.mobile-nav a[href="#acasa"]')?.insertAdjacentElement('afterend', linkMobil);
+    meniuMobilDeSezon();
+  }
+
+  /* ---------- MENIUL DE PE TELEFON: GHIRLANDĂ ---------- */
+  function meniuMobilDeSezon() {
+    const sus = document.querySelector('.mm-top');
+    if (!sus) return;
+    const g = document.createElement('div');
+    g.className = 'xm-mm-garland';
+    sus.appendChild(g);
+    legaGlobulete(g);
+    // meniul ocupă toată lățimea ecranului; ghirlanda se desenează la prima deschidere și la rotire
+    let latime = 0;
+    const deseneaza = () => {
+      if (innerWidth === latime) return;
+      latime = innerWidth;
+      g.innerHTML = ghirlanda(latime, { span: 130, sag: 8, top: 10, h: 56, seed: 5 });
+    };
+    document.getElementById('hamburger')?.addEventListener('click', deseneaza);
   }
 
   /* ---------- BRADUL DE ÎMPODOBIT ---------- */

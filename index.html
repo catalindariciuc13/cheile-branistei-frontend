@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cheile Braniștei | Mountain Retreat</title>
-  <meta name="description" content="Cheile Braniștei — pensiune de munte în Bucovina, Brăniștea, jud. Suceava. Cazare liniștită lângă râu, cu foișor, grătar și priveliște spre munți. Rezervă rapid pe WhatsApp." />
+  <meta name="description" content="Cheile Braniștei — pensiune de munte în Bucovina, Braniștea, jud. Suceava. Cazare liniștită lângă râu, cu foișor, grătar și priveliște spre munți. Rezervă rapid pe WhatsApp." />
   <link rel="canonical" href="https://cheilebranistei.ro/" />
 
   <meta property="og:type" content="website" />
@@ -150,7 +150,7 @@ h1,h2,h3{
 body{ padding-top:95px; }
 @media (max-width: 600px){ body{ padding-top:65px; } }
 
-nav{
+nav.nav{
   position:fixed;
   top:0;
   left:0;
@@ -291,63 +291,137 @@ nav{
 .mobile-menu {
   position: fixed;
   inset: 0;
-  background: rgba(8,18,14,.98);
-  z-index: 2000;
+  height: 100dvh;
+  z-index: 2100;   /* peste butonul de WhatsApp și cadoul plutitor */
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
+  background:
+    radial-gradient(520px 300px at 50% 0%, rgba(214,179,106,.13), transparent 70%),
+    radial-gradient(500px 360px at 100% 100%, rgba(214,179,106,.07), transparent 70%),
+    linear-gradient(180deg, #11291f, #08150f);
   transform: translateX(100%);
-  transition: transform .3s ease;
+  transition: transform .35s cubic-bezier(.2,.8,.3,1);
+  overscroll-behavior: contain;
 }
-
 .mobile-menu.open { transform: translateX(0); }
 
+.mm-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: calc(12px + env(safe-area-inset-top)) 18px 12px;
+  border-bottom:1px solid var(--line);
+  position:relative;
+}
+.mm-logo img{ height:44px; width:auto; filter:brightness(0) invert(1); }
+
 .mobile-menu-close {
-  position: absolute;
-  top: 20px; right: 20px;
-  width: 44px; height: 44px;
+  width: 42px; height: 42px;
   border-radius: 12px;
   border: 1px solid var(--line);
-  background: rgba(0,0,0,.3);
+  background: rgba(0,0,0,.25);
   color: var(--text);
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
   display: grid;
   place-items: center;
 }
 
 .mobile-nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 2rem;
+  justify-content: center;
+  width: min(100%, 440px);
+  margin: 0 auto;
+  padding: 14px 22px;
 }
 
 .mobile-link {
-  display: block;
-  width: 100%;
-  max-width: 280px;
-  text-align: center;
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.04);
-  color: var(--muted);
-  font-size: .85rem;
-  letter-spacing: 3px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 4px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+  font-size: .9rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
   font-weight: 700;
-  transition: .18s ease;
+  transition: color .18s ease, padding-left .18s ease;
 }
-
+.mobile-link:last-child{ border-bottom:0; }
+.mobile-link .icon{
+  box-sizing:border-box;
+  flex:0 0 38px;
+  width:38px; height:38px;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid rgba(214,179,106,.28);
+  background:rgba(214,179,106,.08);
+  color:var(--accent);
+}
+.mobile-link::after{
+  content:"›";
+  margin-left:auto;
+  color:var(--muted);
+  font-size:1.4rem;
+  font-weight:400;
+  line-height:1;
+}
 .mobile-link:hover,
-.mobile-link.active {
-  color: var(--accent);
-  border-color: rgba(214,179,106,.4);
-  background: rgba(214,179,106,.08);
+.mobile-link.active { color: var(--accent); padding-left:8px; }
+
+/* intrare pe rând a linkurilor la deschidere */
+.mobile-menu.open .mobile-link,
+.mobile-menu.open .mm-bottom{ animation: mmIn .45s cubic-bezier(.2,.8,.3,1) both; }
+.mobile-menu.open .mobile-link:nth-child(2){ animation-delay:.04s }
+.mobile-menu.open .mobile-link:nth-child(3){ animation-delay:.08s }
+.mobile-menu.open .mobile-link:nth-child(4){ animation-delay:.12s }
+.mobile-menu.open .mobile-link:nth-child(5){ animation-delay:.16s }
+.mobile-menu.open .mobile-link:nth-child(6){ animation-delay:.20s }
+.mobile-menu.open .mobile-link:nth-child(7){ animation-delay:.24s }
+.mobile-menu.open .mm-bottom{ animation-delay:.26s }
+@keyframes mmIn{ from{ opacity:0; transform:translateX(24px); } to{ opacity:1; transform:none; } }
+
+.mm-bottom{
+  width:min(100%, 440px);
+  margin:0 auto;
+  padding: 14px 22px calc(18px + env(safe-area-inset-bottom));
+  text-align:center;
+}
+.btn.primary.mm-cta{
+  color:#10241c;
+  border-color:rgba(214,179,106,.8);
+  background:linear-gradient(180deg, #ddbc77, #c6a054);
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+}
+.mm-contact{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:14px;
+}
+.mm-contact a{
+  width:46px; height:46px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.18);
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font-size:18px;
+}
+.mm-contact a:active{ color:var(--accent); border-color:rgba(214,179,106,.45); }
+.mm-adr{
+  margin:12px 0 0;
+  font-size:.7rem;
+  letter-spacing:1px;
+  color:rgba(245,241,232,.45);
+}
+@media (prefers-reduced-motion: reduce){
+  .mobile-menu.open .mobile-link, .mobile-menu.open .mm-bottom{ animation:none; }
 }
 
 /* =========================
@@ -1240,7 +1314,7 @@ a:focus, button:focus{
 @media (min-width: 601px){
   .nav-inner{ padding: 10px 0; gap: 10px; }
   .nav-logo img{ height: 74px; }
-  nav{ transition: background .25s ease; }
+  nav.nav{ transition: background .25s ease; }
   .nav-inner{ transition: padding .25s ease, gap .25s ease; }
   .nav-logo img{ transition: height .25s ease; }
   nav.nav-scrolled{ background: rgba(8,18,14,.72); }
@@ -1744,7 +1818,7 @@ html{ -webkit-tap-highlight-color: transparent; }
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Calea Cernăuțiului 5",
-      "addressLocality": "Brăniștea",
+      "addressLocality": "Braniștea",
       "addressRegion": "Suceava",
       "addressCountry": "RO"
     },
@@ -1811,16 +1885,28 @@ html{ -webkit-tap-highlight-color: transparent; }
 
   <!-- MOBILE MENU OVERLAY -->
   <div class="mobile-menu" id="mobileMenu">
-    <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Închide">✕</button>
-    <nav class="mobile-nav">
-      <a href="#acasa" class="mobile-link">Acasă</a>
-      <a href="#concept" class="mobile-link">Concept</a>
-      <a href="#facilitati" class="mobile-link">Facilități</a>
-      <a href="#rezerva" class="mobile-link">Rezervă</a>
-      <a href="#cazare" class="mobile-link">Cazare</a>
-      <a href="#zona" class="mobile-link">Împrejurimi</a>
-      <a href="#contact" class="mobile-link">Contact</a>
+    <div class="mm-top">
+      <a href="#acasa" class="mm-logo" aria-label="Cheile Braniștei — Acasă"><img src="logo.webp" alt="Cheile Braniștei" width="200" height="70"></a>
+      <button class="mobile-menu-close" id="mobileMenuClose" aria-label="Închide">✕</button>
+    </div>
+    <nav class="mobile-nav" aria-label="Meniu">
+      <a href="#acasa" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#mountain"></use></svg><span>Acasă</span></a>
+      <a href="#concept" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#water"></use></svg><span>Concept</span></a>
+      <a href="#facilitati" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#wifi"></use></svg><span>Facilități</span></a>
+      <a href="#cazare" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#bed"></use></svg><span>Cazare</span></a>
+      <a href="#zona" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#location-dot"></use></svg><span>Împrejurimi</span></a>
+      <a href="#contact" class="mobile-link"><svg class="icon" aria-hidden="true"><use href="#envelope"></use></svg><span>Contact</span></a>
     </nav>
+    <div class="mm-bottom">
+      <a href="#rezerva" class="btn primary full mm-cta"><svg class="icon" aria-hidden="true"><use href="#calendar-check"></use></svg> Rezervă acum</a>
+      <div class="mm-contact">
+        <a href="tel:0733623000" aria-label="Sună-ne"><svg class="icon" aria-hidden="true"><use href="#phone"></use></svg></a>
+        <a href="https://wa.me/40733623000" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="icon" aria-hidden="true"><use href="#whatsapp"></use></svg></a>
+        <a href="https://www.instagram.com/cheile.branistei/" target="_blank" rel="noopener" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#instagram"></use></svg></a>
+        <a href="https://www.facebook.com/cheilebranistei/" target="_blank" rel="noopener" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#facebook"></use></svg></a>
+      </div>
+      <p class="mm-adr">Calea Cernăuțiului 5, Braniștea · jud. Suceava</p>
+    </div>
   </div>
 
   <main>

@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hamburger?.addEventListener('click', openMenu);
     mobileClose?.addEventListener('click', closeMenu);
-    document.querySelectorAll('.mobile-link').forEach(link =>
+    document.querySelectorAll('#mobileMenu a').forEach(link =>
       link.addEventListener('click', closeMenu)
     );
   })();
