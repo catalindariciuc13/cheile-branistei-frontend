@@ -69,6 +69,18 @@
   const AN = azi.getMonth() === 0 ? azi.getFullYear() - 1 : azi.getFullYear();
   const CRACIUN = new Date(AN, 11, 24);
 
+  // Prețul unei nopți cu premiul de la brad (folosit de calculatorul de preț din main.js).
+  // null = fără reducere (nu a câștigat sau noaptea nu e în perioada premiului).
+  window.xmPretNoapte = k => {
+    if (stoc.get(localStorage, 'xm-cadou') !== '1') return null;
+    const P = PERIOADA_SARBATORI, md = +k.slice(5, 7) * 100 + +k.slice(8, 10);
+    const start = `${AN}-${String(P.start[0]).padStart(2, '0')}-${String(P.start[1]).padStart(2, '0')}`;
+    const sfarsit = `${AN + 1}-${String(P.sfarsit[0]).padStart(2, '0')}-${String(P.sfarsit[1]).padStart(2, '0')}`;
+    if (k < start || k >= sfarsit) return null;
+    if (md >= P.exclus[0][0] * 100 + P.exclus[0][1] && md <= P.exclus[1][0] * 100 + P.exclus[1][1]) return null;
+    return +CADOU.pret.nou.replace('.', '');
+  };
+
   // Stare comună (modul „Seară de iarnă” influențează ninsoarea)
   const stare = { noapte: false, reinit: null, deschideOferta: null };
 
@@ -1366,6 +1378,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
 
     brad(w.body.querySelector('.xm-j1'), () => {
       stoc.set(localStorage, 'xm-cadou', '1');
+      window.cbRecalcPret?.();                  // prețul din formular trece pe reducere
       actualizeazaFab();
       w.etapa(2);
     });

@@ -1,3 +1,18 @@
+/* Regulile de rezervare pe sezoane — aceleași ca în backend (ReguliSezon.java); calendarul le
+   actualizează din răspunsul API-ului. O „noapte” e data în care începe (24 dec = de pe 24 pe 25). */
+window.cbReguli = (() => {
+  const md = k => +k.slice(5, 7) * 100 + +k.slice(8, 10);
+  const r = {
+    pretCamera: 250, pretCasa: 3000, pachetCraciun: 8000, minNoptiIarna: 2, minNoptiCraciun: 3,
+    iarna: { start: '11-30', sfarsit: '02-29' }, craciun: { start: '12-23', sfarsit: '12-27' },
+  };
+  const lz = s => +s.slice(0, 2) * 100 + +s.slice(3, 5);
+  r.esteIarna   = k => { const m = md(k); return m >= lz(r.iarna.start) || m <= lz(r.iarna.sfarsit); };
+  r.esteCraciun = k => { const m = md(k); return m >= lz(r.craciun.start) && m <= lz(r.craciun.sfarsit); };
+  r.minNopti = zile => zile.some(r.esteCraciun) ? r.minNoptiCraciun : zile.some(r.esteIarna) ? r.minNoptiIarna : 1;
+  return r;
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
   /* =========================
@@ -322,16 +337,25 @@ document.addEventListener('DOMContentLoaded', () => {
       verificaDisponibilitate();
     });
 
-    // Calculator pret
+    // Calculator pret — pe nopți: iarna toată casa (pachet la Crăciun), în rest pe camere.
+    // Reducerea câștigată la brad vine din sarbatori.js prin window.xmPretNoapte (dacă există).
+    const R = window.cbReguli;
+    const lei = n => `${n.toLocaleString('ro-RO')} RON`;
+    const nopti = (ci, co) => {
+      const z = [];
+      for (const d = new Date(ci + 'T00:00:00'); d < new Date(co + 'T00:00:00'); d.setDate(d.getDate() + 1)) {
+        z.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`);
+      }
+      return z;
+    };
     const calcPret = () => {
       const checkin  = document.getElementById('checkin')?.value;
       const checkout = document.getElementById('checkout')?.value;
       const guests   = parseInt(document.getElementById('guests')?.value || '2');
       if (!checkin || !checkout) return;
 
-      const nopti  = Math.max(0, (new Date(checkout) - new Date(checkin)) / 86400000);
+      const zile   = nopti(checkin, checkout);
       const camere = Math.ceil(guests / 2);
-      const total  = nopti * camere * 250;
 
       let priceEl = document.getElementById('price-estimate');
       if (!priceEl) {
@@ -341,21 +365,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = form.querySelector('button[type="submit"]');
         form.insertBefore(priceEl, submitBtn);
       }
+      if (!zile.length) { priceEl.innerHTML = ''; return; }
 
-      if (nopti > 0) {
-        const strCamere = camere === 1 ? '1 cameră' : `${camere} camere`;
-        const strNopti  = nopti  === 1 ? '1 noapte' : `${nopti} nopți`;
-        priceEl.innerHTML = `
-          <div class="price-row">
-            <span>${strCamere} × ${strNopti} × 250 RON</span>
-            <strong>${total.toLocaleString('ro-RO')} RON</strong>
-          </div>
-          <div class="price-note">* Estimare orientativă</div>
-        `;
-      } else {
-        priceEl.innerHTML = '';
+      const craciun = zile.filter(R.esteCraciun).length;
+      const iarna   = zile.filter(k => R.esteIarna(k) && !R.esteCraciun(k));
+      const vara    = zile.length - craciun - iarna.length;
+      const nN = n => n === 1 ? '1 noapte' : `${n} nopți`;
+      const randuri = [];
+      let total = 0;
+
+      if (craciun) {
+        const s = craciun >= 3 ? R.pachetCraciun + (craciun - 3) * R.pretCasa : craciun * R.pretCasa;
+        randuri.push([craciun >= 3 ? `Pachet Crăciun · toată casa${craciun > 3 ? ` + ${nN(craciun - 3)}` : ''}` : `Crăciun · ${nN(craciun)} × ${lei(R.pretCasa)}`, s]);
+        total += s;
       }
+      if (iarna.length) {
+        const preturi = iarna.map(k => window.xmPretNoapte?.(k) ?? R.pretCasa);
+        const reduse  = preturi.filter(p => p < R.pretCasa).length;
+        const s = preturi.reduce((a, b) => a + b, 0);
+        randuri.push([`Toată casa · ${nN(iarna.length)} × ${lei(R.pretCasa)}`, iarna.length * R.pretCasa]);
+        if (reduse) randuri.push([`🎁 Cadoul de la brad · ${nN(reduse)}`, s - iarna.length * R.pretCasa]);
+        total += s;
+      }
+      if (vara) {
+        const s = vara * camere * R.pretCamera;
+        randuri.push([`${camere === 1 ? '1 cameră' : `${camere} camere`} × ${nN(vara)} × ${R.pretCamera} RON`, s]);
+        total += s;
+      }
+
+      const detaliat = randuri.length > 1;
+      priceEl.innerHTML = `
+        ${detaliat ? randuri.map(([t, s]) => `<div class="price-row price-sub"><span>${t}</span><span>${s < 0 ? '−' + lei(-s) : lei(s)}</span></div>`).join('') : ''}
+        <div class="price-row">
+          <span>${detaliat ? 'Total' : randuri[0][0]}</span>
+          <strong>${lei(total)}</strong>
+        </div>
+        <div class="price-note">* Estimare orientativă${craciun || iarna.length ? ' · iarna se închiriază toată casa' : ''}</div>
+      `;
     };
+    window.cbRecalcPret = calcPret;
 
     document.getElementById('checkout')?.addEventListener('change', () => {
       calcPret();
@@ -387,7 +435,15 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         const data = await r.json();
 
-        if (data.camereLibere === 0) {
+        if (data.regula) {
+          dispEl.className = 'disponibilitate indisponibil';
+          dispEl.textContent = `❌ ${data.regula}`;
+        } else if (data.casaIntreaga) {
+          dispEl.className = `disponibilitate ${data.camereLibere > 0 ? 'disponibil' : 'indisponibil'}`;
+          dispEl.innerHTML = data.camereLibere > 0
+            ? `✅ <strong>Toată casa</strong> este liberă în perioada selectată`
+            : `❌ Casa nu este liberă integral în perioada selectată`;
+        } else if (data.camereLibere === 0) {
           dispEl.className = 'disponibilitate indisponibil';
           dispEl.innerHTML = `❌ Nu mai sunt camere disponibile în perioada selectată`;
         } else if (data.camereLibere <= 2) {
@@ -685,6 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!chei.length) return !!libere;
         libere = noi;
         pret   = data.pretCamera || 250;
+        if (data.reguli) Object.assign(window.cbReguli, data.reguli);
         const ultima = new Date(chei[chei.length - 1] + 'T00:00:00');
         const a = azi();
         maxOfs = (ultima.getFullYear() * 12 + ultima.getMonth())
@@ -716,6 +773,14 @@ document.addEventListener('DOMContentLoaded', () => {
       btnNext.disabled = lunaOfs >= maxOfs;
 
       const limita = selIn && !selOut ? limitaCheckout() : null;
+      const R = window.cbReguli;
+      // check-out prea devreme față de minimul de nopți (iarna 2, Crăciun 3)
+      const preaScurt = k => {
+        if (!selIn || selOut || k <= selIn) return false;
+        const z = [];
+        for (const d = new Date(selIn + 'T00:00:00'); iso(d) < k; d.setDate(d.getDate() + 1)) z.push(iso(d));
+        return z.length < R.minNopti(z);
+      };
 
       let html = ZILE.map(z => `<div class="cal-zh">${z}</div>`).join('');
       const goluri = (luna.getDay() + 6) % 7;
@@ -735,9 +800,16 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (plin && k !== limita) {
           cls += ' plin'; dis = 'disabled';
           jos = '<span class="zi-pret">–</span>';
+        } else if (preaScurt(k) && k !== limita) {
+          cls += ' scurt'; dis = 'disabled';
+          jos = `<span class="zi-pret">${R.esteIarna(k) ? (R.esteCraciun(k) ? 'pachet' : R.pretCasa) : pret}</span>`;
         } else {
           if (plin && k === limita) cls += ' plin-checkout';
-          else {
+          else if (R.esteIarna(k)) {
+            // iarna: toată casa (la Crăciun, pachetul de 3 nopți)
+            jos = `<span class="zi-pret">${R.esteCraciun(k) ? 'pachet' : R.pretCasa}</span>`;
+            cls += ' casa';
+          } else {
             jos = `<span class="zi-pret">${pret}</span>`;
             if (libere[k] <= 2) cls += ' putine';
           }
@@ -750,10 +822,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       grid.innerHTML = html;
 
+      const minim = selIn ? R.minNopti([selIn]) : 1;
       hint.textContent = !selIn
-        ? 'Alege data de check-in'
-        : (!selOut ? 'Acum alege data de check-out'
+        ? 'Alege data de check-in · iarna se închiriază toată casa'
+        : (!selOut ? `Acum alege data de check-out${minim > 1 ? ` · minim ${minim} nopți${R.esteCraciun(selIn) ? ' de Crăciun' : ''}` : ''}`
                    : `${Math.round((new Date(selOut) - new Date(selIn)) / 86400000)} nopți selectate`);
+      if (!selIn && !Object.keys(libere).some(R.esteIarna)) hint.textContent = 'Alege data de check-in';
     };
 
     const aplica = () => {
