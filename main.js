@@ -4,11 +4,14 @@ window.cbReguli = (() => {
   const md = k => +k.slice(5, 7) * 100 + +k.slice(8, 10);
   const r = {
     pretCamera: 250, pretCasa: 3000, pachetCraciun: 8000, minNoptiIarna: 2, minNoptiCraciun: 3,
-    iarna: { start: '11-30', sfarsit: '02-29' }, craciun: { start: '12-23', sfarsit: '12-27' },
+    iarna: { start: '11-01', sfarsit: '03-31' }, craciun: { start: '12-23', sfarsit: '12-27' },
+    // nopți blocate (Revelion 2026/27 rezervat integral: check-in 30 dec, check-out 3 ian) — ca în backend
+    blocate: [['2026-12-30', '2027-01-03']],
   };
   const lz = s => +s.slice(0, 2) * 100 + +s.slice(3, 5);
   r.esteIarna   = k => { const m = md(k); return m >= lz(r.iarna.start) || m <= lz(r.iarna.sfarsit); };
   r.esteCraciun = k => { const m = md(k); return m >= lz(r.craciun.start) && m <= lz(r.craciun.sfarsit); };
+  r.esteBlocata = k => r.blocate.some(([de, pana]) => k >= de && k < pana);
   r.minNopti = zile => zile.some(r.esteCraciun) ? r.minNoptiCraciun : zile.some(r.esteIarna) ? r.minNoptiIarna : 1;
   return r;
 })();
@@ -375,9 +378,12 @@ document.addEventListener('DOMContentLoaded', () => {
       let total = 0;
 
       if (craciun) {
-        const s = craciun >= 3 ? R.pachetCraciun + (craciun - 3) * R.pretCasa : craciun * R.pretCasa;
-        randuri.push([craciun >= 3 ? `Pachet Crăciun · toată casa${craciun > 3 ? ` + ${nN(craciun - 3)}` : ''}` : `Crăciun · ${nN(craciun)} × ${lei(R.pretCasa)}`, s]);
-        total += s;
+        // prețul întreg pe nopți, apoi reducerea pachetului de Crăciun (3 nopți: 9.000 → 8.000)
+        const intreg = craciun * R.pretCasa;
+        const reducere = craciun >= 3 ? 3 * R.pretCasa - R.pachetCraciun : 0;
+        randuri.push([`Toată casa de Crăciun · ${nN(craciun)} × ${lei(R.pretCasa)}`, intreg]);
+        if (reducere > 0) randuri.push(['🎄 Oferta de Crăciun', -reducere]);
+        total += intreg - reducere;
       }
       if (iarna.length) {
         const preturi = iarna.map(k => window.xmPretNoapte?.(k) ?? R.pretCasa);
@@ -402,8 +408,40 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="price-note">* Estimare orientativă${craciun || iarna.length ? ' · iarna se închiriază toată casa' : ''}</div>
       `;
+      // „Vrei reducere? Împodobește bradul” (din sarbatori.js, doar în sezon și dacă nu a câștigat deja)
+      const promo = window.xmPromoBrad?.(zile);
+      if (promo) priceEl.appendChild(promo);
     };
     window.cbRecalcPret = calcPret;
+
+    // Datele se afișează frumos („joi, 3 dec. 2026”); valoarea câmpului rămâne YYYY-MM-DD pentru server
+    ['checkin', 'checkout'].forEach(id => {
+      const inp = document.getElementById(id);
+      const box = inp?.closest('.rv-input');
+      if (!box) return;
+      const lbl = document.createElement('span');
+      lbl.className = 'rv-date';
+      box.appendChild(lbl);
+      const fmtAn = new Intl.DateTimeFormat('ro-RO', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      const fmt   = new Intl.DateTimeFormat('ro-RO', { weekday: 'short', day: 'numeric', month: 'short' });   // anul doar dacă nu e cel curent
+      const arata = () => {
+        const ok = /^\d{4}-\d{2}-\d{2}$/.test(inp.value);
+        const data = ok ? new Date(inp.value + 'T00:00:00') : null;
+        lbl.textContent = data ? (data.getFullYear() === new Date().getFullYear() ? fmt : fmtAn).format(data) : '';
+        box.classList.toggle('are-data', ok);
+      };
+      inp.addEventListener('change', arata);
+      form.addEventListener('reset', () => setTimeout(arata));
+      arata();
+    });
+
+    // Prețul din stânga: arătăm doar blocul sezonului de azi (iarna toată casa, în rest pe camere)
+    {
+      const d = new Date();
+      const k = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const sezon = R.esteIarna(k) ? 'iarna' : 'vara';
+      document.querySelectorAll('[data-sezon]').forEach(el => { el.hidden = el.dataset.sezon !== sezon; });
+    }
 
     document.getElementById('checkout')?.addEventListener('change', () => {
       calcPret();
@@ -422,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dispEl = document.createElement('div');
         dispEl.id = 'disponibilitate';
         dispEl.className = 'disponibilitate';
-        const checkoutField = document.getElementById('checkout').closest('.field');
+        const checkoutField = document.getElementById('checkout').closest('.field-dates') || document.getElementById('checkout').closest('.field');
         checkoutField.after(dispEl);
       }
 
@@ -838,7 +876,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const deschide = async () => {
-      if (!(await incarca())) { fallbackNativ(); return; }
+      // Dacă serverul nu răspunde, păstrăm același calendar (check-in + check-out în aceeași fereastră),
+      // doar fără zilele ocupate — disponibilitatea reală o verifică oricum serverul la trimitere.
+      if (!(await incarca())) {
+        if (!libere) {
+          libere = {};
+          const d = azi();
+          for (let i = 0; i < 180; i++) { const k = iso(d); libere[k] = window.cbReguli.esteBlocata(k) ? 0 : 7; d.setDate(d.getDate() + 1); }
+          maxOfs = 5;
+        }
+        if (!libere) { fallbackNativ(); return; }
+      }
       pop.classList.add('open');
       backdrop.classList.add('open');
       randeaza();

@@ -919,6 +919,122 @@ html.xm-night body{ background:linear-gradient(180deg,#0b1a22,#060f13); }
 .field textarea{min-height:92px; resize:vertical}
 
 /* =========================
+   FORMULAR REZERVARE — design nou
+   ========================= */
+.reserve-card{ max-width:960px; }
+.reserve-grid{ grid-template-columns: .9fr 1.1fr; }
+.reserve-left{ padding:34px 32px; display:flex; flex-direction:column; gap:0; }
+.reserve-right{ padding:28px 26px; }
+.reserve-left h3{ font-size:1.5rem; margin-bottom:22px; }
+
+.rv-price{
+  margin-bottom:4px;
+  padding:16px 18px;
+  border-radius:16px;
+  border:1px solid rgba(214,179,106,.35);
+  background:linear-gradient(160deg, rgba(214,179,106,.14), rgba(214,179,106,.03));
+}
+.rv-price-main{ display:flex; align-items:baseline; gap:8px; }
+.rv-price-main strong{ font-family:'Prata',serif; font-weight:400; font-size:2rem; color:var(--accent); line-height:1; }
+.rv-price-main span{ color:var(--muted); font-size:.85rem; }
+.rv-price-sub{ margin-top:10px; color:var(--text); font-size:.86rem; font-weight:600; }
+.rv-price-note{ margin-top:6px; color:var(--muted); font-size:.78rem; line-height:1.5; }
+.rv-facts{ margin-top:28px; }
+
+.rv-facts{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.rv-facts > div{
+  display:flex; align-items:center; gap:10px;
+  padding:13px 14px; border-radius:12px;
+  border:1px solid var(--line); background:rgba(0,0,0,.14);
+}
+.rv-facts .icon{ flex:0 0 18px; width:18px; height:18px; color:var(--accent); }
+.rv-facts span{ display:flex; flex-direction:column; font-size:.7rem; letter-spacing:1px; text-transform:uppercase; color:var(--muted); line-height:1.3; }
+.rv-facts strong{ font-size:.82rem; letter-spacing:0; text-transform:none; color:var(--text); font-weight:600; }
+
+.rv-trust{ list-style:none; margin:30px 0 0; padding:24px 0 0; border-top:1px solid var(--line); display:grid; gap:14px; }
+.rv-trust li{ display:flex; align-items:center; gap:10px; font-size:.85rem; color:var(--muted); }
+.rv-trust .icon{ width:15px; height:15px; color:#8fe0a8; flex:0 0 15px; }
+
+.rv-step{
+  display:flex; align-items:center; gap:10px;
+  margin:4px 0 14px;
+  font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--text);
+}
+.rv-step span{
+  display:grid; place-items:center; width:24px; height:24px; border-radius:50%;
+  background:linear-gradient(180deg, #ddbc77, #c6a054); color:#10241c; font-size:.75rem; letter-spacing:0;
+}
+.rv-step:not(:first-child){ margin-top:22px; padding-top:20px; border-top:1px solid var(--line); }
+
+#reserveForm .field label{ font-size:.68rem; letter-spacing:.12em; color:rgba(245,241,232,.6); }
+#reserveForm .field label em{ font-style:normal; text-transform:none; letter-spacing:0; opacity:.7; }
+.rv-input{ position:relative; }
+.rv-input .icon{
+  position:absolute; left:14px; top:50%; transform:translateY(-50%);
+  width:15px; height:15px; color:rgba(214,179,106,.75); pointer-events:none;
+}
+#reserveForm .rv-input input,
+#reserveForm .rv-input select{
+  height:48px; padding:0 14px 0 40px; border-radius:12px;
+  background:rgba(0,0,0,.22); font-size:.92rem;
+  transition:border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+#reserveForm textarea{ border-radius:12px; background:rgba(0,0,0,.22); font-size:.92rem; }
+#reserveForm input:focus, #reserveForm select:focus, #reserveForm textarea:focus{
+  border-color:rgba(214,179,106,.7); box-shadow:0 0 0 3px rgba(214,179,106,.14); background:rgba(0,0,0,.3);
+}
+#reserveForm input[readonly]{ cursor:pointer; }
+.rv-select select{ appearance:none; -webkit-appearance:none; cursor:pointer; }
+.rv-select::after{
+  content:""; position:absolute; right:16px; top:50%; width:8px; height:8px; margin-top:-6px;
+  border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); transform:rotate(45deg); pointer-events:none;
+}
+.rv-select select{ color-scheme:dark; }
+.rv-select select option{ background:#11181f; color:var(--text); }
+
+/* check-in + check-out într-o singură casetă */
+.field-dates{
+  display:grid; grid-template-columns:1fr 1fr; gap:0; margin-bottom:12px;
+  border:1px solid rgba(245,241,232,.16); border-radius:14px; background:rgba(0,0,0,.22); overflow:hidden;
+}
+.field-dates .field{ margin:0; padding:10px 12px 8px; }
+.field-dates .field + .field{ border-left:1px solid rgba(245,241,232,.12); }
+.field-dates .rv-input input{ height:34px; padding-left:28px; border:0 !important; background:transparent !important; box-shadow:none !important; font-weight:600; }
+.field-dates .rv-input .icon{ left:2px; }
+.rv-date{ position:absolute; left:28px; right:4px; top:50%; transform:translateY(-50%); pointer-events:none;
+  font-weight:600; font-size:.9rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.are-data input{ color:transparent !important; }
+.field-dates:focus-within{ border-color:rgba(214,179,106,.7); box-shadow:0 0 0 3px rgba(214,179,106,.14); }
+
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+#reserveForm .privacy-consent{ margin:14px 0 16px; }
+.btn.primary.rv-submit{ height:54px; font-size:.82rem; color:#10241c; border-color:rgba(214,179,106,.8);
+  background:linear-gradient(180deg, #ddbc77, #c6a054); box-shadow:0 12px 30px rgba(0,0,0,.3); }
+.btn.primary.rv-submit:hover{ background:linear-gradient(180deg, #e6c886, #cfa95c); }
+.rv-after{ margin:10px 0 0 !important; text-align:center; font-size:.76rem !important; color:var(--muted); }
+
+/* rezumatul prețului ca un bon */
+#reserveForm .price-estimate{
+  margin:4px 0 14px; padding:14px 16px; border-radius:14px;
+  border:1px dashed rgba(214,179,106,.45); background:rgba(214,179,106,.06);
+}
+#reserveForm .price-row{ font-size:.86rem; }
+#reserveForm .price-row.price-sub{ color:var(--muted); font-size:.8rem; margin-bottom:6px; }
+#reserveForm .price-row:not(.price-sub){ padding-top:8px; border-top:1px solid rgba(214,179,106,.2); }
+#reserveForm .price-row:only-of-type,
+#reserveForm .price-row:first-child:not(.price-sub){ border-top:0; padding-top:0; }
+
+@media (max-width: 980px){
+  .reserve-grid{ grid-template-columns:1fr; }
+}
+@media (max-width: 600px){
+  .reserve-left, .reserve-right{ padding:22px 18px; }
+  .field-row{ grid-template-columns:1fr; gap:0; }
+  .rv-price-main strong{ font-size:1.7rem; }
+}
+
+/* =========================
    PRICE ESTIMATE
    ========================= */
 
@@ -1866,6 +1982,7 @@ html{ -webkit-tap-highlight-color: transparent; }
     <symbol id="water" viewBox="0 0 576 512"><path d="M269.5 69.9c11.1-7.9 25.9-7.9 37 0C329 85.4 356.5 96 384 96c26.9 0 55.4-10.8 77.4-26.1l0 0c11.9-8.5 28.1-7.8 39.2 1.7c14.4 11.9 32.5 21 50.6 25.2c17.2 4 27.9 21.2 23.9 38.4s-21.2 27.9-38.4 23.9c-24.5-5.7-44.9-16.5-58.2-25C449.5 149.7 417 160 384 160c-31.9 0-60.6-9.9-80.4-18.9c-5.8-2.7-11.1-5.3-15.6-7.7c-4.5 2.4-9.7 5.1-15.6 7.7c-19.8 9-48.5 18.9-80.4 18.9c-33 0-65.5-10.3-94.5-25.8c-13.4 8.4-33.7 19.3-58.2 25c-17.2 4-34.4-6.7-38.4-23.9s6.7-34.4 23.9-38.4C42.8 92.6 61 83.5 75.3 71.6c11.1-9.5 27.3-10.1 39.2-1.7l0 0C136.7 85.2 165.1 96 192 96c27.5 0 55-10.6 77.5-26.1zm37 288C329 373.4 356.5 384 384 384c26.9 0 55.4-10.8 77.4-26.1l0 0c11.9-8.5 28.1-7.8 39.2 1.7c14.4 11.9 32.5 21 50.6 25.2c17.2 4 27.9 21.2 23.9 38.4s-21.2 27.9-38.4 23.9c-24.5-5.7-44.9-16.5-58.2-25C449.5 437.7 417 448 384 448c-31.9 0-60.6-9.9-80.4-18.9c-5.8-2.7-11.1-5.3-15.6-7.7c-4.5 2.4-9.7 5.1-15.6 7.7c-19.8 9-48.5 18.9-80.4 18.9c-33 0-65.5-10.3-94.5-25.8c-13.4 8.4-33.7 19.3-58.2 25c-17.2 4-34.4-6.7-38.4-23.9s6.7-34.4 23.9-38.4c18.1-4.2 36.2-13.3 50.6-25.2c11.1-9.4 27.3-10.1 39.2-1.7l0 0C136.7 373.2 165.1 384 192 384c27.5 0 55-10.6 77.5-26.1c11.1-7.9 25.9-7.9 37 0zm0-144C329 229.4 356.5 240 384 240c26.9 0 55.4-10.8 77.4-26.1l0 0c11.9-8.5 28.1-7.8 39.2 1.7c14.4 11.9 32.5 21 50.6 25.2c17.2 4 27.9 21.2 23.9 38.4s-21.2 27.9-38.4 23.9c-24.5-5.7-44.9-16.5-58.2-25C449.5 293.7 417 304 384 304c-31.9 0-60.6-9.9-80.4-18.9c-5.8-2.7-11.1-5.3-15.6-7.7c-4.5 2.4-9.7 5.1-15.6 7.7c-19.8 9-48.5 18.9-80.4 18.9c-33 0-65.5-10.3-94.5-25.8c-13.4 8.4-33.7 19.3-58.2 25c-17.2 4-34.4-6.7-38.4-23.9s6.7-34.4 23.9-38.4c18.1-4.2 36.2-13.3 50.6-25.2c11.1-9.5 27.3-10.1 39.2-1.7l0 0C136.7 229.2 165.1 240 192 240c27.5 0 55-10.6 77.5-26.1c11.1-7.9 25.9-7.9 37 0z"/></symbol>
     <symbol id="wifi" viewBox="0 0 640 512"><path d="M54.2 202.9C123.2 136.7 216.8 96 320 96s196.8 40.7 265.8 106.9c12.8 12.2 33 11.8 45.2-.9s11.8-33-.9-45.2C549.7 79.5 440.4 32 320 32S90.3 79.5 9.8 156.7C-2.9 169-3.3 189.2 8.9 202s32.5 13.2 45.2 .9zM320 256c56.8 0 108.6 21.1 148.2 56c13.3 11.7 33.5 10.4 45.2-2.8s10.4-33.5-2.8-45.2C459.8 219.2 393 192 320 192s-139.8 27.2-190.5 72c-13.3 11.7-14.5 31.9-2.8 45.2s31.9 14.5 45.2 2.8c39.5-34.9 91.3-56 148.2-56zm64 160a64 64 0 1 0 -128 0 64 64 0 1 0 128 0z"/></symbol>
     <symbol id="whatsapp" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></symbol>
+    <symbol id="user" viewBox="0 0 448 512"><path d="M224 256a128 128 0 1 0 0-256 128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3 0 498.7 13.3 512 29.7 512h388.6c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/></symbol>
     <symbol id="phone" viewBox="0 0 512 512"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></symbol>
     <symbol id="envelope" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></symbol>
     <symbol id="facebook" viewBox="0 0 320 512"><path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/></symbol>
@@ -2008,48 +2125,88 @@ html{ -webkit-tap-highlight-color: transparent; }
       <div class="reserve-card reveal" data-delay="200">
         <div class="reserve-grid">
           <div class="reserve-left reveal" data-delay="260">
-            <div class="kicker">Confirmare rapidă</div>
-            <h3>Trimite cererea în 30 secunde</h3>
-            <p class="reserve-quote">„Un loc unde timpul stă pe loc și muntele îți vorbește."</p>
-            <div class="reserve-info">
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#moon"></use></svg><span><strong>250 RON</strong> / cameră / noapte</span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#mountain"></use></svg><span>Iarna: <strong>toată casa</strong>, 3.000 RON / noapte, minim 2 nopți</span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#arrow-right-to-bracket"></use></svg><span>Check-in după <strong>ora 14:00</strong></span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#arrow-right-from-bracket"></use></svg><span>Check-out până la <strong>ora 12:00</strong></span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#calendar-week"></use></svg><span>Minim <strong>2 nopți</strong> în weekend</span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#paw"></use></svg><span>Animale de companie <strong>acceptate</strong></span></div>
-              <div class="reserve-info-item"><svg class="icon" aria-hidden="true"><use href="#square-parking"></use></svg><span>Parcare <strong>gratuită</strong></span></div>
+            <div class="kicker">Rezervare directă</div>
+            <h3>Rezervă-ți sejurul la munte</h3>
+
+            <!-- prețul se schimbă după sezon (main.js ascunde blocul care nu e valabil azi) -->
+            <div class="rv-price" data-sezon="iarna">
+              <div class="rv-price-main"><strong>3.000 RON</strong><span>/ noapte</span></div>
+              <div class="rv-price-sub">Toată casa doar pentru voi · până la 14 persoane</div>
+              <div class="rv-price-note">Noiembrie – martie se închiriază doar casa întreagă, minim 2 nopți.</div>
             </div>
+            <div class="rv-price" data-sezon="vara">
+              <div class="rv-price-main"><strong>250 RON</strong><span>/ cameră / noapte</span></div>
+              <div class="rv-price-sub">Sau toată casa, pentru grupuri și evenimente</div>
+              <div class="rv-price-note">Minim 2 nopți în weekend.</div>
+            </div>
+
+
+            <div class="rv-facts">
+              <div><svg class="icon" aria-hidden="true"><use href="#arrow-right-to-bracket"></use></svg><span>Check-in<strong>de la 14:00</strong></span></div>
+              <div><svg class="icon" aria-hidden="true"><use href="#arrow-right-from-bracket"></use></svg><span>Check-out<strong>până la 12:00</strong></span></div>
+              <div><svg class="icon" aria-hidden="true"><use href="#wifi"></use></svg><span>Wi-Fi<strong>gratuit</strong></span></div>
+              <div><svg class="icon" aria-hidden="true"><use href="#square-parking"></use></svg><span>Parcare<strong>gratuită</strong></span></div>
+            </div>
+
+            <ul class="rv-trust">
+              <li><svg class="icon" aria-hidden="true"><use href="#phone"></use></svg> Te sunăm pentru confirmare</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#whatsapp"></use></svg> Răspundem rapid și pe WhatsApp</li>
+            </ul>
           </div>
           <div class="reserve-right reveal" data-delay="320">
             <form id="reserveForm">
-              <div class="field"><label for="nume">Nume</label><input type="text" id="nume" placeholder="Numele tău" required></div>
-              <div class="field"><label for="telefon">Telefon</label><input type="tel" id="telefon" placeholder="07xx xxx xxx" required></div>
-              <div class="field"><label for="email">Email (opțional)</label><input type="email" id="email" placeholder="email@exemplu.com"></div>
-              <div class="field"><label for="checkin">Check-in</label><input type="text" id="checkin" placeholder="Alege data" readonly inputmode="none" autocomplete="off" required></div>
-              <div class="field"><label for="checkout">Check-out</label><input type="text" id="checkout" placeholder="Alege data" readonly inputmode="none" autocomplete="off" required></div>
+              <div class="rv-step"><span>1</span> Perioada sejurului</div>
+              <div class="field-dates">
+                <div class="field">
+                  <label for="checkin">Check-in</label>
+                  <div class="rv-input"><svg class="icon" aria-hidden="true"><use href="#arrow-right-to-bracket"></use></svg><input type="text" id="checkin" placeholder="Alege data" readonly inputmode="none" autocomplete="off" required></div>
+                </div>
+                <div class="field">
+                  <label for="checkout">Check-out</label>
+                  <div class="rv-input"><svg class="icon" aria-hidden="true"><use href="#arrow-right-from-bracket"></use></svg><input type="text" id="checkout" placeholder="Alege data" readonly inputmode="none" autocomplete="off" required></div>
+                </div>
+              </div>
               <div class="field">
                 <label for="guests">Persoane</label>
-                <select id="guests" aria-label="Număr persoane" required>
-                  <option value="2">2 persoane</option>
-                  <option value="3">3 persoane</option>
-                  <option value="4">4 persoane</option>
-                  <option value="5">5 persoane</option>
-                  <option value="6">6 persoane</option>
-                  <option value="7">7 persoane</option>
-                  <option value="8">8 persoane</option>
-                  <option value="10">9-10 persoane</option>
-                  <option value="14">11-14 persoane</option>
-                </select>
+                <div class="rv-input rv-select"><svg class="icon" aria-hidden="true"><use href="#bed"></use></svg>
+                  <select id="guests" aria-label="Număr persoane" required>
+                    <option value="2">2 persoane</option>
+                    <option value="3">3 persoane</option>
+                    <option value="4">4 persoane</option>
+                    <option value="5">5 persoane</option>
+                    <option value="6">6 persoane</option>
+                    <option value="7">7 persoane</option>
+                    <option value="8">8 persoane</option>
+                    <option value="10">9-10 persoane</option>
+                    <option value="14">11-14 persoane</option>
+                  </select>
+                </div>
               </div>
-              <div class="field"><label for="note">Mesaj (opțional)</label><textarea id="note" placeholder="Ex: vrem și ciubăr / venim cu copil / ajungem seara..."></textarea></div>
+
+              <div class="rv-step"><span>2</span> Datele tale</div>
+              <div class="field-row">
+                <div class="field">
+                  <label for="nume">Nume</label>
+                  <div class="rv-input"><svg class="icon" aria-hidden="true"><use href="#user"></use></svg><input type="text" id="nume" placeholder="Numele tău" autocomplete="name" required></div>
+                </div>
+                <div class="field">
+                  <label for="telefon">Telefon</label>
+                  <div class="rv-input"><svg class="icon" aria-hidden="true"><use href="#phone"></use></svg><input type="tel" id="telefon" placeholder="07xx xxx xxx" autocomplete="tel" required></div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="email">Email <em>(opțional)</em></label>
+                <div class="rv-input"><svg class="icon" aria-hidden="true"><use href="#envelope"></use></svg><input type="email" id="email" placeholder="email@exemplu.com" autocomplete="email"></div>
+              </div>
+              <div class="field"><label for="note">Mesaj <em>(opțional)</em></label><textarea id="note" placeholder="Ex: vrem și ciubăr / venim cu copil / ajungem seara..."></textarea></div>
               <div class="privacy-consent">
                 <input type="checkbox" id="privacy" required>
                 <label for="privacy">
                   Sunt de acord cu <a href="/privacy.html">Politica de confidențialitate</a>
                 </label>
               </div>
-              <button type="submit" class="btn primary full"><svg class="icon" aria-hidden="true"><use href="#calendar-check"></use></svg> Trimite rezervarea</button>
+              <button type="submit" class="btn primary full rv-submit"><svg class="icon" aria-hidden="true"><use href="#calendar-check"></use></svg> Trimite cererea de rezervare</button>
+              <p class="rv-after">Nu plătești nimic acum — te contactăm pentru confirmare.</p>
             </form>
           </div>
         </div>

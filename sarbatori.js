@@ -10,7 +10,7 @@
 
   /* ---------- CONFIGURARE ---------- */
   const SEZON = { start: [11, 15], sfarsit: [1, 10] };  // [luna, zi] — decorul apare în intervalul ăsta
-  // Perioada premiului de la brad (și a numărătorii de nopți libere). Nopțile de Crăciun sunt excluse: pentru ele e pachetul de Crăciun.
+  // Perioada premiului de la brad (folosită la calculul prețului). Nopțile de Crăciun sunt excluse: pentru ele e pachetul de Crăciun.
   const PERIOADA_SARBATORI = { start: [11, 30], sfarsit: [1, 10], exclus: [[12, 23], [12, 27]], text: '30 nov – 22 dec și 28 dec – 10 ian' };
 
   const API = 'https://cheile-branistei-backend-production.up.railway.app/api';
@@ -71,18 +71,34 @@
 
   // Prețul unei nopți cu premiul de la brad (folosit de calculatorul de preț din main.js).
   // null = fără reducere (nu a câștigat sau noaptea nu e în perioada premiului).
-  window.xmPretNoapte = k => {
-    if (stoc.get(localStorage, 'xm-cadou') !== '1') return null;
+  const noapteCuPremiu = k => {
     const P = PERIOADA_SARBATORI, md = +k.slice(5, 7) * 100 + +k.slice(8, 10);
     const start = `${AN}-${String(P.start[0]).padStart(2, '0')}-${String(P.start[1]).padStart(2, '0')}`;
     const sfarsit = `${AN + 1}-${String(P.sfarsit[0]).padStart(2, '0')}-${String(P.sfarsit[1]).padStart(2, '0')}`;
-    if (k < start || k >= sfarsit) return null;
-    if (md >= P.exclus[0][0] * 100 + P.exclus[0][1] && md <= P.exclus[1][0] * 100 + P.exclus[1][1]) return null;
-    return +CADOU.pret.nou.replace('.', '');
+    if (k < start || k >= sfarsit) return false;
+    return !(md >= P.exclus[0][0] * 100 + P.exclus[0][1] && md <= P.exclus[1][0] * 100 + P.exclus[1][1]);
+  };
+  const aCastigat = () => stoc.get(localStorage, 'xm-cadou') === '1';
+  const reducerePeNoapte = () => +CADOU.pret.vechi.replace('.', '') - +CADOU.pret.nou.replace('.', '');
+
+  window.xmPretNoapte = k => aCastigat() && noapteCuPremiu(k) ? +CADOU.pret.nou.replace('.', '') : null;
+
+  // Sub prețul din formular: „Vrei reducere? Împodobește bradul” — doar dacă nu a câștigat încă
+  // și perioada aleasă are nopți în perioada premiului. Întoarce un element sau null.
+  window.xmPromoBrad = zile => {
+    if (aCastigat() || !stare.deschideJoc) return null;
+    const n = zile.filter(noapteCuPremiu).length;
+    if (!n) return null;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'xm-promo';
+    b.innerHTML = `<span class="xm-promo-ico">🎄</span><span><strong>Vrei ${(n * reducerePeNoapte()).toLocaleString('ro-RO')} RON reducere?</strong>Împodobește bradul și câștigi ${reducerePeNoapte()} RON pe noapte</span><span class="xm-promo-go">›</span>`;
+    b.addEventListener('click', () => stare.deschideJoc());
+    return b;
   };
 
   // Stare comună (modul „Seară de iarnă” influențează ninsoarea)
-  const stare = { noapte: false, reinit: null, deschideOferta: null };
+  const stare = { noapte: false, reinit: null, deschideOferta: null, deschideJoc: null };
 
   const stoc = {
     get: (s, k) => { try { return s.getItem(k); } catch { return null; } },
@@ -201,6 +217,13 @@ html.xm-modal body{overflow:hidden}
 .xm-ins small{font-size:.5em;letter-spacing:1px;margin-top:2px;font-weight:700}
 .xm-badge{width:64px;height:64px;font-size:.92rem}
 .xm-save{display:block;margin-top:4px;font-style:normal;font-size:.74rem;font-weight:600;color:#8fe0a8}
+/* „Vrei reducere? Împodobește bradul” sub prețul din formular */
+.xm-promo{display:flex;align-items:center;gap:12px;width:100%;margin:12px 0 0;padding:12px 14px;border-radius:12px;border:1px solid rgba(226,96,106,.45);background:linear-gradient(135deg,rgba(168,40,52,.35),rgba(168,40,52,.12));color:var(--text);text-align:left;cursor:pointer;font-family:inherit;transition:transform .18s ease,border-color .18s ease}
+.xm-promo:hover{transform:translateY(-1px);border-color:rgba(243,220,157,.6)}
+.xm-promo-ico{font-size:1.4rem;line-height:1}
+.xm-promo strong{display:block;color:#f3dc9d;font-size:.88rem}
+.xm-promo span:nth-child(2){flex:1;font-size:.76rem;color:var(--muted);line-height:1.4}
+.xm-promo-go{font-size:1.5rem;color:#f3dc9d;line-height:1}
 /* Revelion — sold out */
 .xm-nye{position:relative;display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:12px 14px;border-radius:14px;text-align:left;border:1px dashed rgba(243,220,157,.4);background:radial-gradient(240px 120px at 20% 50%,rgba(243,220,157,.10),transparent 70%),rgba(0,0,0,.2);overflow:hidden}
 .xm-nye-art{flex:0 0 74px;width:74px;height:auto}
@@ -235,14 +258,6 @@ html.xm-on body{background:radial-gradient(800px 520px at 100% 22%,rgba(168,40,5
 
 
 /* nopți libere de sărbători */
-.xm-avail{display:inline-flex;align-items:center;gap:9px;padding:.42rem .85rem;border-radius:999px;background:rgba(111,208,140,.10);border:1px solid rgba(111,208,140,.38);color:var(--text);font-size:.78rem;line-height:1.35;text-align:left}
-.xm-avail[hidden]{display:none}
-.xm-avail b{color:#8fe0a8}
-.xm-dot{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:#6fd08c;box-shadow:0 0 0 0 rgba(111,208,140,.6);animation:xmDot 2s ease-out infinite}
-@keyframes xmDot{0%{box-shadow:0 0 0 0 rgba(111,208,140,.6)}70%,100%{box-shadow:0 0 0 8px rgba(111,208,140,0)}}
-.xm-s1 .xm-avail{margin:-4px 0 16px}
-.xm-s2 .xm-avail{margin:-6px 0 16px}
-.reserve-left .xm-avail{margin:4px 0 0}
 
 /* confirmare festivă la rezervare */
 .xm-confirm{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-family:'Prata',serif;color:#f3dc9d;font-size:1.08rem}
@@ -307,7 +322,6 @@ html.xm-on body{background:radial-gradient(800px 520px at 100% 22%,rgba(168,40,5
 
 .xm-card.wide{width:min(100%,480px)}
 .xm-j2,.xm-j3{animation:xmRise .55s ease both}
-.xm-j3 .xm-avail{margin:-6px 0 16px}
 .xm-extra:has(> :only-child){grid-template-columns:minmax(0,520px);justify-content:center}
 .xm-tree-wrap{position:relative}
 .xm-tree-wrap .xm-burst{left:50%;top:22px}
@@ -387,6 +401,17 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
 .xm-night .hero::after{background:radial-gradient(700px 420px at 18% 12%,rgba(255,244,210,.12),transparent 65%)}
 .xm-night nav.nav{background:rgba(6,14,22,.78)}
 .xm-night .mobile-menu{background:radial-gradient(520px 300px at 50% 0%,rgba(120,150,215,.16),transparent 70%),radial-gradient(500px 360px at 100% 100%,rgba(168,40,52,.10),transparent 70%),linear-gradient(180deg,#0f1d2c,#060d16)}
+/* calendarul, fereastra de confirmare și etichetele — fără verdele de bază în modul de seară */
+.xm-night .cal-pop{background:linear-gradient(160deg,#14243c,#080f1a);border-color:rgba(205,218,255,.28)}
+.xm-night .cal-inchide{background:#14243c;border-color:rgba(205,218,255,.35)}
+.xm-night .cal-zi{background:rgba(10,20,40,.55)}
+.xm-night .cal-zi.selectat{background:linear-gradient(180deg,rgba(214,179,106,.9),rgba(198,160,84,.9))}
+.xm-night .cal-zi.interval{background:rgba(214,179,106,.2)}
+.xm-night .cal-zi.plin,.xm-night .cal-zi.trecut,.xm-night .cal-zi:disabled{background:rgba(10,20,40,.25)}
+.xm-night .cal-nav{background:rgba(10,20,40,.55)}
+.xm-night .cal-backdrop{background:rgba(3,8,18,.62)}
+.xm-night .modal-box{background:linear-gradient(160deg,#14243c,#080f1a);border-color:rgba(205,218,255,.2)}
+.xm-night .xm-fab-tip,.xm-night .xm-night-tip{background:#14243c}
 .xm-night .section.alt{background:rgba(140,170,230,.035)}
 .xm-night .xm-light circle:first-child{opacity:.6}
 .xm-night .xm-overlay{background:rgba(3,8,18,.74)}
@@ -412,7 +437,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
 }
 @media (prefers-reduced-motion:reduce){
   .xm-on .hero-logo{animation:none;filter:brightness(0) invert(1) drop-shadow(0 0 5px rgba(255,214,140,.55)) drop-shadow(0 0 18px rgba(255,190,100,.28))}
-  .xm-bauble,.xm-light,.xm-gift svg,.xm-fab::after,.xm-flurry,.xm-sky i,.xm-on .car-card::after,.xm-dot,.xm-tstar,.xm-tb{animation:none!important}
+  .xm-bauble,.xm-light,.xm-gift svg,.xm-fab::after,.xm-flurry,.xm-sky i,.xm-on .car-card::after,.xm-tstar,.xm-tb{animation:none!important}
   .xm-flurry{display:none}
 }`;
   const style = document.createElement('style');
@@ -769,7 +794,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
   }
 
   /* ---------- BRADUL DE ÎMPODOBIT ---------- */
-  const BRAD_TINTA = 5;
+  const BRAD_TINTA = 6;
   // nivelurile bradului: [vârf y, bază y, jumătate de lățime la bază]
   const NIVELURI = [[30, 104, 54], [64, 150, 70], [100, 198, 86]];
   const CULORI_GLOB = [['#f3dc9d', '#b8903f'], ['#e2606a', '#7d1d26'], ['#ffffff', '#b9c6cd'], ['#8fd3ff', '#2a6f9e']];
@@ -912,44 +937,6 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     });
   }
 
-  /* ---------- NOPȚI LIBERE DE SĂRBĂTORI (din calendarul public) ---------- */
-  // Numără nopțile în care e liberă toată casa, doar din intervale de minim 2 nopți la rând (cum cere cadoul de la brad)
-  let _nopti = null;
-  function noptiLibere() {
-    return _nopti ??= (async () => {
-      try {
-        const r = await fetch(`${API}/rezervari/calendar?zile=120`);
-        if (!r.ok) return null;
-        const d = await r.json();
-        const lib = d.libere || {}, total = d.camereTotal || 7;
-        const iso = x => `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
-        const P = PERIOADA_SARBATORI;
-        const inceput = new Date(AN, P.start[0] - 1, P.start[1]);
-        const sfarsit = new Date(AN + 1, P.sfarsit[0] - 1, P.sfarsit[1]);   // ziua de check-out
-        const zi0 = new Date(azi.getFullYear(), azi.getMonth(), azi.getDate());
-        let sir = 0, nopti = 0;
-        for (const x = new Date(Math.max(inceput, zi0)); x < sfarsit; x.setDate(x.getDate() + 1)) {
-          const lunaZi = (x.getMonth() + 1) * 100 + x.getDate();
-          const exclusa = P.exclus && lunaZi >= P.exclus[0][0] * 100 + P.exclus[0][1] && lunaZi <= P.exclus[1][0] * 100 + P.exclus[1][1];
-          if (!exclusa && lib[iso(x)] >= total) sir++;
-          else { if (sir >= 2) nopti += sir; sir = 0; }
-        }
-        if (sir >= 2) nopti += sir;
-        return nopti;
-      } catch { return null; }
-    })();
-  }
-  async function disponibilitate() {
-    const left = document.querySelector('.reserve-left .reserve-quote');
-    if (left) left.insertAdjacentHTML('beforebegin', '<div class="xm-avail" data-avail hidden></div>');
-    const n = await noptiLibere();
-    if (!n) return;                               // eroare sau totul ocupat → nu afișăm nimic
-    const nopti = n === 1 ? '1 noapte liberă' : n >= 20 ? `${n} de nopți libere` : `${n} nopți libere`;
-    document.querySelectorAll('[data-avail]').forEach(el => {
-      el.innerHTML = `<span class="xm-dot"></span><span>Mai sunt <b>${nopti}</b> pentru toată casa în perioada cadoului (${PERIOADA_SARBATORI.text})</span>`;
-      el.hidden = false;
-    });
-  }
 
   /* ---------- TITLUL TAB-ULUI ---------- */
   function titluTab() {
@@ -1354,7 +1341,6 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     <div class="xm-big">${insigna(CADOU.reducere)}</div>
     <h3>500 RON reducere pe noapte la închirierea întregii case</h3>
     <div class="xm-period">${ico('calendar-check')} ${CADOU.perioada}</div>
-    <div class="xm-avail" data-avail hidden></div>
     <ul class="xm-list">
       <li style="animation-delay:120ms">${ico('xm-house')}<div><strong>Toată casa doar pentru voi</strong><span>Închiriere integrală — perfectă pentru familie sau prieteni.</span></div></li>
       <li style="animation-delay:210ms">${ico('moon')}<div><strong>Minim 2 nopți</strong><span>Alegi tu zilele: ${CADOU.perioada}.</span></div></li>
@@ -1417,6 +1403,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       arataFab();
     };
     fab.addEventListener('click', () => deschide());
+    stare.deschideJoc = () => deschide();
     document.querySelector('[data-play]')?.addEventListener('click', () => deschide());
 
     // „Dacă nu vrei, derulezi”: prima derulare în jos închide jocul și arată hero-ul —
@@ -1597,7 +1584,6 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     if (ofertaActiva) oferta();
     if (jocActiv) joc();
     felicitare();
-    disponibilitate();
     titluTab();
     iconita();
     confirmareFestiva();
