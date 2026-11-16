@@ -18,12 +18,12 @@
   // Cadoul câștigat la jocul cu bradul (pop-up-ul de la intrare)
   const CADOU = {
     activPanaLa: '2027-01-08',                  // ultima zi în care jocul apare (minim 2 nopți până pe 10 ian)
-    reducere:  '-10%',
+    reducere:  '-500 RON',
     perioada:  '30 noiembrie – 10 ianuarie',
-    pret:      { vechi: '3.000', nou: '2.700', unitate: 'pe noapte · închiriere integrală' },
+    pret:      { vechi: '3.000', nou: '2.500', unitate: 'pe noapte · închiriere integrală', economie: 'Economisești 1.000 RON la 2 nopți' },
     conditii:  'Reducerea se aplică la închirierea integrală a casei, pentru minim 2 nopți, între 30 noiembrie și 10 ianuarie. Revelionul este deja rezervat integral.',
-    mesajRezervare: 'Cadoul de la brad 🎁 — 10% reducere, închiriere integrală, minim 2 nopți (30 nov – 10 ian)',
-    whatsapp: 'Bună! Am câștigat cadoul de la brad 🎁 (10% reducere la închirierea integrală, minim 2 nopți) și aș dori detalii.',
+    mesajRezervare: 'Cadoul de la brad 🎁 — 500 RON/noapte reducere, închiriere integrală, minim 2 nopți (30 nov – 10 ian)',
+    whatsapp: 'Bună! Am câștigat cadoul de la brad 🎁 (500 RON/noapte reducere la închirierea integrală, minim 2 nopți) și aș dori detalii.',
   };
 
   // Oferta permanentă de iarnă (se deschide din butonul din hero) — valabilă oricând, nu doar de sărbători
@@ -34,7 +34,7 @@
     teaser:   'Ți-am pregătit o ofertă specială pentru zilele de iarnă. Deschide cadoul și vezi ce te așteaptă la Cheile Braniștei.',
     hook:     'Toată casa · minim 3 nopți',
     perioada: 'Alegi tu perioada · minim 3 nopți',
-    reducere: '-10%',
+    reducere: '-500 RON',
     include: [
       ['xm-house',      'Toată casa doar pentru voi',  'Închiriere integrală — perfectă pentru familie sau prieteni.'],
       ['moon',          'Minim 3 nopți, oricând',      'Vii când vrei tu, noi îți pregătim casa de sărbătoare.'],
@@ -42,7 +42,7 @@
       ['fire',          'Seri la foc în foișor',       'Grătar, povești și cer înstelat.'],
       ['xm-snowflake',  'Pârtia Rarău la 35 de minute','Schi ziua, liniște seara.'],
     ],
-    pret:     { vechi: '3.000', nou: '2.700', unitate: 'pe noapte · închiriere integrală' },
+    pret:     { vechi: '3.000', nou: '2.500', unitate: 'pe noapte · închiriere integrală', economie: 'Economisești 1.500 RON la 3 nopți' },
     conditii: 'Ofertă valabilă pentru închirierea integrală a casei, pentru minim 3 nopți, în perioada aleasă de tine (în limita disponibilității).',
     mesajRezervare: 'Doresc Oferta de iarnă ❄ — închiriere integrală, minim 3 nopți',
     whatsapp: 'Bună! Aș dori detalii despre Oferta de iarnă ❄ (închiriere integrală, minim 3 nopți)',
@@ -183,6 +183,10 @@ html.xm-modal body{overflow:hidden}
 .xm-price strong{color:var(--accent);font-family:'Prata',serif;font-size:1.45rem}
 .xm-price small{display:block;color:var(--muted);font-size:.72rem;letter-spacing:.5px}
 .xm-badge{flex:0 0 auto;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#d9505a,#8a2029);color:#fff;font-weight:700;font-size:.95rem;border:2px solid rgba(240,213,143,.7);transform:rotate(-10deg);box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.xm-ins{display:flex;flex-direction:column;align-items:center;line-height:1}
+.xm-ins small{font-size:.5em;letter-spacing:1px;margin-top:2px;font-weight:700}
+.xm-badge{width:64px;height:64px;font-size:.92rem}
+.xm-save{display:block;margin-top:4px;font-style:normal;font-size:.74rem;font-weight:600;color:#8fe0a8}
 .xm-terms{color:rgba(245,241,232,.55);font-size:.72rem;line-height:1.5;margin:0 0 16px}
 .xm-actions{display:grid;gap:10px}
 .xm-back{right:auto;left:-13px;font-size:20px;line-height:1;padding-bottom:3px}
@@ -406,6 +410,8 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
   <symbol id="xm-snowflake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M12 2L9.6 4.4M12 2l2.4 2.4M12 22l-2.4-2.4M12 22l2.4-2.4M3.3 7l3.3.9M3.3 7l.9-3.3M20.7 17l-3.3-.9M20.7 17l-.9 3.3M3.3 17l.9 3.3M3.3 17l3.3-.9M20.7 7l-.9-3.3M20.7 7l-3.3.9"/></g></symbol>
 </svg>`;
   const ico = (id, cls = 'icon') => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"></use></svg>`;
+  // „-500 RON” în cercurile roșii: suma mare, moneda mică dedesubt
+  const insigna = r => r.replace(/^(\S+)\s+(.+)$/, '<span class="xm-ins">$1<small>$2</small></span>');
 
   /* ---------- GHIRLANDĂ DE BRAD ---------- */
   function ghirlanda(W, o = {}) {
@@ -1035,6 +1041,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       const schimba = () => {
         stare.noapte = on;
         document.documentElement.classList.toggle('xm-night', on);
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', on ? '#070f17' : '#0a1712');
         btn.setAttribute('aria-pressed', String(on));
         btn.setAttribute('aria-label', on ? 'Oprește modul Seară de iarnă' : 'Pornește modul Seară de iarnă');
         btn.innerHTML = `${ico('moon')}<span class="xm-night-tip">${on ? 'Înapoi la zi' : 'Seară de iarnă'}</span>`;
@@ -1240,8 +1247,8 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       ${OFERTA.include.map(([i, t, d], k) => `<li style="animation-delay:${120 + k * 90}ms">${ico(i)}<div><strong>${t}</strong><span>${d}</span></div></li>`).join('')}
     </ul>
     <div class="xm-price">
-      <div><s>${OFERTA.pret.vechi} RON</s><strong>${OFERTA.pret.nou} RON</strong><small>${OFERTA.pret.unitate}</small></div>
-      <span class="xm-badge">${OFERTA.reducere}</span>
+      <div><s>${OFERTA.pret.vechi} RON</s><strong>${OFERTA.pret.nou} RON</strong><small>${OFERTA.pret.unitate}</small><em class="xm-save">${OFERTA.pret.economie}</em></div>
+      <span class="xm-badge">${insigna(OFERTA.reducere)}</span>
     </div>
     <p class="xm-terms">${OFERTA.conditii}</p>
     <div class="xm-actions">
@@ -1296,8 +1303,8 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
   </div>
   <div class="xm-stage xm-j3" data-wide hidden>
     <div class="xm-kicker">Cadoul tău de sărbători</div>
-    <div class="xm-big">${CADOU.reducere}</div>
-    <h3>10% reducere la închirierea întregii case</h3>
+    <div class="xm-big">${insigna(CADOU.reducere)}</div>
+    <h3>500 RON reducere pe noapte la închirierea întregii case</h3>
     <div class="xm-period">${ico('calendar-check')} ${CADOU.perioada}</div>
     <div class="xm-avail" data-avail hidden></div>
     <ul class="xm-list">
@@ -1306,8 +1313,8 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       <li style="animation-delay:300ms">${ico('xm-tree')}<div><strong>Casă de sărbătoare</strong><span>Brad împodobit, seri la foc în foișor și liniște la munte.</span></div></li>
     </ul>
     <div class="xm-price">
-      <div><s>${CADOU.pret.vechi} RON</s><strong>${CADOU.pret.nou} RON</strong><small>${CADOU.pret.unitate}</small></div>
-      <span class="xm-badge">${CADOU.reducere}</span>
+      <div><s>${CADOU.pret.vechi} RON</s><strong>${CADOU.pret.nou} RON</strong><small>${CADOU.pret.unitate}</small><em class="xm-save">${CADOU.pret.economie}</em></div>
+      <span class="xm-badge">${insigna(CADOU.reducere)}</span>
     </div>
     <p class="xm-terms">${CADOU.conditii}</p>
     <div class="xm-actions">
@@ -1337,7 +1344,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     fab.className = 'xm-fab';
     document.body.appendChild(fab);
     const actualizeazaFab = () => {
-      const tip = castigat() ? 'Cadoul tău: -10% 🎁' : 'Împodobește bradul și câștigă 🎄';
+      const tip = castigat() ? 'Cadoul tău: -500 RON/noapte 🎁' : 'Împodobește bradul și câștigă 🎄';
       fab.setAttribute('aria-label', tip);
       fab.innerHTML = `${ico('xm-gift')}<span class="xm-fab-tip">${tip}</span>`;
     };

@@ -57,7 +57,11 @@
     if (!sezon) { preload('hero.webp', '(min-width: 601px)'); preload('hero-mobile.webp', '(max-width: 600px)'); return; }
     h.classList.add('xm-on');
     preload('hero-iarna.jpg');
-    if (g(localStorage, 'xm-noapte') !== '0') h.classList.add('xm-night');
+    var noapte = g(localStorage, 'xm-noapte') !== '0';
+    if (noapte) h.classList.add('xm-night');
+    // culoarea barei de stare (iPhone/Android) potrivită cu bara site-ului, nu verdele de vară
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute('content', noapte ? '#070f17' : '#0a1712');
     var recent = Date.now() - (+g(localStorage, 'xm-inchis') || 0) < 864e5;
     if (q === 'test' || (g(localStorage, 'xm-cadou') !== '1' && !g(sessionStorage, 'xm-vazut') && !recent && !location.hash))
       h.classList.add('xm-intro-on');   // sarbatori.js scoate clasa dacă intro-ul nu pornește
@@ -514,10 +518,13 @@ nav.nav{
 
 /* Sezonul de sărbători (clasele vin din scriptul din <head>): poza de iarnă și caseta ascunsă
    până la finalul intro-ului — aici, nu în sarbatori.js, ca să se aplice de la prima afișare */
+/* fundalul paginii în sezon, de la prima afișare (altfel se vedea verdele de vară câteva secunde) */
+html.xm-on body{ background:linear-gradient(180deg,#0d1f19,#08140f); }
+html.xm-night body{ background:linear-gradient(180deg,#0b1a22,#060f13); }
 .xm-on .hero{
   background:
     linear-gradient(rgba(0,0,0,.04), rgba(0,0,0,.22)),
-    url('hero-iarna.jpg') center 58% / cover no-repeat;
+    url('hero-iarna.jpg') center 58% / cover no-repeat #0c1a2c;   /* cer de noapte cât se încarcă poza */
 }
 .xm-intro-on .reveal-hero{ opacity:0 !important; transform:translateY(26px) !important; filter:blur(2px) !important; }
 
