@@ -10,7 +10,8 @@
 
   /* ---------- CONFIGURARE ---------- */
   const SEZON = { start: [11, 15], sfarsit: [1, 10] };  // [luna, zi] — decorul apare în intervalul ăsta
-  const PERIOADA_SARBATORI = { start: [11, 30], sfarsit: [1, 10], text: '30 noiembrie – 10 ianuarie' }; // pentru „nopți libere”
+  // Perioada premiului de la brad (și a numărătorii de nopți libere). Nopțile de Crăciun sunt excluse: pentru ele e pachetul de Crăciun.
+  const PERIOADA_SARBATORI = { start: [11, 30], sfarsit: [1, 10], exclus: [[12, 23], [12, 27]], text: '30 nov – 22 dec și 28 dec – 10 ian' };
 
   const API = 'https://cheile-branistei-backend-production.up.railway.app/api';
   const URL_SITE = 'https://cheilebranistei.ro/';
@@ -19,33 +20,34 @@
   const CADOU = {
     activPanaLa: '2027-01-08',                  // ultima zi în care jocul apare (minim 2 nopți până pe 10 ian)
     reducere:  '-500 RON',
-    perioada:  '30 noiembrie – 10 ianuarie',
+    perioada:  '30 nov – 22 dec și 28 dec – 10 ian',
     pret:      { vechi: '3.000', nou: '2.500', unitate: 'pe noapte · închiriere integrală', economie: 'Economisești 1.000 RON la 2 nopți' },
-    conditii:  'Reducerea se aplică la închirierea integrală a casei, pentru minim 2 nopți, între 30 noiembrie și 10 ianuarie. Revelionul este deja rezervat integral.',
-    mesajRezervare: 'Cadoul de la brad 🎁 — 500 RON/noapte reducere, închiriere integrală, minim 2 nopți (30 nov – 10 ian)',
+    conditii:  'Reducerea se aplică la închirierea integrală a casei, pentru minim 2 nopți, între 30 noiembrie – 22 decembrie și 28 decembrie – 10 ianuarie. Pentru Crăciun (23 – 27 decembrie) avem pachetul de Crăciun. Revelionul este deja rezervat integral.',
+    mesajRezervare: 'Cadoul de la brad 🎁 — 500 RON/noapte reducere, închiriere integrală, minim 2 nopți (30 nov – 22 dec sau 28 dec – 10 ian)',
     whatsapp: 'Bună! Am câștigat cadoul de la brad 🎁 (500 RON/noapte reducere la închirierea integrală, minim 2 nopți) și aș dori detalii.',
   };
 
-  // Oferta permanentă de iarnă (se deschide din butonul din hero) — valabilă oricând, nu doar de sărbători
+  // Oferta de Crăciun (butonul din hero): pachet toată casa, 3 nopți, în jurul Crăciunului
   const OFERTA = {
-    activaPanaLa: '2027-01-10',                 // după această dată butonul nu mai apare (decorul se oprește oricum)
-    kicker:   'Ofertă de iarnă',
-    titlu:    'Iarnă ca-n povești, la munte',
-    teaser:   'Ți-am pregătit o ofertă specială pentru zilele de iarnă. Deschide cadoul și vezi ce te așteaptă la Cheile Braniștei.',
-    hook:     'Toată casa · minim 3 nopți',
-    perioada: 'Alegi tu perioada · minim 3 nopți',
-    reducere: '-500 RON',
+    activaPanaLa: '2026-12-27',                 // după Crăciun butonul dispare (jocul cu bradul rămâne până pe 10 ian)
+    nume:     'Oferta de Crăciun',
+    kicker:   'Ofertă de Crăciun',
+    titlu:    'Crăciun ca-n povești, la munte',
+    teaser:   'Toată casa doar pentru voi, trei nopți de sărbătoare în inima Bucovinei. Deschide cadoul și vezi ce te așteaptă.',
+    hook:     'Toată casa · 3 nopți de Crăciun',
+    perioada: 'De Crăciun · minim 3 nopți (ex. 24 – 27 decembrie)',
+    reducere: '-1.000 RON',
     include: [
       ['xm-house',      'Toată casa doar pentru voi',  'Închiriere integrală — perfectă pentru familie sau prieteni.'],
-      ['moon',          'Minim 3 nopți, oricând',      'Vii când vrei tu, noi îți pregătim casa de sărbătoare.'],
+      ['moon',          '3 nopți de Crăciun',          'Alegi tu zilele din jurul Crăciunului, de exemplu 24 – 27 decembrie.'],
       ['xm-tree',       'Casă de sărbătoare',          'Brad împodobit și atmosferă de poveste în toată casa.'],
       ['fire',          'Seri la foc în foișor',       'Grătar, povești și cer înstelat.'],
       ['xm-snowflake',  'Pârtia Rarău la 35 de minute','Schi ziua, liniște seara.'],
     ],
-    pret:     { vechi: '3.000', nou: '2.500', unitate: 'pe noapte · închiriere integrală', economie: 'Economisești 1.500 RON la 3 nopți' },
-    conditii: 'Ofertă valabilă pentru închirierea integrală a casei, pentru minim 3 nopți, în perioada aleasă de tine (în limita disponibilității).',
-    mesajRezervare: 'Doresc Oferta de iarnă ❄ — închiriere integrală, minim 3 nopți',
-    whatsapp: 'Bună! Aș dori detalii despre Oferta de iarnă ❄ (închiriere integrală, minim 3 nopți)',
+    pret:     { vechi: '9.000', nou: '8.000', unitate: 'pachet 3 nopți · toată casa', economie: 'Economisești 1.000 RON' },
+    conditii: 'Pachet pentru închirierea integrală a casei, 3 nopți în perioada Crăciunului (în limita disponibilității).',
+    mesajRezervare: 'Doresc Oferta de Crăciun 🎄 — toată casa, pachet 3 nopți (8.000 RON)',
+    whatsapp: 'Bună! Aș dori detalii despre Oferta de Crăciun 🎄 (toată casa, pachet 3 nopți, 8.000 RON)',
   };
 
   const TELEFON_WA = '40733623000';
@@ -187,6 +189,13 @@ html.xm-modal body{overflow:hidden}
 .xm-ins small{font-size:.5em;letter-spacing:1px;margin-top:2px;font-weight:700}
 .xm-badge{width:64px;height:64px;font-size:.92rem}
 .xm-save{display:block;margin-top:4px;font-style:normal;font-size:.74rem;font-weight:600;color:#8fe0a8}
+/* Revelion — sold out */
+.xm-nye{position:relative;display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:12px 14px;border-radius:14px;text-align:left;border:1px dashed rgba(243,220,157,.4);background:radial-gradient(240px 120px at 20% 50%,rgba(243,220,157,.10),transparent 70%),rgba(0,0,0,.2);overflow:hidden}
+.xm-nye-art{flex:0 0 74px;width:74px;height:auto}
+.xm-nye-txt strong{display:block;font-family:"Prata",serif;font-weight:400;color:#f3dc9d;font-size:1.05rem}
+.xm-nye-txt > span{display:block;color:var(--muted);font-size:.76rem;line-height:1.4;margin-top:2px}
+.xm-stamp{display:inline-block;vertical-align:middle;margin-left:8px;transform:rotate(-8deg);padding:2px 8px;border:2.5px solid #e2606a;border-radius:8px;color:#e2606a;font:800 .64rem "Montserrat",sans-serif;letter-spacing:1.6px;text-transform:uppercase;background:rgba(10,14,20,.55);box-shadow:0 0 0 2px rgba(226,96,106,.18) inset;opacity:.92}
+@media (max-width:380px){ .xm-nye-art{flex-basis:58px;width:58px} }
 .xm-terms{color:rgba(245,241,232,.55);font-size:.72rem;line-height:1.5;margin:0 0 16px}
 .xm-actions{display:grid;gap:10px}
 .xm-back{right:auto;left:-13px;font-size:20px;line-height:1;padding-bottom:3px}
@@ -209,7 +218,7 @@ html.xm-on body{background:radial-gradient(800px 520px at 100% 22%,rgba(168,40,5
 /* caseta din hero nu mai intră sub bară + ghirlandă (globulețele atârnă ~60px) */
 .xm-on .hero{padding-top:125px}   /* poza de iarnă e în index.html, ca să apară de la prima afișare */
 @media (max-height:820px){ .xm-on .hero{padding-bottom:8vh} }
-/* pe telefon caseta stă centrată, cu loc jos pentru cadoul plutitor și WhatsApp (altfel acopereau „Oferta de iarnă”) */
+/* pe telefon caseta stă centrată, cu loc jos pentru cadoul plutitor și WhatsApp (altfel acopereau butonul de ofertă) */
 @media (max-width:600px){ .xm-on .hero{padding-top:115px;padding-bottom:112px;justify-content:center} }
 
 
@@ -908,7 +917,9 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
         const zi0 = new Date(azi.getFullYear(), azi.getMonth(), azi.getDate());
         let sir = 0, nopti = 0;
         for (const x = new Date(Math.max(inceput, zi0)); x < sfarsit; x.setDate(x.getDate() + 1)) {
-          if (lib[iso(x)] >= total) sir++;
+          const lunaZi = (x.getMonth() + 1) * 100 + x.getDate();
+          const exclusa = P.exclus && lunaZi >= P.exclus[0][0] * 100 + P.exclus[0][1] && lunaZi <= P.exclus[1][0] * 100 + P.exclus[1][1];
+          if (!exclusa && lib[iso(x)] >= total) sir++;
           else { if (sir >= 2) nopti += sir; sir = 0; }
         }
         if (sir >= 2) nopti += sir;
@@ -923,7 +934,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     if (!n) return;                               // eroare sau totul ocupat → nu afișăm nimic
     const nopti = n === 1 ? '1 noapte liberă' : n >= 20 ? `${n} de nopți libere` : `${n} nopți libere`;
     document.querySelectorAll('[data-avail]').forEach(el => {
-      el.innerHTML = `<span class="xm-dot"></span><span>Mai sunt <b>${nopti}</b> pentru toată casa de sărbători (${PERIOADA_SARBATORI.text})</span>`;
+      el.innerHTML = `<span class="xm-dot"></span><span>Mai sunt <b>${nopti}</b> pentru toată casa în perioada cadoului (${PERIOADA_SARBATORI.text})</span>`;
       el.hidden = false;
     });
   }
@@ -1226,7 +1237,31 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
   }
   const linkWA = text => `https://api.whatsapp.com/send?phone=${TELEFON_WA}&text=${encodeURIComponent(text)}`;
 
-  /* ---------- OFERTA DE IARNĂ (din butonul din hero) ---------- */
+  /* ---------- „REVELION — SOLD OUT” (ilustrație + ștampilă) ---------- */
+  const REVELION_SOLD_OUT = `
+  <div class="xm-nye" role="note" aria-label="Revelionul este deja rezervat integral">
+    <svg class="xm-nye-art" viewBox="0 0 120 96" aria-hidden="true">
+      <g stroke-linecap="round" fill="none">
+        <g stroke="#f3dc9d" stroke-width="1.8" opacity=".9"><path d="M84 18v-8M84 26v8M76 22h-8M92 22h8M78 16l-5-5M90 28l5 5M90 16l5-5M78 28l-5 5"/></g>
+        <g stroke="#e2606a" stroke-width="1.5" opacity=".8"><path d="M24 14v-6M24 20v6M18 17h-6M30 17h6M20 13l-4-4M28 21l4 4M28 13l4-4M20 21l-4 4"/></g>
+        <g stroke="#8fd3ff" stroke-width="1.3" opacity=".7"><path d="M104 46v-4M104 50v4M100 48h-4M108 48h4"/></g>
+      </g>
+      <g transform="rotate(-12 48 60)">
+        <path d="M38 34h20l-2 18a8 8 0 0 1-16 0z" fill="rgba(243,220,157,.22)" stroke="#f3dc9d" stroke-width="1.6"/>
+        <path d="M40 44h16l-1 8a7 7 0 0 1-14 0z" fill="#f3dc9d" opacity=".75"/>
+        <path d="M48 60v20M40 82h16" stroke="#f3dc9d" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="45" cy="47" r="1" fill="#fff"/><circle cx="51" cy="42" r=".9" fill="#fff"/><circle cx="48" cy="38" r=".8" fill="#fff"/>
+      </g>
+      <g transform="rotate(14 72 60)">
+        <path d="M62 36h20l-2 18a8 8 0 0 1-16 0z" fill="rgba(243,220,157,.22)" stroke="#f3dc9d" stroke-width="1.6"/>
+        <path d="M64 46h16l-1 8a7 7 0 0 1-14 0z" fill="#f3dc9d" opacity=".75"/>
+        <path d="M72 62v20M64 84h16" stroke="#f3dc9d" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <div class="xm-nye-txt"><strong>Revelion ${AN + 1} <span class="xm-stamp">Sold out</span></strong><span>Casa e rezervată integral. Mulțumim!</span></div>
+  </div>`;
+
+  /* ---------- OFERTA DE CRĂCIUN (din butonul din hero) ---------- */
   function oferta() {
     const w = fereastra('xm-oferta', 'xmTitluOf');
     w.body.innerHTML = `
@@ -1251,6 +1286,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       <span class="xm-badge">${insigna(OFERTA.reducere)}</span>
     </div>
     <p class="xm-terms">${OFERTA.conditii}</p>
+    ${REVELION_SOLD_OUT}
     <div class="xm-actions">
       <button type="button" class="btn primary full xm-book">${ico('calendar-check')} Rezervă oferta</button>
       <a class="btn full" href="${linkWA(OFERTA.whatsapp)}" target="_blank" rel="noopener">${ico('whatsapp')} Întreabă pe WhatsApp</a>
@@ -1275,7 +1311,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'xm-hero-chip';
-      chip.innerHTML = `${ico('xm-gift')} Oferta de iarnă`;
+      chip.innerHTML = `${ico('xm-gift')} ${OFERTA.nume}`;
       chip.addEventListener('click', deschide);
       actiuni.insertAdjacentElement('afterend', chip);
     }
@@ -1309,7 +1345,7 @@ html.xm-night body{background:radial-gradient(1000px 600px at 50% -5%,rgba(120,1
     <div class="xm-avail" data-avail hidden></div>
     <ul class="xm-list">
       <li style="animation-delay:120ms">${ico('xm-house')}<div><strong>Toată casa doar pentru voi</strong><span>Închiriere integrală — perfectă pentru familie sau prieteni.</span></div></li>
-      <li style="animation-delay:210ms">${ico('moon')}<div><strong>Minim 2 nopți</strong><span>Alegi tu zilele, între ${CADOU.perioada}.</span></div></li>
+      <li style="animation-delay:210ms">${ico('moon')}<div><strong>Minim 2 nopți</strong><span>Alegi tu zilele: ${CADOU.perioada}.</span></div></li>
       <li style="animation-delay:300ms">${ico('xm-tree')}<div><strong>Casă de sărbătoare</strong><span>Brad împodobit, seri la foc în foișor și liniște la munte.</span></div></li>
     </ul>
     <div class="xm-price">
