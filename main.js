@@ -10,11 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const revealAt = 40;
 
-    const onScroll = () => {
-      const show = window.scrollY > revealAt;
-      box.classList.toggle('show', show);
-      hero.classList.toggle('hero-scrolled', show);
-    };
+    // Caseta apare imediat la încărcare (fără „gol” la deschiderea site-ului)
+    // și rămâne afișată; la scroll doar se întunecă puțin poza.
+    requestAnimationFrame(() => requestAnimationFrame(() => box.classList.add('show')));
+
+    const onScroll = () =>
+      hero.classList.toggle('hero-scrolled', window.scrollY > revealAt);
 
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();
@@ -85,8 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const nav = document.querySelector('nav');
     if (!nav) return;
 
-    const onScroll = () =>
-      nav.classList.toggle('nav-scrolled', window.scrollY > 20);
+    // Două praguri (histerezis): când bara își schimbă înălțimea, pagina sare
+    // cu ~24px — cu un singur prag, săritura îl retraversa și bara „tremura”.
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > 60) nav.classList.add('nav-scrolled');
+      else if (y < 8) nav.classList.remove('nav-scrolled');
+    };
 
     window.addEventListener('scroll', onScroll, { passive:true });
     onScroll();

@@ -13,14 +13,16 @@
   <meta property="og:url" content="https://cheilebranistei.ro/" />
   <meta property="og:title" content="Cheile Braniștei | Mountain Retreat" />
   <meta property="og:description" content="Pensiune de munte în Bucovina, lângă râu, cu foișor, grătar și priveliște spre munți. Rezervă rapid pe WhatsApp sau telefon." />
-  <meta property="og:image" content="https://cheilebranistei.ro/hero.webp" />
-  <meta property="og:image:width" content="1920" />
-  <meta property="og:image:height" content="1081" />
+  <!-- SEZON: poza de iarnă la previzualizare (WhatsApp/Facebook). După sărbători: înapoi la hero.webp, 1920x1081 -->
+  <meta property="og:image" content="https://cheilebranistei.ro/og-iarna.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Casa Cheile Braniștei luminată, într-o seară de iarnă" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Cheile Braniștei | Mountain Retreat" />
   <meta name="twitter:description" content="Pensiune de munte în Bucovina, lângă râu, cu foișor, grătar și priveliște spre munți." />
-  <meta name="twitter:image" content="https://cheilebranistei.ro/hero.webp" />
+  <meta name="twitter:image" content="https://cheilebranistei.ro/og-iarna.jpg" />
 
   <link rel="preload" as="font" type="font/woff2" href="fonts/prata-latin.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="fonts/montserrat-latin.woff2" crossorigin>
@@ -38,8 +40,29 @@
   <meta name="theme-color" content="#102a21"/>
 
  
-  <link rel="preload" as="image" href="hero.webp" type="image/webp" media="(min-width: 601px)" fetchpriority="high">
-  <link rel="preload" as="image" href="hero-mobile.webp" type="image/webp" media="(max-width: 600px)" fetchpriority="high">
+  <!-- Sezonul de sărbători se stabilește ÎNAINTE de prima afișare, ca să nu apară o clipă poza de vară
+       (sau caseta din hero înainte de intro). Datele trebuie să fie în acord cu SEZON din sarbatori.js. -->
+  <script>
+  (function () {
+    var h = document.documentElement, q = new URLSearchParams(location.search).get('sarbatori');
+    var d = new Date(), md = (d.getMonth() + 1) * 100 + d.getDate();
+    var sezon = q !== 'off' && (q === 'on' || q === 'test' || md >= 1115 || md <= 110);   // 15 nov – 10 ian
+    var g = function (s, k) { try { return s.getItem(k); } catch (e) { return null; } };
+    var preload = function (href, media) {
+      var l = document.createElement('link');
+      l.rel = 'preload'; l.as = 'image'; l.href = href; l.setAttribute('fetchpriority', 'high');
+      if (media) l.media = media;
+      document.head.appendChild(l);
+    };
+    if (!sezon) { preload('hero.webp', '(min-width: 601px)'); preload('hero-mobile.webp', '(max-width: 600px)'); return; }
+    h.classList.add('xm-on');
+    preload('hero-iarna.jpg');
+    if (g(localStorage, 'xm-noapte') !== '0') h.classList.add('xm-night');
+    var recent = Date.now() - (+g(localStorage, 'xm-inchis') || 0) < 864e5;
+    if (q === 'test' || (g(localStorage, 'xm-cadou') !== '1' && !g(sessionStorage, 'xm-vazut') && !recent && !location.hash))
+      h.classList.add('xm-intro-on');   // sarbatori.js scoate clasa dacă intro-ul nu pornește
+  })();
+  </script>
 
   <style>
 /* =========================
@@ -86,6 +109,9 @@
 
 *{box-sizing:border-box; scroll-behavior:smooth}
 html,body{margin:0;padding:0}
+/* Nicio derulare laterală, chiar dacă un element iese câțiva pixeli din ecran (pe iPhone pagina „aluneca” în lateral).
+   'clip' nu creează container de scroll, deci nu strică bara fixă de sus. */
+html,body{overflow-x:clip}
 
 body{
   font-family:'Montserrat', sans-serif;
@@ -118,9 +144,17 @@ h1,h2,h3{
    NAV
    ========================= */
 
+/* Bara plutește deasupra paginii (fixed), iar body păstrează un spațiu egal cu înălțimea
+   ei mare (logo 74px + 2×10px padding + 1px bordură). Așa, când bara se micșorează la scroll,
+   conținutul de dedesubt nu mai sare. Pe mobil: logo 48px + 2×8px + 1px. */
+body{ padding-top:95px; }
+@media (max-width: 600px){ body{ padding-top:65px; } }
+
 nav{
-  position:sticky;
+  position:fixed;
   top:0;
+  left:0;
+  right:0;
   z-index:1000;
   background:rgba(8,18,14,.55);
   backdrop-filter:blur(10px);
@@ -201,6 +235,22 @@ nav{
 .nav-links a.active::after {
   transform: translateX(-50%) scaleX(1);
 }
+
+/* Rezervă — acțiunea principală, evidențiată în meniu */
+.nav-links a.nav-cta{
+  color:#10241c;
+  border-color:rgba(214,179,106,.7);
+  background:linear-gradient(180deg, #ddbc77, #c6a054);
+  margin-left:4px;
+}
+.nav-links a.nav-cta:hover,
+.nav-links a.nav-cta.active{
+  color:#10241c;
+  border-color:rgba(214,179,106,.9);
+  background:linear-gradient(180deg, #e6c886, #cfa95c);
+  box-shadow:0 6px 18px rgba(0,0,0,.3);
+}
+.nav-links a.nav-cta::after{ display:none; }
 
 /* =========================
    HAMBURGER
@@ -387,6 +437,15 @@ nav{
     linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.28)),
     url('hero.webp') top center / cover no-repeat;
 }
+
+/* Sezonul de sărbători (clasele vin din scriptul din <head>): poza de iarnă și caseta ascunsă
+   până la finalul intro-ului — aici, nu în sarbatori.js, ca să se aplice de la prima afișare */
+.xm-on .hero{
+  background:
+    linear-gradient(rgba(0,0,0,.04), rgba(0,0,0,.22)),
+    url('hero-iarna.jpg') center 58% / cover no-repeat;
+}
+.xm-intro-on .reveal-hero{ opacity:0 !important; transform:translateY(26px) !important; filter:blur(2px) !important; }
 
 /* Întunecarea la scroll e un strat separat — imaginea de fundal nu se
    schimbă niciodată, deci nu mai există refetch/redecode (flash pe mobil) */
@@ -1272,6 +1331,12 @@ a:focus, button:focus{
     background-position: center top;
     background-size: cover;
   }
+  .xm-on .hero{
+    background-image:
+      linear-gradient(rgba(0,0,0,.04), rgba(0,0,0,.22)),
+      url('hero-iarna.jpg');
+    background-position: 33% center;
+  }
 
   .car-track{
     display:flex;
@@ -1727,17 +1792,14 @@ html{ -webkit-tap-highlight-color: transparent; }
   <!-- NAV -->
   <nav class="nav">
     <div class="wrap nav-inner navbar">
-      <div class="nav-logo brand">
+      <a href="#acasa" class="nav-logo brand" aria-label="Cheile Braniștei — Acasă">
         <img src="logo.webp" alt="Cheile Braniștei" width="200" height="70">
-      </div>
+      </a>
       <div class="nav-links menu" id="navLinks">
-        <a href="#acasa">Acasă</a>
-        <a href="#concept">Concept</a>
-        <a href="#facilitati">Facilități</a>
-        <a href="#rezerva">Rezervă</a>
         <a href="#cazare">Cazare</a>
         <a href="#zona">Împrejurimi</a>
         <a href="#contact">Contact</a>
+        <a href="#rezerva" class="nav-cta">Rezervă</a>
       </div>
       <button class="hamburger" id="hamburger" aria-label="Meniu">
         <span></span>
@@ -1915,6 +1977,13 @@ html{ -webkit-tap-highlight-color: transparent; }
           <button class="car-card" type="button" data-gallery-btn data-src="camera6.webp" aria-label="Foto 7"><img src="camera6-thumb.webp" alt="Salon" width="1200" height="900" loading="lazy"></button>
           <button class="car-card" type="button" data-gallery-btn data-src="hol.webp" aria-label="Foto 8"><img src="hol-thumb.webp" alt="Hol Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
           <button class="car-card" type="button" data-gallery-btn data-src="garden.webp" aria-label="Foto 9"><img src="garden-thumb.webp" alt="Curte Cheile Braniștei" width="1200" height="1600" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="camera-iarna.jpg" data-iarna aria-label="Foto 10"><img src="camera-iarna-thumb.jpg" alt="Cameră dublă cu priveliște spre munții înzăpeziți" width="525" height="700" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="salon-hol.jpg" aria-label="Foto 11"><img src="salon-hol-thumb.jpg" alt="Salonul și zona de zi" width="700" height="525" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="salon-mare.jpg" aria-label="Foto 12"><img src="salon-mare-thumb.jpg" alt="Salonul mare pentru mese și evenimente" width="700" height="525" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="salon-brad.jpg" data-iarna aria-label="Foto 13"><img src="salon-brad-thumb.jpg" alt="Salonul cu bradul de Crăciun" width="700" height="525" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="hero-iarna.jpg" data-iarna aria-label="Foto 14"><img src="iarna-noapte-thumb.jpg" alt="Casa Cheile Braniștei luminată, într-o seară de iarnă" width="700" height="525" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="iarna-ciubar.jpg" data-iarna aria-label="Foto 15"><img src="iarna-ciubar-thumb.jpg" alt="Casa iarna, cu ciubărul în curte" width="525" height="700" loading="lazy"></button>
+          <button class="car-card" type="button" data-gallery-btn data-src="iarna-curte.jpg" data-iarna aria-label="Foto 16"><img src="iarna-curte-thumb.jpg" alt="Curtea acoperită de zăpadă, cu foișoarele" width="525" height="700" loading="lazy"></button>
         </div>
         <button class="car-btn next" type="button" aria-label="Înainte" data-next>›</button>
       </div>
@@ -2098,6 +2167,8 @@ html{ -webkit-tap-highlight-color: transparent; }
   </a>
 
   <script src="main.js"></script>
+  <!-- Decor de sărbători + oferta de Crăciun (se activează singur 15 nov – 7 ian) -->
+  <script src="sarbatori.js" defer></script>
   <!-- Cloudflare Web Analytics (fara cookies, fara tracking personal) -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "d5746165c7694d72bc28e3d435e04534"}'></script>
 </body>
